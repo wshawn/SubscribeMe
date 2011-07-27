@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * SubscribeMe
+ *
+ * Copyright 2011 by Mark Hamstra <business@markhamstra.nl>
+ *
+ * This file is part of SubscribeMe, a subscriptions management extra for MODX Revolution
+ *
+ * SubscribeMe is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * SubscribeMe is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * SubscribeMe; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * Suite 330, Boston, MA 02111-1307 USA
+-->
+<model package="subscribeme" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM">
+    <object class="smSubscription" table="sm_subscription" extends="xPDOObject">
+        <field key="sub_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="sub_id" length="" collation="A" null="false" />
+        </index>
+
+        <field key="user_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
+        <field key="type_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
+
+        <field key="start" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
+        <field key="end" dbtype="timestamp" phptype="timestamp" null="false" />
+        <field key="active" dbtype="tinyint" precision="1" phptype="boolean" null="true" default="1" />
+
+        <aggregate alias="User" class="modUser" local="user_id" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="SubscriptionType" class="smSubscriptionType" local="type_id" foreign="type_id" cardinality="one" owner="foreign" />
+
+        <aggregate alias="Transactions" class="smTransaction" local="sub_id" foreign="sub_id" cardinality="one" owner="local" />
+    </object>
+
+    <object class="smTransaction" table="sm_transaction" extends="xPDOObject">
+        <field key="trans_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="trans_id" length="" collation="A" null="false" />
+        </index>
+
+        <field key="sub_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
+        <field key="user_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
+
+        <field key="reference" dbtype="varchar" precision="256" phptype="string" null="true" default="" />
+        <field key="method" dbtype="varchar" precision="25" phptype="string" null="true" default="" />
+
+        <field key="completed" dbtype="tinyint" precision="1" phptype="boolean" null="true" default="0" />
+
+        <field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
+        <field key="updatedon" dbtype="timestamp" phptype="timestamp" null="false" />
+
+        <aggregate alias="User" class="modUser" local="user_id" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Subscription" class="smSubscription" local="sub_id" foreign="sub_id" cardinality="one" owner="foreign" />
+    </object>
+
+    <object class="smSubscriptionType" table="sm_subscription_type" extends="xPDOObject">
+        <field key="type_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="type_id" length="" collation="A" null="false" />
+        </index>
+
+        <field key="name" dbtype="varchar" precision="256" phptype="string" null="false" default="A New SubscribeMe Subscription" />
+        <field key="description" dbtype="text" phptype="string" default="" />
+        <field key="sortorder" dbtype="int" precision="11" phptype="integer" default="0" />
+
+        <field key="price" dbtype="numeric" precision="7,2" phptype="integer" null="false" default="0.00" /> <!-- amount to be billed every recurrence -->
+        <field key="periods" dbtype="int" precision="11" phptype="integer" null="false" default="1" /> <!-- number of periods between each recurrence -->
+        <field key="period" dbtype="varchar" precision="1" phptype="string" null="false" default="M" /> <!-- period day/week/month/year D/W/M/Y -->
+
+        <field key="usergroup" dbtype="text" phptype="json" null="true" />
+
+        <aggregate alias="Subscriptions" class="smSubscription" local="type_id" foreign="type_id" cardinality="many" owner="local" />
+    </object>
+</model>
+
