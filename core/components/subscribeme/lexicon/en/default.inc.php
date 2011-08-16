@@ -17,9 +17,16 @@ $_lang['sm.subscriptiontypes'] = 'Subscription Types';
 $_lang['sm.button.add'] = 'Add new [[+what]]';
 $_lang['sm.button.update'] = 'Update [[+what]]';
 $_lang['sm.button.remove'] = 'Remove [[+what]]';
+$_lang['sm.button.exportsubs'] = 'Export Subscribers';
+$_lang['sm.combo.filter_on'] = 'Filter on [[+what]]';
+$_lang['sm.search'] = 'Search';
+$_lang['sm.search...'] = 'Search...';
 
 /* Generic fields */
 $_lang['sm.fullname'] = 'Full Name';
 $_lang['sm.email'] = 'E-mail Address';
 $_lang['sm.active'] = 'Active';
+$_lang['sm.username'] = 'Username';
+$_lang['sm.limit'] = 'Limit';
+
 ?>

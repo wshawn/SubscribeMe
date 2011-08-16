@@ -70,7 +70,7 @@
         <field key="description" dbtype="text" phptype="string" default="" />
         <field key="sortorder" dbtype="int" precision="11" phptype="integer" default="0" />
 
-        <field key="price" dbtype="numeric" precision="7,2" phptype="integer" null="false" default="0.00" /> <!-- amount to be billed every recurrence -->
+        <field key="price" dbtype="numeric" precision="7,2" phptype="float" null="false" default="0.00" /> <!-- amount to be billed every recurrence -->
         <field key="periods" dbtype="int" precision="11" phptype="integer" null="false" default="1" /> <!-- number of periods between each recurrence -->
         <field key="period" dbtype="varchar" precision="1" phptype="string" null="false" default="M" /> <!-- period day/week/month/year D/W/M/Y -->
 

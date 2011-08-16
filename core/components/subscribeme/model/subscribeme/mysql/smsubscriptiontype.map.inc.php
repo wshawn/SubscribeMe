@@ -70,7 +70,7 @@ $xpdo_meta_map['smSubscriptionType']= array (
     array (
       'dbtype' => 'numeric',
       'precision' => '7,2',
-      'phptype' => 'integer',
+      'phptype' => 'float',
       'null' => false,
       'default' => 0,
     ),
