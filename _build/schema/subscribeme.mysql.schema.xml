@@ -27,7 +27,8 @@
         </index>
 
         <field key="user_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
-        <field key="type_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
+        <field key="type_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" attributes="unsigned" />
+        <field key="trans_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" attributes="unsigned" />
 
         <field key="start" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
         <field key="end" dbtype="timestamp" phptype="timestamp" null="false" />
@@ -36,7 +37,7 @@
         <aggregate alias="User" class="modUser" local="user_id" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="SubscriptionType" class="smSubscriptionType" local="type_id" foreign="type_id" cardinality="one" owner="foreign" />
 
-        <aggregate alias="Transactions" class="smTransaction" local="sub_id" foreign="sub_id" cardinality="one" owner="local" />
+        <aggregate alias="Transaction" class="smTransaction" local="trans_id" foreign="trans_id" cardinality="one" owner="foreign" />
     </object>
 
     <object class="smTransaction" table="sm_transaction" extends="xPDOObject">
@@ -45,11 +46,11 @@
             <column key="trans_id" length="" collation="A" null="false" />
         </index>
 
-        <field key="sub_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
         <field key="user_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
 
         <field key="reference" dbtype="varchar" precision="256" phptype="string" null="true" default="" />
         <field key="method" dbtype="varchar" precision="25" phptype="string" null="true" default="" />
+        <field key="amount" dbtype="float" precision="10,2" phptype="string" null="true" default="" />
 
         <field key="completed" dbtype="tinyint" precision="1" phptype="boolean" null="true" default="0" />
 
@@ -57,7 +58,7 @@
         <field key="updatedon" dbtype="timestamp" phptype="timestamp" null="false" />
 
         <aggregate alias="User" class="modUser" local="user_id" foreign="id" cardinality="one" owner="foreign" />
-        <aggregate alias="Subscription" class="smSubscription" local="sub_id" foreign="sub_id" cardinality="one" owner="foreign" />
+        <aggregate alias="Subscriptions" class="smSubscription" local="trans_id" foreign="trans_id" cardinality="many" owner="local" />
     </object>
 
     <object class="smSubscriptionType" table="sm_subscription_type" extends="xPDOObject">

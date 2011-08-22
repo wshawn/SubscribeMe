@@ -27,6 +27,7 @@ $xpdo_meta_map['smSubscription']= array (
     'sub_id' => NULL,
     'user_id' => NULL,
     'type_id' => NULL,
+    'trans_id' => NULL,
     'start' => 'CURRENT_TIMESTAMP',
     'end' => NULL,
     'active' => 1,
@@ -60,7 +61,15 @@ $xpdo_meta_map['smSubscription']= array (
       'phptype' => 'integer',
       'null' => false,
       'index' => 'fk',
-      'generated' => 'native',
+      'attributes' => 'unsigned',
+    ),
+    'trans_id' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '11',
+      'phptype' => 'integer',
+      'null' => false,
+      'index' => 'fk',
       'attributes' => 'unsigned',
     ),
     'start' => 
@@ -122,13 +131,13 @@ $xpdo_meta_map['smSubscription']= array (
       'cardinality' => 'one',
       'owner' => 'foreign',
     ),
-    'Transactions' => 
+    'Transaction' => 
     array (
       'class' => 'smTransaction',
-      'local' => 'sub_id',
-      'foreign' => 'sub_id',
+      'local' => 'trans_id',
+      'foreign' => 'trans_id',
       'cardinality' => 'one',
-      'owner' => 'local',
+      'owner' => 'foreign',
     ),
   ),
 );

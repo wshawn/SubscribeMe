@@ -43,7 +43,7 @@ SM.grid.Subscribers = function(config) {
                         key: Ext.EventObject.ENTER,
                         fn: function() {
                             this.fireEvent('change',this);
-                            //this.blur();
+                            this.blur(); // calling blur() will make the field lose focus, which in turn prevents it from resubmitting again when you click out of the field
                             return true;
                         },
                         scope: cmp
@@ -57,6 +57,12 @@ SM.grid.Subscribers = function(config) {
             width: 200,
             listeners: {
                 'select': {fn: this.filterBySubscriptionType, scope: this}
+            }
+        },'-',{
+            xtype: 'button',
+            text: _('sm.button.clearfilter'),
+            listeners: {
+                'click': {fn: this.clearFilter, scope: this}
             }
         }],
 		fields: [
@@ -151,7 +157,6 @@ SM.grid.Subscribers = function(config) {
 };
 Ext.extend(SM.grid.Subscribers,MODx.grid.Grid,{
     filterBySubscriptionType: function (cb, rec, ri) {
-        console.log(cb, rec, ri, rec.data);
         this.getStore().baseParams['subscriptiontype'] = rec.data['id'];
         this.getBottomToolbar().changePage(1);
         this.refresh();
@@ -159,6 +164,14 @@ Ext.extend(SM.grid.Subscribers,MODx.grid.Grid,{
     searchSubs: function(tf, nv, ov) {
         var store = this.getStore();
         store.baseParams.query = tf.getValue();
+        this.getBottomToolbar().changePage(1);
+        this.refresh();
+    },
+    clearFilter: function() {
+        this.getStore().baseParams['query'] = '';
+        this.getStore().baseParams['subscriptiontype'] = '';
+        Ext.getCmp('sm-subscriptiontype-filter').reset();
+        Ext.getCmp('sm-subs-search').reset();
         this.getBottomToolbar().changePage(1);
         this.refresh();
     }

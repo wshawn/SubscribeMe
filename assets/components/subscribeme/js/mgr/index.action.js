@@ -31,7 +31,7 @@ SM.page.Index = function(config) {
             },{
                 title: _('sm.transactions'),
                 items: [{
-                    //xtype: 'sm-grid-transactions',
+                    xtype: 'sm-grid-transactions',
                     border: false
                 }]
             },{

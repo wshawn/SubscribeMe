@@ -25,10 +25,10 @@ $xpdo_meta_map['smTransaction']= array (
   'fields' => 
   array (
     'trans_id' => NULL,
-    'sub_id' => NULL,
     'user_id' => NULL,
     'reference' => '',
     'method' => '',
+    'amount' => 0,
     'completed' => 0,
     'createdon' => 'CURRENT_TIMESTAMP',
     'updatedon' => NULL,
@@ -42,16 +42,6 @@ $xpdo_meta_map['smTransaction']= array (
       'phptype' => 'integer',
       'null' => false,
       'index' => 'pk',
-      'generated' => 'native',
-      'attributes' => 'unsigned',
-    ),
-    'sub_id' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '11',
-      'phptype' => 'integer',
-      'null' => false,
-      'index' => 'fk',
       'generated' => 'native',
       'attributes' => 'unsigned',
     ),
@@ -80,6 +70,14 @@ $xpdo_meta_map['smTransaction']= array (
       'phptype' => 'string',
       'null' => true,
       'default' => '',
+    ),
+    'amount' => 
+    array (
+      'dbtype' => 'float',
+      'precision' => '10,2',
+      'phptype' => 'string',
+      'null' => true,
+      'default' => 0,
     ),
     'completed' => 
     array (
@@ -132,13 +130,13 @@ $xpdo_meta_map['smTransaction']= array (
       'cardinality' => 'one',
       'owner' => 'foreign',
     ),
-    'Subscription' => 
+    'Subscriptions' => 
     array (
       'class' => 'smSubscription',
-      'local' => 'sub_id',
-      'foreign' => 'sub_id',
-      'cardinality' => 'one',
-      'owner' => 'foreign',
+      'local' => 'trans_id',
+      'foreign' => 'trans_id',
+      'cardinality' => 'many',
+      'owner' => 'local',
     ),
   ),
 );
