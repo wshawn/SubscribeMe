@@ -1,11 +1,11 @@
 
-SM.grid.Subscribers = function(config) {
+SM.grid.SubscriptionTypes = function(config) {
     config = config || {};
     Ext.applyIf(config,{
 		url: SM.config.connector_url,
-		id: 'grid-subscribers',
+		id: 'grid-subscriptiontypes',
 		baseParams: {
-            action: 'mgr/subscribers/getlist'
+            action: 'mgr/subscriptiontypes/getlist'
         },
         params: [],
         viewConfig: {
@@ -14,30 +14,16 @@ SM.grid.Subscribers = function(config) {
         },
         tbar: [{
             xtype: 'button',
-            text: _('sm.button.add',{ what: _('sm.subscriber') } ),
+            text: _('sm.button.add',{ what: _('sm.subscriptiontype') } ),
             handler: function() {
-                window.location.href = '?a='+MODx.action['csm/subscribers'];
-            }
-        },'-',{
-            xtype: 'button',
-            text: _('sm.button.exportsubs'),
-            handler: function() {
-                r = {
-                    subscriptiontype: Ext.getCmp('sm-subscriptiontype-filter').getValue(),
-                    search: Ext.getCmp('sm-subs-search').getValue(),
-                    limit: 500
-                };
-                o = new SM.window.ExportSubscribers({
-                    record: r
-                });
-                o.show();
+                //window.location.href = '?a='+MODx.action['csm/subscriptiontypes'];
             }
         },'->',{
             xtype: 'textfield',
-            id: 'sm-subs-search',
+            id: 'sm-subtypes-search',
             emptyText: _('sm.search...'),
             listeners: {
-                'change': { fn:this.searchSubs, scope:this},
+                'change': { fn:this.searchSubTypes, scope:this},
                 'render': { fn: function(cmp) {
                     new Ext.KeyMap(cmp.getEl(), {
                         key: Ext.EventObject.ENTER,
@@ -51,14 +37,6 @@ SM.grid.Subscribers = function(config) {
                 },scope: this}
             }
         },'-',{
-            xtype: 'sm-combo-subscriptiontype',
-            emptyText: _('sm.combo.filter_on',{what: _('sm.subscriptions')}),
-            id: 'sm-subscriptiontype-filter',
-            width: 200,
-            listeners: {
-                'select': {fn: this.filterBySubscriptionType, scope: this}
-            }
-        },'-',{
             xtype: 'button',
             text: _('sm.button.clearfilter'),
             listeners: {
@@ -66,45 +44,66 @@ SM.grid.Subscribers = function(config) {
             }
         }],
 		fields: [
-            {name: 'id', type: 'int'},
-            {name: 'subscriptions', type: 'string'},
-            {name: 'fullname', type: 'string'},
-            {name: 'username', type: 'string'},
-            {name: 'email', type: 'string'},
+            {name: 'type_id', type: 'int'},
+            {name: 'name', type: 'string'},
+            {name: 'description', type: 'string'},
+            {name: 'sortorder', type: 'int'},
+            {name: 'price', type: 'float'},
+            {name: 'periods', type: 'int'},
+            {name: 'period', type: 'string'},
+            {name: 'usergroup', type: 'string'},
             {name: 'active', type: 'boolean'}
         ],
         paging: true,
-        primaryKey: 'id',
+        primaryKey: 'type_id',
 		remoteSort: true,
         sortBy: 'name',
 		columns: [{
 			header: _('id'),
-			dataIndex: 'id',
+			dataIndex: 'type_id',
 			sortable: true,
 			width: 1
 		},{
-			header: _('sm.subscriptions'),
-            dataIndex: 'subscriptions',
+			header: _('sm.name'),
+            dataIndex: 'name',
             sortable: true,
-            width: 7,
+            width: 4,
             renderer: function(val) {
                 return '<div style="white-space: normal !important;">'+ val +'</div>';
             }
 		},{
-			header: _('sm.fullname'),
-			dataIndex: 'fullname',
+			header: _('sm.description'),
+			dataIndex: 'description',
 			sortable: true,
-			width: 4
+			width: 5,
+            renderer: function(val) {
+                return '<div style="white-space: normal !important;">'+ val +'</div>';
+            }
 		},{
-            header: _('sm.username'),
-            dataIndex: 'username',
+            header: _('sm.sortorder'),
+            dataIndex: 'sortorder',
             sortable: true,
             width: 2
         },{
-			header: _('sm.email'),
-			dataIndex: 'email',
+			header: _('sm.price'),
+			dataIndex: 'price',
 			sortable: true,
-			width: 3
+			width: 2
+		},{
+			header: _('sm.periods'),
+			dataIndex: 'periods',
+			sortable: true,
+			width: 2
+		},{
+			header: _('sm.period'),
+			dataIndex: 'period',
+			sortable: true,
+			width: 2
+		},{
+			header: _('sm.usergroup'),
+			dataIndex: 'usergroup',
+			sortable: true,
+			width: 4
 		},{
 			header: _('sm.active'),
 			dataIndex: 'active',
@@ -116,33 +115,36 @@ SM.grid.Subscribers = function(config) {
             }
 		}]
 		,listeners: {
-			/*'rowcontextmenu': function(grid, rowIndex, e) {
+			'rowcontextmenu': function(grid, rowIndex, e) {
                 var _contextMenu = new Ext.menu.Menu({
                     items: [{
                         text: _('update'),
                         handler: function(grid, rowIndex, e) {
-                            var eid = Ext.getCmp('grid-subscribers').getSelectionModel().getSelected().data.subscribers_id;
-                            window.location.href = '?a='+MODx.action['csm/subscribers']+'&id='+eid;
-                        }
+                            win = new SM.window.SubscriptionTypes({
+                                record: this.getSelectionModel().getSelected().data
+                            });
+                            win.show();
+                        },
+                        scope: this
                     },'-',{
-                        text: _('remove')+' '+_('sm.subscribers'),
+                        text: _('remove')+' '+_('sm.subscriptiontypes'),
                         handler: function(grid, rowIndex, e) {
                             MODx.msg.confirm({
-                                title: _('sm.remove',{what: _('sm.subscribers')}),
+                                title: _('sm.remove',{what: _('sm.subscriptiontypes')}),
                                 text: _('confirm_remove'),
                                 url: SM.config.connector_url,
                                 params: {
-                                    action: 'mgr/subscribers/remove',
-                                    eid: Ext.getCmp('grid-subscribers').getSelectionModel().getSelected().data.subscribers_id
+                                    action: 'mgr/subscriptiontypes/remove',
+                                    eid: Ext.getCmp('grid-subscriptiontypes').getSelectionModel().getSelected().data.subscriptiontypes_id
                                 },
                                 listeners: {
                                     'success': { fn:function (r) {
                                         MODx.msg.status({
-                                            title: _('sm.removed', {what: _('sm.subscribers')}),
-                                            message: _('sm.remove_successful', {what: _('sm.subscribers')}),
+                                            title: _('sm.removed', {what: _('sm.subscriptiontypes')}),
+                                            message: _('sm.remove_successful', {what: _('sm.subscriptiontypes')}),
                                             delay: 3
                                         });
-                                        Ext.getCmp('grid-subscribers').refresh();
+                                        Ext.getCmp('grid-subscriptiontypes').refresh();
                                     }, scope: true}
                                 }
                             });
@@ -151,17 +153,12 @@ SM.grid.Subscribers = function(config) {
                 });
                 _contextMenu.showAt(e.getXY());
 			}
-		*/}
+		}
     });
-    SM.grid.Subscribers.superclass.constructor.call(this,config);
+    SM.grid.SubscriptionTypes.superclass.constructor.call(this,config);
 };
-Ext.extend(SM.grid.Subscribers,MODx.grid.Grid,{
-    filterBySubscriptionType: function (cb, rec, ri) {
-        this.getStore().baseParams['subscriptiontype'] = rec.data['id'];
-        this.getBottomToolbar().changePage(1);
-        this.refresh();
-    },
-    searchSubs: function(tf, nv, ov) {
+Ext.extend(SM.grid.SubscriptionTypes,MODx.grid.Grid,{
+    searchSubTypes: function(tf, nv, ov) {
         var store = this.getStore();
         store.baseParams.query = tf.getValue();
         this.getBottomToolbar().changePage(1);
@@ -169,11 +166,9 @@ Ext.extend(SM.grid.Subscribers,MODx.grid.Grid,{
     },
     clearFilter: function() {
         this.getStore().baseParams['query'] = '';
-        this.getStore().baseParams['subscriptiontype'] = '';
-        Ext.getCmp('sm-subscriptiontype-filter').reset();
-        Ext.getCmp('sm-subs-search').reset();
+        Ext.getCmp('sm-subtypes-search').reset();
         this.getBottomToolbar().changePage(1);
         this.refresh();
     }
 });
-Ext.reg('sm-grid-subscribers',SM.grid.Subscribers);
+Ext.reg('sm-grid-subscriptiontypes',SM.grid.SubscriptionTypes);

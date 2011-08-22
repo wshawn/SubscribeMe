@@ -23,7 +23,9 @@ $modx->regClientStartupScript($rex->config['js_url'].'mgr/transactions/combo.pai
 $modx->regClientStartupScript($rex->config['js_url'].'mgr/transactions/markaspaid.window.transactions.js');
 $modx->regClientStartupScript($rex->config['js_url'].'mgr/transactions/viewsubscriptions.window.transactions.js');
 
-$modx->regClientStartupScript($rex->config['js_url'].'mgr/subscriptiontype/combo.subscriptiontype.js');
+$modx->regClientStartupScript($rex->config['js_url'].'mgr/subscriptiontypes/grid.subscriptiontypes.js');
+$modx->regClientStartupScript($rex->config['js_url'].'mgr/subscriptiontypes/window.subscriptiontypes.js');
+$modx->regClientStartupScript($rex->config['js_url'].'mgr/subscriptiontypes/combo.subscriptiontypes.js');
 
 return '<div id="subscribeme"></div>';
 ?>

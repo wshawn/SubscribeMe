@@ -75,7 +75,8 @@
         <field key="periods" dbtype="int" precision="11" phptype="integer" null="false" default="1" /> <!-- number of periods between each recurrence -->
         <field key="period" dbtype="varchar" precision="1" phptype="string" null="false" default="M" /> <!-- period day/week/month/year D/W/M/Y -->
 
-        <field key="usergroup" dbtype="text" phptype="json" null="true" />
+        <field key="usergroup" dbtype="varchar" precision="255" phptype="array" null="true" />
+        <field key="active" dbtype="tinyint" precision="1" phptype="boolean" null="true" default="1" />
 
         <aggregate alias="Subscriptions" class="smSubscription" local="type_id" foreign="type_id" cardinality="many" owner="local" />
     </object>

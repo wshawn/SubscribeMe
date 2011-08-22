@@ -44,5 +44,13 @@ $_lang['sm.amount'] = 'Amount';
 $_lang['sm.completed'] = 'Completed';
 $_lang['sm.start'] = 'Start';
 $_lang['sm.end'] = 'End';
+$_lang['sm.name'] = 'Name';
+$_lang['sm.description'] = 'Description';
+$_lang['sm.sortorder'] = 'Sort Order';
+$_lang['sm.price'] = 'Price';
+$_lang['sm.periods'] = '# of Periods';
+$_lang['sm.period'] = 'Period';
+$_lang['sm.usergroup'] = 'Usergroups';
+
 
 ?>
