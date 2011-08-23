@@ -32,6 +32,7 @@ $xpdo_meta_map['smSubscriptionType']= array (
     'periods' => 1,
     'period' => 'M',
     'usergroup' => NULL,
+    'role' => NULL,
     'active' => 1,
   ),
   'fieldMeta' => 
@@ -93,9 +94,16 @@ $xpdo_meta_map['smSubscriptionType']= array (
     ),
     'usergroup' => 
     array (
-      'dbtype' => 'varchar',
-      'precision' => '255',
-      'phptype' => 'array',
+      'dbtype' => 'int',
+      'precision' => '10',
+      'phptype' => 'integer',
+      'null' => true,
+    ),
+    'role' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'phptype' => 'integer',
       'null' => true,
     ),
     'active' => 

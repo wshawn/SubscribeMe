@@ -37,6 +37,8 @@ $results = array();
 $r = $modx->getCollection('smSubscriptionType',$c);
 foreach ($r as $rs) {
     $ta = $rs->toArray();
+    $ta['usergroup'] = ($ta['usergroup'] > 0) ? $ta['usergroup'] : 0;
+    $ta['role'] = ($ta['role'] > 0) ? $ta['role'] : 0;
     $results[] = $ta;
 }
 

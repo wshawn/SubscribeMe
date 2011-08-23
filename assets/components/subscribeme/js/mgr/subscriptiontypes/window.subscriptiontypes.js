@@ -38,17 +38,32 @@ SM.window.SubscriptionTypes = function(config) {
         },{
             name: 'period',
             fieldLabel: _('sm.period'),
-            xtype: 'textfield', //@todo dropdown
+            xtype: 'sm-combo-period',
             allowBlank: false
         },{
             name: 'usergroup',
             fieldLabel: _('sm.usergroup'),
-            xtype: 'textfield' //@todo grid + button?
+            xtype: 'modx-combo-usergroup'
+        },{
+            name: 'role',
+            fieldLabel: _('sm.role'),
+            xtype: 'modx-combo-usergrouprole'
         },{
             name: 'active',
             fieldLabel: _('sm.active'),
             xtype: 'checkbox'
-        }]
+        },{
+            name: 'sortorder',
+            fieldLabel: _('sm.sortorder'),
+            xtype: 'numberfield',
+            allowDecimal: false,
+            allowNegative: false
+        }],
+        listeners: {
+            'success': function() {
+                Ext.getCmp('grid-subscriptiontypes').refresh();
+            }
+        }
     });
     SM.window.SubscriptionTypes.superclass.constructor.call(this,config);
 };

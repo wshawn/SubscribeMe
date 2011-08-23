@@ -16,7 +16,8 @@ SM.grid.SubscriptionTypes = function(config) {
             xtype: 'button',
             text: _('sm.button.add',{ what: _('sm.subscriptiontype') } ),
             handler: function() {
-                //window.location.href = '?a='+MODx.action['csm/subscriptiontypes'];
+                win = new SM.window.SubscriptionTypes();
+                win.show();
             }
         },'->',{
             xtype: 'textfield',
@@ -51,12 +52,15 @@ SM.grid.SubscriptionTypes = function(config) {
             {name: 'price', type: 'float'},
             {name: 'periods', type: 'int'},
             {name: 'period', type: 'string'},
-            {name: 'usergroup', type: 'string'},
+            {name: 'usergroup', type: 'int'},
+            {name: 'role', type: 'int'},
             {name: 'active', type: 'boolean'}
         ],
         paging: true,
         primaryKey: 'type_id',
 		remoteSort: true,
+        autosave: true,
+        save_action: 'mgr/subscriptiontypes/savefromgrid',
         sortBy: 'name',
 		columns: [{
 			header: _('id'),
@@ -70,7 +74,8 @@ SM.grid.SubscriptionTypes = function(config) {
             width: 4,
             renderer: function(val) {
                 return '<div style="white-space: normal !important;">'+ val +'</div>';
-            }
+            },
+            editor: { xtype: 'textfield' }
 		},{
 			header: _('sm.description'),
 			dataIndex: 'description',
@@ -78,33 +83,45 @@ SM.grid.SubscriptionTypes = function(config) {
 			width: 5,
             renderer: function(val) {
                 return '<div style="white-space: normal !important;">'+ val +'</div>';
-            }
+            },
+            editor: { xtype: 'textarea' }
 		},{
-            header: _('sm.sortorder'),
-            dataIndex: 'sortorder',
-            sortable: true,
-            width: 2
-        },{
 			header: _('sm.price'),
 			dataIndex: 'price',
 			sortable: true,
-			width: 2
+			width: 2,
+            editor: { xtype: 'numberfield' }
 		},{
 			header: _('sm.periods'),
 			dataIndex: 'periods',
 			sortable: true,
-			width: 2
+			width: 2,
+            editor: { xtype: 'numberfield', allowDecimals: false, allowNegative: false }
 		},{
 			header: _('sm.period'),
 			dataIndex: 'period',
 			sortable: true,
-			width: 2
+			width: 2,
+            editor: { xtype: 'sm-combo-period', renderer: true }
 		},{
 			header: _('sm.usergroup'),
 			dataIndex: 'usergroup',
 			sortable: true,
-			width: 4
+			width: 3,
+            editor: { xtype: 'modx-combo-usergroup', renderer: false }
 		},{
+			header: _('sm.role'),
+			dataIndex: 'role',
+			sortable: true,
+			width: 2,
+            editor: { xtype: 'modx-combo-usergrouprole', renderer: false }
+		},{
+            header: _('sm.sortorder'),
+            dataIndex: 'sortorder',
+            sortable: true,
+            width: 2,
+            editor: { xtype: 'numberfield' }
+        },{
 			header: _('sm.active'),
 			dataIndex: 'active',
 			sortable: true,
@@ -112,7 +129,8 @@ SM.grid.SubscriptionTypes = function(config) {
             renderer: function(val) {
                 if (val === true) return '<span style="color: green">'+_('yes')+'</span>';
                 else return '<span style="color: red">'+_('no')+'</span>';
-            }
+            },
+            editor: { xtype: 'modx-combo-boolean', renderer: false }
 		}]
 		,listeners: {
 			'rowcontextmenu': function(grid, rowIndex, e) {
@@ -127,15 +145,15 @@ SM.grid.SubscriptionTypes = function(config) {
                         },
                         scope: this
                     },'-',{
-                        text: _('remove')+' '+_('sm.subscriptiontypes'),
+                        text: _('remove')+' '+_('sm.subscriptiontype'),
                         handler: function(grid, rowIndex, e) {
                             MODx.msg.confirm({
-                                title: _('sm.remove',{what: _('sm.subscriptiontypes')}),
+                                title: _('remove',{what: _('sm.subscriptiontype')}),
                                 text: _('confirm_remove'),
                                 url: SM.config.connector_url,
                                 params: {
                                     action: 'mgr/subscriptiontypes/remove',
-                                    eid: Ext.getCmp('grid-subscriptiontypes').getSelectionModel().getSelected().data.subscriptiontypes_id
+                                    eid: Ext.getCmp('grid-subscriptiontypes').getSelectionModel().getSelected().data.type_id
                                 },
                                 listeners: {
                                     'success': { fn:function (r) {

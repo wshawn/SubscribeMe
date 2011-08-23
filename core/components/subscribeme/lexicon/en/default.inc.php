@@ -23,12 +23,18 @@ $_lang['sm.combo.filter_on'] = 'Filter on [[+what]]';
 $_lang['sm.combo.paidornot'] = 'Paid Status';
 $_lang['sm.combo.paid'] = 'Paid';
 $_lang['sm.combo.unpaid'] = 'Unpaid';
+$_lang['sm.combo.day'] = 'Day';
+$_lang['sm.combo.week'] = 'Week';
+$_lang['sm.combo.month'] = 'Month';
+$_lang['sm.combo.year'] = 'Year';
 $_lang['sm.search'] = 'Search';
 $_lang['sm.search...'] = 'Search...';
 $_lang['sm.transaction.markaspaid'] = 'Mark As Paid';
 $_lang['sm.transaction.markaspaid.text'] = 'Please enter a reference to be added to the transaction. The transaction will be marked as paid with "manual" as method to indicate it was manually accepted. Any related subscriptions will also be processed after clicking save.';
 $_lang['sm.transaction.viewsubscriptions'] = 'View Related Subscriptions';
 $_lang['sm.transaction.viewsubscriptions.text'] = 'These are the subscriptions related to this transaction. These are not necessarily currently active.';
+$_lang['sm.remove'] = 'Remove [[+what]]';
+$_lang['sm.remove_successful'] = 'Successfully removed [[+what]]';
 
 /* Fields */
 $_lang['sm.fullname'] = 'Full Name';
@@ -48,9 +54,9 @@ $_lang['sm.name'] = 'Name';
 $_lang['sm.description'] = 'Description';
 $_lang['sm.sortorder'] = 'Sort Order';
 $_lang['sm.price'] = 'Price';
-$_lang['sm.periods'] = '# of Periods';
+$_lang['sm.periods'] = 'Every X Periods';
 $_lang['sm.period'] = 'Period';
-$_lang['sm.usergroup'] = 'Usergroups';
-
+$_lang['sm.usergroup'] = 'Usergroup';
+$_lang['sm.role'] = 'Role';
 
 ?>
