@@ -31,9 +31,9 @@ SM.grid.Transactions = function(config) {
                 },scope: this}
             }
         },'-',{
-            xtype: 'sm-combo-subscribers',
+            xtype: (config.hideSubscribersCombo) ? 'hidden' : 'sm-combo-subscribers',
             emptyText: _('sm.combo.filter_on',{what: _('sm.subscribers')}),
-            id: 'sm-subscriber-filter',
+            id: 'sm-transaction-filter',
             width: 200,
             listeners: {
                 'select': {fn: this.filterBySubscriber, scope: this}
@@ -147,9 +147,9 @@ Ext.extend(SM.grid.Transactions,MODx.grid.Grid,{
     },
     clearFilter: function() {
         this.getStore().baseParams['query'] = '';
-        this.getStore().baseParams['subscriber'] = '';
+        if (!this.config.hideSubscribersCombo) this.getStore().baseParams['subscriber'] = '';
         this.getStore().baseParams['paid'] = '';
-        Ext.getCmp('sm-subscriber-filter').reset();
+        Ext.getCmp('sm-transaction-filter').reset();
         Ext.getCmp('sm-subscriber-search').reset();
         Ext.getCmp('sm-paid-filter').reset();
         this.getBottomToolbar().changePage(1);

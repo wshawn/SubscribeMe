@@ -7,17 +7,20 @@ $dir = $modx->getOption('dir',$scriptProperties,'asc');
 
 $search = $modx->getOption('query',$scriptProperties,'');
 
-$results = array(
-    array(
-        'id' => 'current',
-        'display' => 'Current Subscribers' //@todo Lexiconify
-    ),
-    array(
-        'id' => '',
-        'display' => 'All User Accounts'
-    )
-);
-
+if ($modx->getOption('options',$scriptProperties,true)) {
+    $results = array(
+        array(
+            'id' => 'current',
+            'display' => 'Current Subscribers' //@todo Lexiconify
+        ),
+        array(
+            'id' => '',
+            'display' => 'All User Accounts'
+        )
+    );
+} else {
+    $results = array();
+}
 $c = $modx->newQuery('smSubscriptionType');
 
 if (strlen($search) > 1) {

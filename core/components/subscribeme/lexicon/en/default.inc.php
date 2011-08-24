@@ -12,6 +12,9 @@ $_lang['sm.subscribers'] = 'Subscribers';
 $_lang['sm.transactions'] = 'Transactions';
 $_lang['sm.subscriptions'] = 'Subscriptions';
 $_lang['sm.subscriptiontypes'] = 'Subscription Types';
+$_lang['sm.freesubscription'] = 'Complimentary Subscription';
+$_lang['sm.freesubscription.text'] = 'By adding a new Complimentary Subscription to this Subscriber account they will receive access to your premium content for free for a certain period.
+    If you are trying to confirm a manual payment instead, please right click the related transaction on the Transaction tab and select "Mark as Paid".';
 
 /* Buttons & Actions */
 $_lang['sm.button.add'] = 'Add new [[+what]]';

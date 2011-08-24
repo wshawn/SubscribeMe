@@ -8,7 +8,8 @@ SM.combo.SubscriptionType = function(config) {
         fields: ['id','display'],
         url: SM.config.connector_url,
         baseParams: {
-            action: 'mgr/subscriptiontypes/get_combo_filter'
+            action: 'mgr/subscriptiontypes/get_combo_filter',
+            options: (config.hideOptions) ? 0 : 1
         }
     });
     SM.combo.SubscriptionType.superclass.constructor.call(this,config);

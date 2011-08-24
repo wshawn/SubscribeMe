@@ -1,11 +1,11 @@
 
-SM.grid.Subscribers = function(config) {
+SM.grid.Subscriptions = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-		url: SM.config.connector_url,
-		id: 'grid-subscribers',
-		baseParams: {
-            action: 'mgr/subscribers/getlist'
+        url: SM.config.connector_url,
+        id: 'grid-subscriptions',
+        baseParams: {
+            action: 'mgr/subscriptions/getlist'
         },
         params: [],
         viewConfig: {
@@ -14,23 +14,14 @@ SM.grid.Subscribers = function(config) {
         },
         tbar: [{
             xtype: 'button',
-            text: _('sm.button.add',{ what: _('sm.subscriber') } ),
+            text: _('sm.button.add',{ what: _('sm.freesubscription') } ),
             handler: function() {
-                window.location.href = '?a='+MODx.action['csm/index']+'&action=subscriber';
-            }
-        },'-',{
-            xtype: 'button',
-            text: _('sm.button.exportsubs'),
-            handler: function() {
-                r = {
-                    subscriptiontype: Ext.getCmp('sm-subscriptiontype-filter').getValue(),
-                    search: Ext.getCmp('sm-subs-search').getValue(),
-                    limit: 500
-                };
-                o = new SM.window.ExportSubscribers({
-                    record: r
+                win = new SM.window.AddSubscription({
+                    record: {
+                        user_id: (SM.record) ? SM.record['id'] : 0
+                    }
                 });
-                o.show();
+                win.show();
             }
         },'->',{
             xtype: 'textfield',
@@ -65,47 +56,61 @@ SM.grid.Subscribers = function(config) {
                 'click': {fn: this.clearFilter, scope: this}
             }
         }],
-		fields: [
-            {name: 'id', type: 'int'},
-            {name: 'subscriptions', type: 'string'},
-            {name: 'fullname', type: 'string'},
-            {name: 'username', type: 'string'},
-            {name: 'email', type: 'string'},
+        paging: true,
+        primaryKey: 'sub_id',
+        remoteSort: true,
+        sortBy: 'sub_id',
+        fields: [
+            {name: 'sub_id', type: 'int'},
+            {name: 'user_id', type: 'int'},
+            {name: 'type_id', type: 'int'},
+            {name: 'trans_id', type: 'int'},
+            {name: 'type', type: 'string'},
+            {name: 'start', type: 'string'},
+            {name: 'end', type: 'string'},
             {name: 'active', type: 'boolean'}
         ],
-        paging: true,
-        primaryKey: 'id',
-		remoteSort: true,
-        sortBy: 'name',
-		columns: [{
+        columns: [{
 			header: _('id'),
-			dataIndex: 'id',
+			dataIndex: 'sub_id',
 			sortable: true,
 			width: 1
 		},{
-			header: _('sm.subscriptions'),
-            dataIndex: 'subscriptions',
+			header: _('user')+' '+_('id'),
+			dataIndex: 'user_id',
+			sortable: true,
+			width: 1,
+            hidden: true
+		},{
+			header: _('sm.subscriptiontype')+' '+_('id'),
+			dataIndex: 'type_id',
+			sortable: true,
+			width: 1,
+            hidden: true
+		},{
+			header: _('sm.transaction')+' '+_('id'),
+			dataIndex: 'trans_id',
+			sortable: true,
+			width: 1
+		},{
+			header: _('sm.subscription'),
+            dataIndex: 'type',
             sortable: true,
             width: 7,
             renderer: function(val) {
                 return '<div style="white-space: normal !important;">'+ val +'</div>';
             }
 		},{
-			header: _('sm.fullname'),
-			dataIndex: 'fullname',
-			sortable: true,
-			width: 4
-		},{
-            header: _('sm.username'),
-            dataIndex: 'username',
-            sortable: true,
-            width: 2
-        },{
-			header: _('sm.email'),
-			dataIndex: 'email',
+			header: _('sm.start'),
+			dataIndex: 'start',
 			sortable: true,
 			width: 3
 		},{
+            header: _('sm.end'),
+            dataIndex: 'end',
+            sortable: true,
+            width: 3
+        },{
 			header: _('sm.active'),
 			dataIndex: 'active',
 			sortable: true,
@@ -115,24 +120,10 @@ SM.grid.Subscribers = function(config) {
                 else return '<span style="color: red">'+_('no')+'</span>';
             }
 		}]
-		,listeners: {
-			'rowcontextmenu': function(grid, rowIndex, e) {
-                var _contextMenu = new Ext.menu.Menu({
-                    items: [{
-                        text: _('update'),
-                        handler: function(grid, rowIndex, e) {
-                            var eid = Ext.getCmp('grid-subscribers').getSelectionModel().getSelected().data.id;
-                            window.location.href = '?a='+MODx.action['csm/index']+'&action=subscriber&id='+eid;
-                        }
-                    }]
-                });
-                _contextMenu.showAt(e.getXY());
-			}
-		}
     });
-    SM.grid.Subscribers.superclass.constructor.call(this,config);
+    SM.grid.Subscriptions.superclass.constructor.call(this,config);
 };
-Ext.extend(SM.grid.Subscribers,MODx.grid.Grid,{
+Ext.extend(SM.grid.Subscriptions,MODx.grid.Grid,{
     filterBySubscriptionType: function (cb, rec, ri) {
         this.getStore().baseParams['subscriptiontype'] = rec.data['id'];
         this.getBottomToolbar().changePage(1);
@@ -153,4 +144,4 @@ Ext.extend(SM.grid.Subscribers,MODx.grid.Grid,{
         this.refresh();
     }
 });
-Ext.reg('sm-grid-subscribers',SM.grid.Subscribers);
+Ext.reg('sm-grid-subscriptions',SM.grid.Subscriptions);
