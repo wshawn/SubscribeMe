@@ -90,6 +90,7 @@ class SubscribeMe {
         $f = $this->config['elements_path'].'chunks/'.strtolower($name).$postFix;
         if (file_exists($f)) {
             $o = file_get_contents($f);
+            /* @var modChunk $chunk */
             $chunk = $this->modx->newObject('modChunk');
             $chunk->set('name',$name);
             $chunk->setContent($o);

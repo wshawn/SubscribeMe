@@ -12,9 +12,12 @@ $_lang['sm.subscribers'] = 'Subscribers';
 $_lang['sm.transactions'] = 'Transactions';
 $_lang['sm.subscriptions'] = 'Subscriptions';
 $_lang['sm.subscriptiontypes'] = 'Subscription Types';
+
 $_lang['sm.freesubscription'] = 'Complimentary Subscription';
 $_lang['sm.freesubscription.text'] = 'By adding a new Complimentary Subscription to this Subscriber account they will receive access to your premium content for free for a certain period.
     If you are trying to confirm a manual payment instead, please right click the related transaction on the Transaction tab and select "Mark as Paid".';
+$_lang['sm.subscriber.account'] = 'Account Information';
+$_lang['sm.subscriber.profile'] = 'User Profile';
 
 /* Buttons & Actions */
 $_lang['sm.button.add'] = 'Add new [[+what]]';
@@ -38,6 +41,7 @@ $_lang['sm.transaction.viewsubscriptions'] = 'View Related Subscriptions';
 $_lang['sm.transaction.viewsubscriptions.text'] = 'These are the subscriptions related to this transaction. These are not necessarily currently active.';
 $_lang['sm.remove'] = 'Remove [[+what]]';
 $_lang['sm.remove_successful'] = 'Successfully removed [[+what]]';
+$_lang['sm.back'] = 'Back';
 
 /* Fields */
 $_lang['sm.fullname'] = 'Full Name';
@@ -61,5 +65,12 @@ $_lang['sm.periods'] = 'Every X Periods';
 $_lang['sm.period'] = 'Period';
 $_lang['sm.usergroup'] = 'Usergroup';
 $_lang['sm.role'] = 'Role';
+
+/* Errors */
+$_lang['sm.error.sendmailfailed'] = 'An error occured sending email.';
+$_lang['sm.error.savefailed'] = 'An error occured attempting to save your changes.';
+$_lang['sm.error.savefailed.user'] = 'An error occured attempting to save the user account.';
+$_lang['sm.error.savefailed.userprofile'] = 'An error occured attempting to save the user profile.';
+
 
 ?>

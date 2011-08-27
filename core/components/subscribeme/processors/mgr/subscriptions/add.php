@@ -14,6 +14,8 @@ $transaction->fromArray(
     )
 );
 
+// @todo Set up proper permissions
+
 
 $subscription = $modx->newObject('smSubscription');
 $subscription->fromArray(

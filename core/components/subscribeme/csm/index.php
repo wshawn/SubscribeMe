@@ -20,6 +20,8 @@ if ($_GET['action'] == 'subscriber') {
         if ($user instanceof modUser) {
             $profile = $user->getOne('Profile');
             $data = array_merge($user->toArray(),$profile->toArray());
+            $data['lastlogin'] = date(DATE_RFC822,$data['lastlogin']);
+            $data['dob'] = date($modx->config['manager_date_format'],$data['dob']);
             $modx->regClientStartupHTMLBlock('
 <script type="text/javascript">
     Ext.onReady(function() {
@@ -38,6 +40,8 @@ if ($_GET['action'] == 'subscriber') {
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/grid.subscriptions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/add.window.subscriptions.js');
+
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscribers/panel.subscribers.js');
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptiontypes/combo.subscriptiontypes.js');
 

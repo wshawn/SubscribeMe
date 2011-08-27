@@ -1,6 +1,10 @@
 Ext.onReady(function() {
     Ext.QuickTips.init();
-    MODx.load({ xtype: 'sm-page-subscriber'});
+    var o = MODx.load({ xtype: 'sm-page-subscriber'});
+    if ((SM.record) && (Ext.getCmp('sm-panel-subscribers'))) {
+        Ext.getCmp('sm-panel-subscribers').getForm().setValues(SM.record);
+    }
+    o.show();
 });
 
 /*
@@ -10,6 +14,24 @@ SM.page.Subscriber = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         renderTo: 'subscribeme',
+        buttons: [{
+            process: 'submit',
+            text: _('save'),
+            handler: function () {
+                var panel = Ext.getCmp('sm-panel-subscribers');
+                if (panel.getForm().isValid()) {
+                    Ext.getCmp('sm-panel-subscribers').submit();
+                } else {
+                    MODx.msg.alert(_('error'),_('correct_errors'))
+                }
+            }
+        },'-',{
+            process: 'cancel',
+            text: _('sm.back'),
+            handler: function () {
+                window.location.href = '?a='+MODx.request['a'];
+            }
+        }],
         components: [{
             xtype: 'sm-panel-header'
         },{
@@ -25,7 +47,7 @@ SM.page.Subscriber = function(config) {
             items: [{
                 title: _('sm.subscriber'),
                 items: [{
-                    //xtype: 'sm-panel-subscribers',
+                    xtype: 'sm-panel-subscribers',
                     border: false
                 }]
             },{
