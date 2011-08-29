@@ -19,25 +19,23 @@
  * SubscribeMe; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
 */
-$xpdo_meta_map['smSubscriptionType']= array (
+$xpdo_meta_map['smProduct']= array (
   'package' => 'subscribeme',
-  'table' => 'sm_subscription_type',
+  'table' => 'sm_product',
   'fields' => 
   array (
-    'type_id' => NULL,
+    'product_id' => NULL,
     'name' => 'A New SubscribeMe Subscription',
     'description' => '',
     'sortorder' => 0,
     'price' => 0,
     'periods' => 1,
     'period' => 'M',
-    'usergroup' => NULL,
-    'role' => NULL,
     'active' => 1,
   ),
   'fieldMeta' => 
   array (
-    'type_id' => 
+    'product_id' => 
     array (
       'dbtype' => 'int',
       'precision' => '11',
@@ -92,20 +90,6 @@ $xpdo_meta_map['smSubscriptionType']= array (
       'null' => false,
       'default' => 'M',
     ),
-    'usergroup' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'phptype' => 'integer',
-      'null' => true,
-    ),
-    'role' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'phptype' => 'integer',
-      'null' => true,
-    ),
     'active' => 
     array (
       'dbtype' => 'tinyint',
@@ -125,7 +109,7 @@ $xpdo_meta_map['smSubscriptionType']= array (
       'type' => 'BTREE',
       'columns' => 
       array (
-        'type_id' => 
+        'product_id' => 
         array (
           'length' => '',
           'collation' => 'A',
@@ -139,8 +123,19 @@ $xpdo_meta_map['smSubscriptionType']= array (
     'Subscriptions' => 
     array (
       'class' => 'smSubscription',
-      'local' => 'type_id',
-      'foreign' => 'type_id',
+      'local' => 'product_id',
+      'foreign' => 'product_id',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+  ),
+  'composites' => 
+  array (
+    'Permissions' => 
+    array (
+      'class' => 'smProductPermissions',
+      'local' => 'product_id',
+      'foreign' => 'product_id',
       'cardinality' => 'many',
       'owner' => 'local',
     ),

@@ -1,14 +1,14 @@
-SM.window.SubscriptionTypes = function(config) {
+SM.window.Products = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('sm.subscriptiontype'),
+        title: _('sm.product'),
         url: SM.config.connector_url,
         closeAction: 'close',
         baseParams: {
-            action: 'mgr/subscriptiontypes/save'
+            action: 'mgr/products/save'
         },
         fields: [{
-            name: 'type_id',
+            name: 'product_id',
             xtype: 'hidden'
         },{
             name: 'name',
@@ -41,14 +41,6 @@ SM.window.SubscriptionTypes = function(config) {
             xtype: 'sm-combo-period',
             allowBlank: false
         },{
-            name: 'usergroup',
-            fieldLabel: _('sm.usergroup'),
-            xtype: 'modx-combo-usergroup'
-        },{
-            name: 'role',
-            fieldLabel: _('sm.role'),
-            xtype: 'modx-combo-usergrouprole'
-        },{
             name: 'active',
             fieldLabel: _('sm.active'),
             xtype: 'checkbox'
@@ -58,14 +50,18 @@ SM.window.SubscriptionTypes = function(config) {
             xtype: 'numberfield',
             allowDecimal: false,
             allowNegative: false
+        },{
+            xtype: (config.record) ? 'sm-grid-productpermissions' : 'hidden',
+            product: (config.record) ? config.record.product_id : 0,
+            fieldLabel: _('sm.permissions')
         }],
         listeners: {
             'success': function() {
-                Ext.getCmp('grid-subscriptiontypes').refresh();
+                Ext.getCmp('grid-products').refresh();
             }
         }
     });
-    SM.window.SubscriptionTypes.superclass.constructor.call(this,config);
+    SM.window.Products.superclass.constructor.call(this,config);
 };
-Ext.extend(SM.window.SubscriptionTypes,MODx.Window);
-Ext.reg('sm-window-subscriptiontypes',SM.window.SubscriptionTypes);
+Ext.extend(SM.window.Products,MODx.Window);
+Ext.reg('sm-window-products',SM.window.Products);

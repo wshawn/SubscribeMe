@@ -18,7 +18,7 @@ SM.window.AddSubscription = function(config) {
         },{
             name: 'type_id',
             hiddenName: 'type_id',
-            xtype: 'sm-combo-subscriptiontype',
+            xtype: 'sm-combo-product',
             fieldLabel:  _('sm.subscription'),
             width: 200,
             hideOptions: true

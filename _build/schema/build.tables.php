@@ -32,7 +32,8 @@ echo 'Starting log...';
 
 echo '<pre style="word-wrap: ">';
 $manager->createObjectContainer('smSubscription');
-$manager->createObjectContainer('smSubscriptionType');
+$manager->createObjectContainer('smProduct');
+$manager->createObjectContainer('smProductPermissions');
 $manager->createObjectContainer('smTransaction');
 echo '</pre>';
 

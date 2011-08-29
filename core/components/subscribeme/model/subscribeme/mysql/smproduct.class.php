@@ -19,6 +19,6 @@
  * SubscribeMe; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
 */
-require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/smsubscriptiontype.class.php');
-class smSubscriptionType_mysql extends smSubscriptionType {}
+require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/smproduct.class.php');
+class smProduct_mysql extends smProduct {}
 ?>

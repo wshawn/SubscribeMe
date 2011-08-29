@@ -6,7 +6,7 @@ $sort = $modx->getOption('sort',$scriptProperties,'start');
 $dir = $modx->getOption('dir',$scriptProperties,'desc');
 
 $user = $modx->getOption('subscriber',$scriptProperties,null);
-$subfilter = $modx->getOption('subscriptiontype',$scriptProperties,null);
+$subfilter = $modx->getOption('product',$scriptProperties,null);
 $results = array();
 
 $c = $modx->newQuery('smSubscription');
@@ -15,8 +15,8 @@ if (is_numeric($user))
     $c->where(array(
                   'user_id' => $user
               ));
-$c->innerJoin('smSubscriptionType','SubscriptionType');
-$c->select(array('smSubscription.*','SubscriptionType.name as type'));
+$c->innerJoin('smProduct','Product');
+$c->select(array('smSubscription.*','Product.name as type'));
 
 $total = $modx->getCount('smSubscription',$c);
 

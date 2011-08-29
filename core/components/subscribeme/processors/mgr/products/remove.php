@@ -8,8 +8,8 @@ $eid = $modx->getOption('eid',$scriptProperties,null);
 if (!$eid)
     return $modx->error->failure('No ID found.');
 
-$obj = $modx->getObject('smSubscriptionType',$eid);
-if (!($obj instanceof smSubscriptionType))
+$obj = $modx->getObject('smProduct',$eid);
+if (!($obj instanceof smProduct))
     return $modx->error->failure('Invalid object');
 
 

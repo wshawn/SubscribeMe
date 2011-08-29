@@ -7,7 +7,7 @@ $dir = $modx->getOption('dir',$scriptProperties,'asc');
 
 $search = $modx->getOption('query',$scriptProperties,null);
 
-$subfilter = $modx->getOption('subscriptiontype',$scriptProperties,null);
+$subfilter = $modx->getOption('product',$scriptProperties,null);
 
 $c = $modx->newQuery('modUser');
 
@@ -37,17 +37,17 @@ if (!empty($search)) {
 
 if (is_numeric($subfilter)) {
     $c->leftJoin('smSubscription','S','modUser.id = S.user_id');
-    //$c->leftJoin('smSubscriptionType','ST','S.type_id = ST.type_id');
+    //$c->leftJoin('smProduct','ST','S.type_id = ST.type_id');
     $c->where(array(
                    'S.type_id' => $subfilter,
-                   'AND:S.end:>' => date('Y-m-d H:i:s',time())
+                   'AND:S.expires:>' => date('Y-m-d H:i:s',time())
               ));
 }
 elseif ($subfilter == 'current') {
     $c->leftJoin('smSubscription','S','modUser.id = S.user_id');
     $c->where(array(
                    'S.type_id:>' => 0,
-                   'AND:S.end:>' => date('Y-m-d H:i:s',time())
+                   'AND:S.expires:>' => date('Y-m-d H:i:s',time())
               ));
 }
 
@@ -71,14 +71,14 @@ foreach ($qr as $idx => $r) {
         'smSubscription',
         array(
              'user_id' => $ta['id'],
-             'end:>' => date('Y-m-d H:i:s')
+             'expires:>' => date('Y-m-d H:i:s')
         )
     );
 
     $ta['subscriptions'] = array();
     foreach ($subs as $s) {
-        $st = $s->getOne('SubscriptionType');
-        if ($st instanceof smSubscriptionType) {
+        $st = $s->getOne('Product');
+        if ($st instanceof smProduct) {
             $ta['subscriptions'][] = $st->get('name').
                                      ' ('.
                                      date($modx->config['manager_date_format'],strtotime($s->get('start'))).

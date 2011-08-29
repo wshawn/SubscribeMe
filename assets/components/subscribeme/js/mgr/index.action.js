@@ -23,9 +23,15 @@ SM.page.Index = function(config) {
                 bodyStyle: 'padding: 5px 8px 5px 5px;'
             },
             items: [{
-                title: _('sm.subscribers'),
+                title: _('users'),
                 items: [{
                     xtype: 'sm-grid-subscribers',
+                    border: false
+                }]
+            },{
+                title: _('sm.subscriptions'),
+                items: [{
+                    //xtype: 'sm-grid-subscriptions',
                     border: false
                 }]
             },{
@@ -35,9 +41,9 @@ SM.page.Index = function(config) {
                     border: false
                 }]
             },{
-                title: _('sm.subscriptiontypes'),
+                title: _('sm.products'),
                 items: [{
-                    xtype: 'sm-grid-subscriptiontypes',
+                    xtype: 'sm-grid-products',
                     border: false
                 }]
             }]

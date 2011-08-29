@@ -9,8 +9,8 @@ SM.window.ExportSubscribers = function(config) {
             action: 'mgr/subscribers/export'
         },
         fields: [{
-            name: 'subscriptiontype',
-            xtype: 'sm-combo-subscriptiontype',
+            name: 'product',
+            xtype: 'sm-combo-product',
             fieldLabel: _('sm.combo.filter_on',{what: _('sm.subscriptions')}),
             width: 200
         },{

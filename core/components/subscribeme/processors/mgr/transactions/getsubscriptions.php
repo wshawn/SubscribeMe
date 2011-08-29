@@ -9,7 +9,7 @@ if (!$transaction || !is_numeric($transaction)) return $modx->error->failure('No
 
 $c = $modx->newQuery('smSubscription');
 $c->where(array('trans_id' => $transaction));
-$c->innerJoin('smSubscriptionType','SubscriptionType');
+$c->innerJoin('smProduct','Product');
 $c->innerJoin('modUser','User');
 $c->innerJoin('modUserProfile','Profile','User.id = Profile.internalKey');
 
@@ -17,7 +17,7 @@ $total = $modx->getCount($c);
 $c->limit($limit,$start);
 $c->sortby($sort,$dir);
 
-$c->select(array('smSubscription.*','SubscriptionType.name AS subscription','User.username AS username','Profile.fullname AS fullname'));
+$c->select(array('smSubscription.*','Product.name AS subscription','User.username AS username','Profile.fullname AS fullname'));
 
 $results = array();
 

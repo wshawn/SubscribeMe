@@ -14,6 +14,7 @@ $modx->regClientStartupHTMLBlock('
 $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscribeme.class.js');
 
 if ($_GET['action'] == 'subscriber') {
+
     if (is_numeric($_GET['id']) && $_GET['id'] > 0) {
         // Fetch the data we need.
         $user = $modx->getObject('modUser',$_GET['id']);
@@ -43,7 +44,7 @@ if ($_GET['action'] == 'subscriber') {
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscribers/panel.subscribers.js');
 
-    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptiontypes/combo.subscriptiontypes.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/products/combo.products.js');
 
 }
 else {
@@ -58,9 +59,12 @@ else {
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/markaspaid.window.transactions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/viewsubscriptions.window.transactions.js');
 
-    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptiontypes/grid.subscriptiontypes.js');
-    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptiontypes/window.subscriptiontypes.js');
-    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptiontypes/combo.subscriptiontypes.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/products/grid.products.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/products/window.products.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/products/combo.products.js');
+
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/productpermissions/grid.productpermissions.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/productpermissions/window.productpermissions.js');
 }
 
 return '<div id="subscribeme"></div>';

@@ -19,40 +19,17 @@
  * SubscribeMe; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
 */
-$xpdo_meta_map['smSubscription']= array (
+$xpdo_meta_map['smProductPermissions']= array (
   'package' => 'subscribeme',
-  'table' => 'sm_subscription',
+  'table' => 'sm_product_permissions',
   'fields' => 
   array (
-    'sub_id' => NULL,
-    'user_id' => NULL,
     'product_id' => NULL,
-    'start' => 'CURRENT_TIMESTAMP',
-    'expires' => NULL,
-    'active' => 1,
+    'usergroup' => NULL,
+    'role' => NULL,
   ),
   'fieldMeta' => 
   array (
-    'sub_id' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '11',
-      'phptype' => 'integer',
-      'null' => false,
-      'index' => 'pk',
-      'generated' => 'native',
-      'attributes' => 'unsigned',
-    ),
-    'user_id' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '11',
-      'phptype' => 'integer',
-      'null' => false,
-      'index' => 'fk',
-      'generated' => 'native',
-      'attributes' => 'unsigned',
-    ),
     'product_id' => 
     array (
       'dbtype' => 'int',
@@ -60,60 +37,29 @@ $xpdo_meta_map['smSubscription']= array (
       'phptype' => 'integer',
       'null' => false,
       'index' => 'fk',
-      'generated' => 'native',
       'attributes' => 'unsigned',
     ),
-    'start' => 
+    'usergroup' => 
     array (
-      'dbtype' => 'timestamp',
-      'phptype' => 'timestamp',
+      'dbtype' => 'int',
+      'precision' => '11',
+      'phptype' => 'integer',
       'null' => false,
-      'default' => 'CURRENT_TIMESTAMP',
+      'index' => 'fk',
+      'attributes' => 'unsigned',
     ),
-    'expires' => 
+    'role' => 
     array (
-      'dbtype' => 'timestamp',
-      'phptype' => 'timestamp',
+      'dbtype' => 'int',
+      'precision' => '11',
+      'phptype' => 'integer',
       'null' => false,
-    ),
-    'active' => 
-    array (
-      'dbtype' => 'tinyint',
-      'precision' => '1',
-      'phptype' => 'boolean',
-      'null' => true,
-      'default' => 1,
-    ),
-  ),
-  'indexes' => 
-  array (
-    'PRIMARY' => 
-    array (
-      'alias' => 'PRIMARY',
-      'primary' => true,
-      'unique' => true,
-      'type' => 'BTREE',
-      'columns' => 
-      array (
-        'sub_id' => 
-        array (
-          'length' => '',
-          'collation' => 'A',
-          'null' => false,
-        ),
-      ),
+      'index' => 'fk',
+      'attributes' => 'unsigned',
     ),
   ),
   'aggregates' => 
   array (
-    'User' => 
-    array (
-      'class' => 'modUser',
-      'local' => 'user_id',
-      'foreign' => 'id',
-      'cardinality' => 'one',
-      'owner' => 'foreign',
-    ),
     'Product' => 
     array (
       'class' => 'smProduct',
@@ -122,16 +68,21 @@ $xpdo_meta_map['smSubscription']= array (
       'cardinality' => 'one',
       'owner' => 'foreign',
     ),
-  ),
-  'composites' => 
-  array (
-    'Transactions' => 
+    'UserGroup' => 
     array (
-      'class' => 'smTransaction',
-      'local' => 'sub_id',
-      'foreign' => 'trans_id',
-      'cardinality' => 'many',
-      'owner' => 'local',
+      'class' => 'modUserGroup',
+      'local' => 'usergroup',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+    'Role' => 
+    array (
+      'class' => 'modUserGroupRole',
+      'local' => 'role',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
     ),
   ),
 );

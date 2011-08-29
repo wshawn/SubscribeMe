@@ -1,13 +1,13 @@
 <?php
 $data = $modx->fromJSON($scriptProperties['data']);
-$id = $modx->getOption('type_id',$data,null);
+$id = $modx->getOption('product_id',$data,null);
 
 if (!$id)
-    $st = $modx->newObject('smSubscriptionType');
+    $st = $modx->newObject('smProduct');
 else
-    $st = $modx->getObject('smSubscriptionType',$id);
+    $st = $modx->getObject('smProduct',$id);
 
-if (!($st instanceof smSubscriptionType))
+if (!($st instanceof smProduct))
     return $modx->error->failure('Invalid object');
 
 $data['active'] = ($data['active'] == 'on') ? true : false;

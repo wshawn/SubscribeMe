@@ -98,6 +98,47 @@ class SubscribeMe {
         return $chunk;
     }
 
+    public function processTransaction(smTransaction $trans, $ref = '') {
+        $trans->set('reference',$ref);
+        $trans->set('method','MANUAL');
+        $trans->set('updatedon',date('Y-m-d H:i:s'));
+
+        // Get all subscriptions belonging to this transaction
+        $subs = $trans->getMany('Subscriptions');
+        if (count($subs) < 1) return 'No subscriptions found';
+
+        foreach ($subs as $sub) {
+            if (!$this->processSubscription($sub))
+                return 'Error processing subscription';
+        }
+
+        // When all went through, mark as completed.
+        $trans->set('completed',true);
+
+        return $trans->save();
+    }
+
+    public function processSubscription(smSubscription $sub) {
+        if (!($sub instanceof smSubscription)) return false;
+
+        $subArray = $sub->toArray();
+        $originalStart = strtotime($subArray['start']);
+        $originalEnd = strtotime($subArray['end']);
+        // If we were supposed to start in the past...
+        if ($originalStart < (time() - 10)) {
+            // ... calculate the difference...
+            $differenceStart = time() - $originalStart;
+            // ... and add it to the end time.
+            $correctedEnd = $originalEnd + $differenceStart;
+            
+
+            //
+            $correctedStart = time();
+        }
+
+
+
+    }
 }
         
 ?>

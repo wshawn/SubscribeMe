@@ -7,11 +7,13 @@ $_lang['subscribeme.desc'] = 'Manage on- and offline subscriptions.';
 $_lang['sm.subscriber'] = 'Subscriber';
 $_lang['sm.transaction'] = 'Transaction';
 $_lang['sm.subscription'] = 'Subscription';
-$_lang['sm.subscriptiontype'] = 'Subscription Type';
+$_lang['sm.product'] = 'Product';
+$_lang['sm.productpermission'] = 'Product Permission';
 $_lang['sm.subscribers'] = 'Subscribers';
 $_lang['sm.transactions'] = 'Transactions';
 $_lang['sm.subscriptions'] = 'Subscriptions';
-$_lang['sm.subscriptiontypes'] = 'Subscription Types';
+$_lang['sm.products'] = 'Products';
+$_lang['sm.productpermissions'] = 'Product Permissions';
 
 $_lang['sm.freesubscription'] = 'Complimentary Subscription';
 $_lang['sm.freesubscription.text'] = 'By adding a new Complimentary Subscription to this Subscriber account they will receive access to your premium content for free for a certain period.
@@ -41,6 +43,7 @@ $_lang['sm.transaction.viewsubscriptions'] = 'View Related Subscriptions';
 $_lang['sm.transaction.viewsubscriptions.text'] = 'These are the subscriptions related to this transaction. These are not necessarily currently active.';
 $_lang['sm.remove'] = 'Remove [[+what]]';
 $_lang['sm.remove_successful'] = 'Successfully removed [[+what]]';
+$_lang['sm.removed'] = 'Removed [[+what]]';
 $_lang['sm.back'] = 'Back';
 
 /* Fields */
@@ -63,7 +66,8 @@ $_lang['sm.sortorder'] = 'Sort Order';
 $_lang['sm.price'] = 'Price';
 $_lang['sm.periods'] = 'Every X Periods';
 $_lang['sm.period'] = 'Period';
-$_lang['sm.usergroup'] = 'Usergroup';
+$_lang['sm.permissions'] = 'Permissions';
+$_lang['sm.usergroup'] = 'User Group';
 $_lang['sm.role'] = 'Role';
 
 /* Errors */

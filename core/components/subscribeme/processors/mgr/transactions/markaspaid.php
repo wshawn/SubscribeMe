@@ -11,16 +11,9 @@ if (!($obj instanceof smTransaction)) {
     return $modx->error->failure('Invalid object'); //@todo lexiconify
 }
 
-$obj->set('reference',$ref);
-$obj->set('method','MANUAL');
-$obj->set('updatedon',date('Y-m-d H:i:s'));
+$result = $modx->sm->processTransaction($obj, $ref);
 
-// @todo Set up the proper permissions here
-
-// When all went through, mark as completed.
-$obj->set('completed',true);
-
-if ($obj->save()) {
+if ($result) {
     return $modx->error->success();
 }
 return $modx->error->failure('Error saving data.') //@todo Lexiconify

@@ -1,21 +1,21 @@
-SM.combo.SubscriptionType = function(config) {
+SM.combo.Product = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        name: 'subscriptiontype',
-        hiddenName: 'subscriptiontype',
+        name: 'product',
+        hiddenName: 'product',
         displayField: 'display',
         valueField: 'id',
         fields: ['id','display'],
         url: SM.config.connector_url,
         baseParams: {
-            action: 'mgr/subscriptiontypes/get_combo_filter',
+            action: 'mgr/products/get_combo_filter',
             options: (config.hideOptions) ? 0 : 1
         }
     });
-    SM.combo.SubscriptionType.superclass.constructor.call(this,config);
+    SM.combo.Product.superclass.constructor.call(this,config);
 };
-Ext.extend(SM.combo.SubscriptionType,MODx.combo.ComboBox);
-Ext.reg('sm-combo-subscriptiontype',SM.combo.SubscriptionType);
+Ext.extend(SM.combo.Product,MODx.combo.ComboBox);
+Ext.reg('sm-combo-product',SM.combo.Product);
 
 SM.combo.Period = function(config) {
     config = config || {};

@@ -8,7 +8,7 @@ $search = $modx->getOption('query',$scriptProperties,null);
 $subscriber = $modx->getOption('subscriber',$scriptProperties,null);
 $paid = $modx->getOption('paid',$scriptProperties,null);
 
-$c = $modx->newQuery('smSubscriptionType');
+$c = $modx->newQuery('smProduct');
 
 if ($search) {
     $c->where(
@@ -21,7 +21,7 @@ if ($search) {
         $c->orCondition(array('type_id' => $search));
 }
 
-$matches = $modx->getCount('smSubscriptionType',$c);
+$matches = $modx->getCount('smProduct',$c);
 
 if (0) {
     $c->prepare();
@@ -29,16 +29,25 @@ if (0) {
 }
 
 $c->sortby($sort,$dir);
-$c->sortby('type_id','desc');
+$c->sortby('product_id','desc');
 $c->limit($limit,$start);
 
 $results = array();
 
-$r = $modx->getCollection('smSubscriptionType',$c);
+$r = $modx->getCollection('smProduct',$c);
 foreach ($r as $rs) {
     $ta = $rs->toArray();
-    $ta['usergroup'] = ($ta['usergroup'] > 0) ? $ta['usergroup'] : 0;
-    $ta['role'] = ($ta['role'] > 0) ? $ta['role'] : 0;
+    $perms = $rs->getMany('Permissions');
+    $ta['permissions'] = array();
+    foreach ($perms as $p) {
+        if ($p instanceof smProductPermissions) {
+            $ug = $p->getOne('UserGroup');
+            $role = $p->getOne('Role');
+            if (($ug instanceof modUserGroup) && ($role instanceof modUserGroupRole))
+                $ta['permissions'][] = $ug->get('name') . ' (' . $role->get('name') . ')';
+        }
+    }
+    $ta['permissions'] = implode(', ',$ta['permissions']);
     $results[] = $ta;
 }
 

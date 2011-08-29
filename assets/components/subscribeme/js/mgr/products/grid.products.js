@@ -1,11 +1,11 @@
 
-SM.grid.SubscriptionTypes = function(config) {
+SM.grid.products = function(config) {
     config = config || {};
     Ext.applyIf(config,{
 		url: SM.config.connector_url,
-		id: 'grid-subscriptiontypes',
+		id: 'grid-products',
 		baseParams: {
-            action: 'mgr/subscriptiontypes/getlist'
+            action: 'mgr/products/getlist'
         },
         params: [],
         viewConfig: {
@@ -14,9 +14,9 @@ SM.grid.SubscriptionTypes = function(config) {
         },
         tbar: [{
             xtype: 'button',
-            text: _('sm.button.add',{ what: _('sm.subscriptiontype') } ),
+            text: _('sm.button.add',{ what: _('sm.product') } ),
             handler: function() {
-                win = new SM.window.SubscriptionTypes();
+                win = new SM.window.Products();
                 win.show();
             }
         },'->',{
@@ -45,26 +45,25 @@ SM.grid.SubscriptionTypes = function(config) {
             }
         }],
 		fields: [
-            {name: 'type_id', type: 'int'},
+            {name: 'product_id', type: 'int'},
             {name: 'name', type: 'string'},
             {name: 'description', type: 'string'},
             {name: 'sortorder', type: 'int'},
             {name: 'price', type: 'float'},
             {name: 'periods', type: 'int'},
             {name: 'period', type: 'string'},
-            {name: 'usergroup', type: 'int'},
-            {name: 'role', type: 'int'},
+            {name: 'permissions', type: 'string'},
             {name: 'active', type: 'boolean'}
         ],
         paging: true,
-        primaryKey: 'type_id',
+        primaryKey: 'product_id',
 		remoteSort: true,
         autosave: true,
-        save_action: 'mgr/subscriptiontypes/savefromgrid',
+        save_action: 'mgr/products/savefromgrid',
         sortBy: 'name',
 		columns: [{
 			header: _('id'),
-			dataIndex: 'type_id',
+			dataIndex: 'product_id',
 			sortable: true,
 			width: 1
 		},{
@@ -104,17 +103,13 @@ SM.grid.SubscriptionTypes = function(config) {
 			width: 2,
             editor: { xtype: 'sm-combo-period', renderer: true }
 		},{
-			header: _('sm.usergroup'),
-			dataIndex: 'usergroup',
+			header: _('sm.permissions'),
+			dataIndex: 'permissions',
 			sortable: true,
-			width: 3,
-            editor: { xtype: 'modx-combo-usergroup', renderer: false }
-		},{
-			header: _('sm.role'),
-			dataIndex: 'role',
-			sortable: true,
-			width: 2,
-            editor: { xtype: 'modx-combo-usergrouprole', renderer: false }
+			width: 5,
+            renderer: function(val) {
+                return '<div style="white-space: normal !important;">'+ val +'</div>';
+            }
 		},{
             header: _('sm.sortorder'),
             dataIndex: 'sortorder',
@@ -138,31 +133,31 @@ SM.grid.SubscriptionTypes = function(config) {
                     items: [{
                         text: _('update'),
                         handler: function(grid, rowIndex, e) {
-                            win = new SM.window.SubscriptionTypes({
+                            win = new SM.window.Products({
                                 record: this.getSelectionModel().getSelected().data
                             });
                             win.show();
                         },
                         scope: this
                     },'-',{
-                        text: _('remove')+' '+_('sm.subscriptiontype'),
+                        text: _('remove')+' '+_('sm.product'),
                         handler: function(grid, rowIndex, e) {
                             MODx.msg.confirm({
-                                title: _('remove',{what: _('sm.subscriptiontype')}),
+                                title: _('remove',{what: _('sm.product')}),
                                 text: _('confirm_remove'),
                                 url: SM.config.connector_url,
                                 params: {
-                                    action: 'mgr/subscriptiontypes/remove',
-                                    eid: Ext.getCmp('grid-subscriptiontypes').getSelectionModel().getSelected().data.type_id
+                                    action: 'mgr/products/remove',
+                                    eid: Ext.getCmp('grid-products').getSelectionModel().getSelected().data.product_id
                                 },
                                 listeners: {
                                     'success': { fn:function (r) {
                                         MODx.msg.status({
-                                            title: _('sm.removed', {what: _('sm.subscriptiontypes')}),
-                                            message: _('sm.remove_successful', {what: _('sm.subscriptiontypes')}),
+                                            title: _('sm.removed', {what: _('sm.products')}),
+                                            message: _('sm.remove_successful', {what: _('sm.products')}),
                                             delay: 3
                                         });
-                                        Ext.getCmp('grid-subscriptiontypes').refresh();
+                                        Ext.getCmp('grid-products').refresh();
                                     }, scope: true}
                                 }
                             });
@@ -173,9 +168,9 @@ SM.grid.SubscriptionTypes = function(config) {
 			}
 		}
     });
-    SM.grid.SubscriptionTypes.superclass.constructor.call(this,config);
+    SM.grid.products.superclass.constructor.call(this,config);
 };
-Ext.extend(SM.grid.SubscriptionTypes,MODx.grid.Grid,{
+Ext.extend(SM.grid.products,MODx.grid.Grid,{
     searchSubTypes: function(tf, nv, ov) {
         var store = this.getStore();
         store.baseParams.query = tf.getValue();
@@ -189,4 +184,4 @@ Ext.extend(SM.grid.SubscriptionTypes,MODx.grid.Grid,{
         this.refresh();
     }
 });
-Ext.reg('sm-grid-subscriptiontypes',SM.grid.SubscriptionTypes);
+Ext.reg('sm-grid-products',SM.grid.products);

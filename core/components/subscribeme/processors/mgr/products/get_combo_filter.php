@@ -21,7 +21,7 @@ if ($modx->getOption('options',$scriptProperties,true)) {
 } else {
     $results = array();
 }
-$c = $modx->newQuery('smSubscriptionType');
+$c = $modx->newQuery('smProduct');
 
 if (strlen($search) > 1) {
     $c->where(array(
@@ -32,11 +32,11 @@ if (strlen($search) > 1) {
 
 $c->sortby($sort,$dir);
 
-$total = $modx->getCount('smSubscriptionType',$c);
+$total = $modx->getCount('smProduct',$c);
 
 $c->limit($limit,$start);
 
-$query = $modx->getCollection('smSubscriptionType',$c);
+$query = $modx->getCollection('smProduct',$c);
 foreach ($query as $r) {
     $ta = $r->toArray();
     $results[] = array(
