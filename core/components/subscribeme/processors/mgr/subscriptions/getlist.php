@@ -16,7 +16,8 @@ if (is_numeric($user))
                   'user_id' => $user
               ));
 $c->innerJoin('smProduct','Product');
-$c->select(array('smSubscription.*','Product.name as type'));
+$c->innerJoin('modUserProfile','Profile','user_id = Profile.internalKey');
+$c->select(array('smSubscription.*','Product.name as product','Profile.fullname as user'));
 
 $total = $modx->getCount('smSubscription',$c);
 
@@ -26,6 +27,8 @@ $c->limit($limit,$start);
 $collection = $modx->getCollection('smSubscription',$c);
 foreach ($collection as $r) {
     $ta = $r->toArray();
+    $ta['start'] = ($ta['start'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['start']));
+    $ta['expires'] = ($ta['expires'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['expires']));
 
     $results[] = $ta;
 }

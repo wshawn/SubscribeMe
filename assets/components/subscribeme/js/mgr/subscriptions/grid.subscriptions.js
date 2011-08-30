@@ -25,7 +25,7 @@ SM.grid.Subscriptions = function(config) {
             }
         },'->',{
             xtype: 'textfield',
-            id: 'sm-subs-search',
+            id: 'sm-subscriptions-search',
             emptyText: _('sm.search...'),
             listeners: {
                 'change': { fn:this.searchSubs, scope:this},
@@ -44,7 +44,7 @@ SM.grid.Subscriptions = function(config) {
         },'-',{
             xtype: 'sm-combo-product',
             emptyText: _('sm.combo.filter_on',{what: _('sm.subscriptions')}),
-            id: 'sm-product-filter',
+            id: 'sm-subscriptions-product-filter',
             width: 200,
             listeners: {
                 'select': {fn: this.filterByProduct, scope: this}
@@ -63,11 +63,11 @@ SM.grid.Subscriptions = function(config) {
         fields: [
             {name: 'sub_id', type: 'int'},
             {name: 'user_id', type: 'int'},
-            {name: 'type_id', type: 'int'},
-            {name: 'trans_id', type: 'int'},
-            {name: 'type', type: 'string'},
+            {name: 'product_id', type: 'int'},
+            {name: 'user', type: 'string'},
+            {name: 'product', type: 'string'},
             {name: 'start', type: 'string'},
-            {name: 'end', type: 'string'},
+            {name: 'expires', type: 'string'},
             {name: 'active', type: 'boolean'}
         ],
         columns: [{
@@ -83,18 +83,21 @@ SM.grid.Subscriptions = function(config) {
             hidden: true
 		},{
 			header: _('sm.product')+' '+_('id'),
-			dataIndex: 'type_id',
+			dataIndex: 'product_id',
 			sortable: true,
 			width: 1,
             hidden: true
 		},{
-			header: _('sm.transaction')+' '+_('id'),
-			dataIndex: 'trans_id',
-			sortable: true,
-			width: 1
+			header: _('user'),
+            dataIndex: 'user',
+            sortable: true,
+            width: 3,
+            renderer: function(val) {
+                return '<div style="white-space: normal !important;">'+ val +'</div>';
+            }
 		},{
-			header: _('sm.subscription'),
-            dataIndex: 'type',
+			header: _('sm.product'),
+            dataIndex: 'product',
             sortable: true,
             width: 7,
             renderer: function(val) {
@@ -106,8 +109,8 @@ SM.grid.Subscriptions = function(config) {
 			sortable: true,
 			width: 3
 		},{
-            header: _('sm.end'),
-            dataIndex: 'end',
+            header: _('sm.expires'),
+            dataIndex: 'expires',
             sortable: true,
             width: 3
         },{
@@ -120,6 +123,27 @@ SM.grid.Subscriptions = function(config) {
                 else return '<span style="color: red">'+_('no')+'</span>';
             }
 		}]
+        ,listeners: {
+			'rowcontextmenu': function(grid, rowIndex, e) {
+                var _contextMenu = new Ext.menu.Menu({
+                    items: [{
+                        text: _('update')+' '+_('user'),
+                        handler: function(grid, rowIndex, e) {
+                            var eid = Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data.sub_id;
+                            window.location.href = '?a='+MODx.action['csm/index']+'&action=subscriber&id='+eid;
+                        }
+                    },{
+                        text: _('sm.subscription.viewtransactions'),
+                        handler: function() {
+                            win = new SM.window.ViewTransactions({
+                                config: { subscription: Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data.sub_id }
+                            });
+                            win.show();}
+                    }]
+                });
+                _contextMenu.showAt(e.getXY());
+			}
+		}
     });
     SM.grid.Subscriptions.superclass.constructor.call(this,config);
 };
@@ -138,8 +162,8 @@ Ext.extend(SM.grid.Subscriptions,MODx.grid.Grid,{
     clearFilter: function() {
         this.getStore().baseParams['query'] = '';
         this.getStore().baseParams['product'] = '';
-        Ext.getCmp('sm-product-filter').reset();
-        Ext.getCmp('sm-subs-search').reset();
+        Ext.getCmp('sm-subscriptions-product-filter').reset();
+        Ext.getCmp('sm-subscriptions-search').reset();
         this.getBottomToolbar().changePage(1);
         this.refresh();
     }

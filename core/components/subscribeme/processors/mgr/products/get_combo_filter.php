@@ -40,7 +40,7 @@ $query = $modx->getCollection('smProduct',$c);
 foreach ($query as $r) {
     $ta = $r->toArray();
     $results[] = array(
-        'id' => $ta['type_id'],
+        'id' => $ta['product_id'],
         'display' => $ta['name'] . ' (' . $ta['price'] . '/' . $ta['periods'].$ta['period'] . ')'
     );
 }

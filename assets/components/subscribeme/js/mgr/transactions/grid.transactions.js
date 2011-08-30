@@ -32,17 +32,17 @@ SM.grid.Transactions = function(config) {
             }
         },'-',{
             xtype: (config.hideSubscribersCombo) ? 'hidden' : 'sm-combo-subscribers',
-            emptyText: _('sm.combo.filter_on',{what: _('sm.subscribers')}),
+            emptyText: _('sm.combo.filter_on',{what: _('user')}),
             id: 'sm-transaction-filter',
             width: 200,
             listeners: {
                 'select': {fn: this.filterBySubscriber, scope: this}
             }
         },'-',{
-            xtype: 'sm-combo-transactionspaid',
-            emptyText: _('sm.combo.filter_on',{what: _('sm.combo.paid')}),
-            id: 'sm-paid-filter',
-            width: 100,
+            xtype: 'sm-combo-transactionsmethod',
+            emptyText: _('sm.combo.filter_on',{what: _('sm.combo.method')}),
+            id: 'sm-method-filter',
+            width: 150,
             listeners: {
                 'select': {fn: this.filterByPaid, scope: this}
             }
@@ -56,12 +56,12 @@ SM.grid.Transactions = function(config) {
 		fields: [
             {name: 'trans_id', type: 'int'},
             {name: 'user_id', type: 'int'},
+            {name: 'sub_id', type: 'int'},
             {name: 'user_name', type: 'string'},
             {name: 'user_username', type: 'string'},
             {name: 'reference', type: 'string'},
             {name: 'method', type: 'string'},
             {name: 'amount', type: 'float'},
-            {name: 'completed', type: 'boolean'},
             {name: 'createdon', type: 'string'},
             {name: 'updatedon', type: 'string'}
         ],
@@ -75,17 +75,22 @@ SM.grid.Transactions = function(config) {
 			sortable: true,
 			width: 1
 		},{
-			header: _('sm.generated'),
-			dataIndex: 'createdon',
-			sortable: true,
-			width: 2
-		},{
-			header: _('sm.updatedon'),
-			dataIndex: 'updatedon',
-			sortable: true,
-			width: 2
-		},{
-			header: _('sm.subscriber')+' '+_('id'),
+            header: _('sm.subscr')+' '+_('id'),
+            dataIndex: 'sub_id',
+            sortable: true,
+            width: 2
+        },{
+            header: _('sm.createdon'),
+            dataIndex: 'createdon',
+            sortable: true,
+            width: 2
+        },{
+            header: _('sm.updatedon'),
+            dataIndex: 'updatedon',
+            sortable: true,
+            width: 2
+        },{
+            header: _('user')+' '+_('id'),
             dataIndex: 'user_id',
             sortable: true,
             width: 2,
@@ -114,16 +119,7 @@ SM.grid.Transactions = function(config) {
 			header: _('sm.amount'),
 			dataIndex: 'amount',
 			sortable: true,
-			width: 2
-		},{
-			header: _('sm.completed'),
-			dataIndex: 'completed',
-			sortable: true,
-			width: 2,
-            renderer: function(val) {
-                if (val === true) return '<span style="color: green">'+_('yes')+'</span>';
-                else return '<span style="color: red">'+_('no')+'</span>';
-            }
+			width: 1
 		}]
     });
     SM.grid.Transactions.superclass.constructor.call(this,config);
@@ -135,7 +131,7 @@ Ext.extend(SM.grid.Transactions,MODx.grid.Grid,{
         this.refresh();
     },
     filterByPaid: function (cb, rec, ri) {
-        this.getStore().baseParams['paid'] = rec.data['id'];
+        this.getStore().baseParams['method'] = rec.data['id'];
         this.getBottomToolbar().changePage(1);
         this.refresh();
     },
@@ -148,10 +144,10 @@ Ext.extend(SM.grid.Transactions,MODx.grid.Grid,{
     clearFilter: function() {
         this.getStore().baseParams['query'] = '';
         if (!this.config.hideSubscribersCombo) this.getStore().baseParams['subscriber'] = '';
-        this.getStore().baseParams['paid'] = '';
+        this.getStore().baseParams['method'] = '';
         Ext.getCmp('sm-transaction-filter').reset();
         Ext.getCmp('sm-subscriber-search').reset();
-        Ext.getCmp('sm-paid-filter').reset();
+        Ext.getCmp('sm-method-filter').reset();
         this.getBottomToolbar().changePage(1);
         this.refresh();
     },
@@ -162,7 +158,7 @@ Ext.extend(SM.grid.Transactions,MODx.grid.Grid,{
         var m = [];
         if (this.getSelectionModel().getCount() > 1) {
         } else {
-            if (d.completed == false) {
+            /*if (!d.completed) {
                 m.push({
                     text: _('sm.transaction.markaspaid'),
                     handler: function() {
@@ -173,14 +169,12 @@ Ext.extend(SM.grid.Transactions,MODx.grid.Grid,{
                     }
                 });
             }
-            m.push({
-                text: _('sm.transaction.viewsubscriptions'),
-                handler: function() {
-                    win = new SM.window.ViewSubscriptions({
-                        config: { transaction: this.getSelectionModel().getSelected().data.trans_id }
-                    });
-                    win.show();}
-            });
+            else {*/
+                m.push({
+                    text: _('sm.nooptions'),
+                    handler: function() { return false; }
+                });
+            //}
         }
         if (m.length > 0) {
             this.addContextMenuItem(m);

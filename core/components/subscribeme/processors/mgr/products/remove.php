@@ -17,7 +17,7 @@ if (!($obj instanceof smProduct))
 $chk = $modx->newQuery('smSubscription');
 $chk->where(
     array(
-        'type_id' => $eid
+        'product_id' => $eid
     )
 );
 $count = $modx->getCount('smSubscription',$chk);

@@ -14,12 +14,14 @@ SM.window.AddSubscription = function(config) {
             bodyStyle: 'padding-bottom: 12px;'
         },{
             name: 'user_id',
-            xtype: 'hidden'
+            xtype: (config.record) ? (config.record.user_id) ? 'hidden' : 'sm-combo-subscribers' : 'sm-combo-subscribers',
+            fieldLabel: _('user'),
+            width: 200
         },{
-            name: 'type_id',
-            hiddenName: 'type_id',
+            name: 'product_id',
+            hiddenName: 'product_id',
             xtype: 'sm-combo-product',
-            fieldLabel:  _('sm.subscription'),
+            fieldLabel:  _('sm.product'),
             width: 200,
             hideOptions: true
         },{
@@ -28,8 +30,8 @@ SM.window.AddSubscription = function(config) {
             xtype: 'datefield',
             width: 200
         },{
-            name: 'end',
-            fieldLabel: _('sm.end'),
+            name: 'expires',
+            fieldLabel: _('sm.expires'),
             xtype: 'datefield',
             allowDecimal: false,
             allowNegative: false,

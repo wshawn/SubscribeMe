@@ -91,7 +91,7 @@ SM.panel.Header = function(config) {
         border: false
         ,baseCls: 'modx-formpanel'
         ,items: [{
-            html: '<h2>'+_('subscribeme')+': '+_('sm.subscriber')+'</h2>'
+            html: '<h2>'+_('subscribeme')+': '+((SM.record) ? SM.record.fullname+' ('+SM.record.username+')' : _('sm.button.add',{what: _('user')})) + '</h2>'
             ,border: false
             ,cls: 'modx-page-header'
         }]

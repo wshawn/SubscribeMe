@@ -9,8 +9,7 @@ $transaction->fromArray(
     array(
          'user_id' => $scriptProperties['user_id'],
          'reference' => $scriptProperties['reference'],
-         'method' => 'COMPLIMENTARY',
-         'completed' => true
+         'method' => 'complimentary',
     )
 );
 

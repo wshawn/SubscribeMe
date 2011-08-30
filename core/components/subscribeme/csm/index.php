@@ -35,12 +35,12 @@ if ($_GET['action'] == 'subscriber') {
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriber.action.js');
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/grid.transactions.js');
-    $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/combo.paid.transactions.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/combo.method.transactions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/markaspaid.window.transactions.js');
-    $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/viewsubscriptions.window.transactions.js');
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/grid.subscriptions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/add.window.subscriptions.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/viewtransactions.window.subscriptions.js');
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscribers/panel.subscribers.js');
 
@@ -54,8 +54,12 @@ else {
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscribers/export.window.subscribers.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscribers/combo.subscribers.js');
 
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/grid.subscriptions.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/add.window.subscriptions.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/viewtransactions.window.subscriptions.js');
+
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/grid.transactions.js');
-    $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/combo.paid.transactions.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/combo.method.transactions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/markaspaid.window.transactions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/viewsubscriptions.window.transactions.js');
 

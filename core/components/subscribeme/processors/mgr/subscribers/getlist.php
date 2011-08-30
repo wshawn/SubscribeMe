@@ -39,14 +39,14 @@ if (is_numeric($subfilter)) {
     $c->leftJoin('smSubscription','S','modUser.id = S.user_id');
     //$c->leftJoin('smProduct','ST','S.type_id = ST.type_id');
     $c->where(array(
-                   'S.type_id' => $subfilter,
+                   'S.product_id' => $subfilter,
                    'AND:S.expires:>' => date('Y-m-d H:i:s',time())
               ));
 }
 elseif ($subfilter == 'current') {
     $c->leftJoin('smSubscription','S','modUser.id = S.user_id');
     $c->where(array(
-                   'S.type_id:>' => 0,
+                   'S.product_id:>' => 0,
                    'AND:S.expires:>' => date('Y-m-d H:i:s',time())
               ));
 }
@@ -83,7 +83,7 @@ foreach ($qr as $idx => $r) {
                                      ' ('.
                                      date($modx->config['manager_date_format'],strtotime($s->get('start'))).
                                      ' - '.
-                                     date($modx->config['manager_date_format'],strtotime($s->get('end'))).
+                                     date($modx->config['manager_date_format'],strtotime($s->get('expires'))).
                                      ')';
         }
     }

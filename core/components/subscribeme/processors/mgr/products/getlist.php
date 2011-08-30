@@ -18,7 +18,7 @@ if ($search) {
         )
     );
     if (is_numeric($search))
-        $c->orCondition(array('type_id' => $search));
+        $c->orCondition(array('product_id' => $search));
 }
 
 $matches = $modx->getCount('smProduct',$c);

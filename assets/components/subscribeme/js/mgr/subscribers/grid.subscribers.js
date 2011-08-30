@@ -52,7 +52,7 @@ SM.grid.Subscribers = function(config) {
             }
         },'-',{
             xtype: 'sm-combo-product',
-            emptyText: _('sm.combo.filter_on',{what: _('sm.subscriptions')}),
+            emptyText: _('sm.combo.filter_on',{what: _('sm.products')}),
             id: 'sm-product-filter',
             width: 200,
             listeners: {
@@ -119,7 +119,7 @@ SM.grid.Subscribers = function(config) {
 			'rowcontextmenu': function(grid, rowIndex, e) {
                 var _contextMenu = new Ext.menu.Menu({
                     items: [{
-                        text: _('update'),
+                        text: _('update')+' '+_('user'),
                         handler: function(grid, rowIndex, e) {
                             var eid = Ext.getCmp('grid-subscribers').getSelectionModel().getSelected().data.id;
                             window.location.href = '?a='+MODx.action['csm/index']+'&action=subscriber&id='+eid;

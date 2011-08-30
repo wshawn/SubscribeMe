@@ -100,7 +100,7 @@ class SubscribeMe {
 
     public function processTransaction(smTransaction $trans, $ref = '') {
         $trans->set('reference',$ref);
-        $trans->set('method','MANUAL');
+        $trans->set('method','manual');
         $trans->set('updatedon',date('Y-m-d H:i:s'));
 
         // Get all subscriptions belonging to this transaction
@@ -111,9 +111,6 @@ class SubscribeMe {
             if (!$this->processSubscription($sub))
                 return 'Error processing subscription';
         }
-
-        // When all went through, mark as completed.
-        $trans->set('completed',true);
 
         return $trans->save();
     }

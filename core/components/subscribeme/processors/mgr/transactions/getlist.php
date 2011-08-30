@@ -6,7 +6,7 @@ $dir = $modx->getOption('dir',$scriptProperties,'desc');
 
 $search = $modx->getOption('query',$scriptProperties,null);
 $subscriber = $modx->getOption('subscriber',$scriptProperties,null);
-$paid = $modx->getOption('paid',$scriptProperties,null);
+$method = $modx->getOption('method',$scriptProperties,null);
 
 $c = $modx->newQuery('smTransaction');
 
@@ -30,10 +30,9 @@ if (is_numeric($subscriber)) {
     $c->where(array('user_id' => $subscriber));
 }
 
-if ($paid == 1)
-    $c->where(array('completed' => 1));
-if ($paid == -1)
-    $c->where(array('completed' => 0));
+if ($method) {
+    $c->where(array('method' => $method));
+}
 
 $matches = $modx->getCount('smTransaction',$c);
 
@@ -52,7 +51,7 @@ $results = array();
 
 $r = $modx->getCollection('smTransaction',$c);
 foreach ($r as $rs) {
-    $ta = $rs->get(array('trans_id','user_id','reference','method','amount','completed','createdon','updatedon','user_name','user_username'));
+    $ta = $rs->get(array('trans_id','sub_id','user_id','reference','method','amount','createdon','updatedon','user_name','user_username'));
     $ta['updatedon'] = ($ta['updatedon'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['updatedon']));
     $ta['createdon'] = ($ta['createdon'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['createdon']));
     $results[] = $ta;

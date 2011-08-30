@@ -31,7 +31,7 @@ SM.page.Index = function(config) {
             },{
                 title: _('sm.subscriptions'),
                 items: [{
-                    //xtype: 'sm-grid-subscriptions',
+                    xtype: 'sm-grid-subscriptions',
                     border: false
                 }]
             },{

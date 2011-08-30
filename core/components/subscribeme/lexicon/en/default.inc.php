@@ -14,10 +14,11 @@ $_lang['sm.transactions'] = 'Transactions';
 $_lang['sm.subscriptions'] = 'Subscriptions';
 $_lang['sm.products'] = 'Products';
 $_lang['sm.productpermissions'] = 'Product Permissions';
+$_lang['sm.subscr'] = 'Subscr.';
 
 $_lang['sm.freesubscription'] = 'Complimentary Subscription';
-$_lang['sm.freesubscription.text'] = 'By adding a new Complimentary Subscription to this Subscriber account they will receive access to your premium content for free for a certain period.
-    If you are trying to confirm a manual payment instead, please right click the related transaction on the Transaction tab and select "Mark as Paid".';
+$_lang['sm.freesubscription.text'] = 'By adding a new Complimentary Subscription to a User account they will receive access to your product for free for a certain period.
+    Doing this will create a new complimentary transaction linked to your user account.';
 $_lang['sm.subscriber.account'] = 'Account Information';
 $_lang['sm.subscriber.profile'] = 'User Profile';
 
@@ -28,9 +29,10 @@ $_lang['sm.button.remove'] = 'Remove [[+what]]';
 $_lang['sm.button.exportsubs'] = 'Export Subscribers';
 $_lang['sm.button.clearfilter'] = 'Reset Filter';
 $_lang['sm.combo.filter_on'] = 'Filter on [[+what]]';
-$_lang['sm.combo.paidornot'] = 'Paid Status';
-$_lang['sm.combo.paid'] = 'Paid';
-$_lang['sm.combo.unpaid'] = 'Unpaid';
+$_lang['sm.combo.method'] = 'Payment Method';
+$_lang['sm.combo.paypal'] = 'PayPal';
+$_lang['sm.combo.manual'] = 'Manual';
+$_lang['sm.combo.complimentary'] = 'Complimentary';
 $_lang['sm.combo.day'] = 'Day';
 $_lang['sm.combo.week'] = 'Week';
 $_lang['sm.combo.month'] = 'Month';
@@ -39,12 +41,13 @@ $_lang['sm.search'] = 'Search';
 $_lang['sm.search...'] = 'Search...';
 $_lang['sm.transaction.markaspaid'] = 'Mark As Paid';
 $_lang['sm.transaction.markaspaid.text'] = 'Please enter a reference to be added to the transaction. The transaction will be marked as paid with "manual" as method to indicate it was manually accepted. Any related subscriptions will also be processed after clicking save.';
-$_lang['sm.transaction.viewsubscriptions'] = 'View Related Subscriptions';
-$_lang['sm.transaction.viewsubscriptions.text'] = 'These are the subscriptions related to this transaction. These are not necessarily currently active.';
+$_lang['sm.subscription.viewtransactions'] = 'View Related Transactions';
+$_lang['sm.subscription.viewtransactions.text'] = 'These are the transactions related to this subscription, and may include manual and complimentary transactions as well.';
 $_lang['sm.remove'] = 'Remove [[+what]]';
 $_lang['sm.remove_successful'] = 'Successfully removed [[+what]]';
 $_lang['sm.removed'] = 'Removed [[+what]]';
 $_lang['sm.back'] = 'Back';
+$_lang['sm.nooptions'] = 'No options available';
 
 /* Fields */
 $_lang['sm.fullname'] = 'Full Name';
@@ -52,14 +55,13 @@ $_lang['sm.email'] = 'E-mail Address';
 $_lang['sm.active'] = 'Active';
 $_lang['sm.username'] = 'Username';
 $_lang['sm.limit'] = 'Limit';
-$_lang['sm.generated'] = 'Generated';
+$_lang['sm.createdon'] = 'Created On';
 $_lang['sm.updatedon'] = 'Updated On';
 $_lang['sm.reference'] = 'Reference';
 $_lang['sm.method'] = 'Method';
 $_lang['sm.amount'] = 'Amount';
-$_lang['sm.completed'] = 'Completed';
 $_lang['sm.start'] = 'Start';
-$_lang['sm.end'] = 'End';
+$_lang['sm.expires'] = 'Expires';
 $_lang['sm.name'] = 'Name';
 $_lang['sm.description'] = 'Description';
 $_lang['sm.sortorder'] = 'Sort Order';
