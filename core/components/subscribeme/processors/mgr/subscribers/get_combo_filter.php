@@ -9,7 +9,7 @@ $search = $modx->getOption('query',$scriptProperties,'');
 
 $c = $modx->newQuery('modUser');
 $c->innerJoin('modUserProfile','Profile');
-$c->select(array('modUser.id','Profile.fullname','modUser.username'));
+$c->select(array('modUser.id','Profile.fullname as fullname','modUser.username as username'));
 
 if (strlen($search) > 1) {
     $c->where(array(
@@ -18,15 +18,15 @@ if (strlen($search) > 1) {
               ));
 }
 
-$c->sortby($sort,$dir);
-
 $total = $modx->getCount('modUser',$c);
 
+$c->sortby($sort,$dir);
 $c->limit($limit,$start);
 
+$results = array();
 $query = $modx->getCollection('modUser',$c);
 foreach ($query as $r) {
-    $ta = $r->get(array('id','fullname','username'));
+    $ta = $r->toArray();
     $results[] = array(
         'id' => $ta['id'],
         'display' => $ta['fullname'] . ' (' . $ta['username'] . ')'
