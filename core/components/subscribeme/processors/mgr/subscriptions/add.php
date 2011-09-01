@@ -12,7 +12,7 @@ $subscription->fromArray(
     array(
         'user_id' => $scriptProperties['user_id'],
         'product_id' => $scriptProperties['product_id'],
-        'start' => date('Y-m-d H:i:s',strtotime($scriptProperties['start'].' 00:00:00')),
+        'start' => date('Y-m-d H:i:s'),
         'expires' => date('Y-m-d H:i:s',strtotime($scriptProperties['end'].' 23:59:00')),
         'active' => true
     )

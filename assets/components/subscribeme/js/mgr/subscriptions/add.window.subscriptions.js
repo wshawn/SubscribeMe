@@ -26,11 +26,6 @@ SM.window.AddSubscription = function(config) {
             width: 200,
             hideOptions: true
         },{
-            name: 'start',
-            fieldLabel: _('sm.start'),
-            xtype: 'datefield',
-            width: 200
-        },{
             name: 'expires',
             fieldLabel: _('sm.expires'),
             xtype: 'datefield',
