@@ -31,6 +31,9 @@ class SubscribeMe {
             'assets_url' => $assetsUrl,
             'connector_url' => $assetsUrl.'connector.php',
         ),$config);
+
+        $this->modx->addPackage('subscribeme',$this->config['model_path']);
+        $this->modx->lexicon->load('subscribeme:default');
     }
 
     /**
@@ -38,13 +41,6 @@ class SubscribeMe {
      * @return bool
      */
     public function initialize($ctx = 'web') {
-        switch ($ctx) {
-            case 'mgr':
-                $modelpath = $this->config['model_path'];
-                $this->modx->addPackage('subscribeme',$modelpath);
-                $this->modx->lexicon->load('subscribeme:default');
-            break;
-        }
         return true;
     }
 
