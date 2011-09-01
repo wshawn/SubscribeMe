@@ -52,6 +52,7 @@ SM.grid.ViewTransactionsGrid = function(config) {
         primaryKey: 'trans_id',
 		remoteSort: true,
         sortBy: 'createdon',
+        pageSize: 5,
 		columns: [{
 			header: _('id'),
 			dataIndex: 'trans_id',
