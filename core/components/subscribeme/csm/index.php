@@ -34,6 +34,7 @@ if ($_GET['action'] == 'subscriber') {
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriber.action.js');
 
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/add.window.transactions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/grid.transactions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/combo.method.transactions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/markaspaid.window.transactions.js');
