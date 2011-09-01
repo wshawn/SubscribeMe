@@ -16,8 +16,17 @@ if (is_numeric($user))
                   'user_id' => $user
               ));
 $c->innerJoin('smProduct','Product');
-$c->innerJoin('modUserProfile','Profile','user_id = Profile.internalKey');
-$c->select(array('smSubscription.*','Product.name as product','Profile.fullname as user'));
+$c->innerJoin('modUserProfile','Profile','smSubscription.user_id = Profile.internalKey');
+$c->select(
+    array(
+        'smSubscription.*',
+        'Product.name as product',
+        'Product.price as product_price',
+        'product.periods as product_periods',
+        'product.period as product_period',
+        'Profile.fullname as user',
+    )
+);
 
 $total = $modx->getCount('smSubscription',$c);
 

@@ -76,7 +76,7 @@ SM.grid.Subscribers = function(config) {
         paging: true,
         primaryKey: 'id',
 		remoteSort: true,
-        sortBy: 'name',
+        sortBy: 'fullname',
 		columns: [{
 			header: _('id'),
 			dataIndex: 'id',

@@ -3,7 +3,7 @@ SM.window.ViewTransactions = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('sm.subscription.viewtransactions'),
-        closeAction: 'close',
+        closeAction: 'hide',
         width: '70%',
         fields: [{
             xtype: 'panel',
@@ -16,12 +16,6 @@ SM.window.ViewTransactions = function(config) {
                 subscription: config.config.subscription || false
             }
         }],
-        listeners: {
-            success: function(result,form) {
-                this.close();
-                Ext.getCmp('grid-subscriptions').refresh();
-            }
-        },
         buttons: [{
             text: _('close'),
             scope: this,
@@ -44,17 +38,6 @@ SM.grid.ViewTransactionsGrid = function(config) {
             forceFit: true,
             enableRowBody: true
         },
-/*      <field key="user_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
-        <field key="sub_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
-
-        <field key="reference" dbtype="varchar" precision="256" phptype="string" null="true" default="" />
-        <field key="method" dbtype="varchar" precision="25" phptype="string" null="true" default="" />
-        <field key="amount" dbtype="float" precision="10,2" phptype="string" null="true" default="" />
-
-        <field key="completed" dbtype="tinyint" precision="1" phptype="boolean" null="true" default="0" />
-
-        <field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
-        <field key="updatedon" dbtype="timestamp" phptype="timestamp" null="false" />*/
 		fields: [
             {name: 'trans_id', type: 'int'},
             {name: 'user_id', type: 'int'},
@@ -91,7 +74,10 @@ SM.grid.ViewTransactionsGrid = function(config) {
 			header: _('sm.method'),
 			dataIndex: 'method',
 			sortable: true,
-			width: 3
+			width: 3,
+            renderer: function(val) {
+                return _('sm.combo.'+val);
+            }
 		},{
             header: _('sm.amount'),
             dataIndex: 'amount',
@@ -108,10 +94,25 @@ SM.grid.ViewTransactionsGrid = function(config) {
             sortable: true,
             width: 4
         }]
-		,listeners: {
-	    }
     });
     SM.grid.ViewTransactionsGrid.superclass.constructor.call(this,config);
 };
-Ext.extend(SM.grid.ViewTransactionsGrid,MODx.grid.Grid);
+Ext.extend(SM.grid.ViewTransactionsGrid,MODx.grid.Grid,{
+    getMenu: function() {
+        var r = this.getSelectionModel().getSelected();
+        var d = r.data;
+
+        var m = [];
+        if (this.getSelectionModel().getCount() > 1) {
+        } else {
+            m.push({
+                text: _('sm.nooptions'),
+                handler: function() { return false; }
+            });
+        }
+        if (m.length > 0) {
+            this.addContextMenuItem(m);
+        }
+    }
+});
 Ext.reg('sm-grid-viewsubscriptions',SM.grid.ViewTransactionsGrid);

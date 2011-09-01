@@ -98,44 +98,76 @@ class SubscribeMe {
         return $chunk;
     }
 
-    public function processTransaction(smTransaction $trans, $ref = '') {
-        $trans->set('reference',$ref);
-        $trans->set('method','manual');
-        $trans->set('updatedon',date('Y-m-d H:i:s'));
+    /**
+     * @param \smTransaction $trans
+     * @return bool|string Returns true if succesful, or an error string when something went wrong.
+     */
+    public function processTransaction(smTransaction $trans) {
+        // Get the subscription
+        $sub = $trans->getOne('Subscription');
+        if (!($sub instanceof smSubscription))
+            return 'Unable to find the subscription belonging to the transaction.';
 
-        // Get all subscriptions belonging to this transaction
-        $subs = $trans->getMany('Subscriptions');
-        if (count($subs) < 1) return 'No subscriptions found';
+        // Get the product
+        $product = $sub->getOne('Product');
+        if (!($product instanceof smProduct))
+            return 'Unable to find the product belonging to the subscription.';
 
-        foreach ($subs as $sub) {
-            if (!$this->processSubscription($sub))
-                return 'Error processing subscription';
+        // We'll need the period from the product
+        $periodUsable = array('D' => 'day', 'W' => 'week', 'M' => 'month', 'Y' => 'year');
+        $prodPeriod = $product->get('periods'); // the number of periods
+        $prodPeriod .= ' '.$periodUsable[$product->get('period')]; // the actual period entity (day)
+
+        // Recalculate the expires column.
+        $subExpCur = $sub->get('expires');                  // Get the current expires time in format 2011-08-30 14:17:22
+        $subExp = strtotime($subExpCur);                    // Parse the time into a unix timestamp
+        $subExp = strtotime('+' . $prodPeriod,$subExp);     // Take the "+2 week" from the product, and add it.
+        if ($subExp < $subExpCur)                           // Do a simple check to make sure the new expires date is larger than earlier
+            return 'Error calculating the new expiring timestamp.';
+
+        // Update the expires column
+        $subExp = date('Y-m-d H:i:s',$subExp);          // First change it to a format MySQL will surely understand.
+        $sub->set('expires', $subExp);                  // Change it
+        if (!$sub->save())                              // Save & if that failed return an error.
+            return 'Error updating subscription with new expires timestamp.';
+
+        // Get the permissions to set from the product
+        $pperms = $product->getMany('Permissions');
+
+        foreach ($pperms as $pp) {
+            // Only process if it's the right object type
+            if ($pp instanceof smProductPermissions) {
+                /* @var smProductPermissions $pp */
+                $ppArray = $pp->toArray();
+                // Check if the user is already a member of this group.
+                $ugTest = $this->modx->getObject('modUserGroupMember',array(
+                    'user_group' => $ppArray['usergroup'],
+                    'role' => $ppArray['role'],
+                    'member' => $sub->get('user_id')
+                ));
+                // If no user group with the requirements was found..
+                if (!($ugTest instanceof modUserGroupMember)) {
+                    // Create a new user group membership
+                    /* @var modUserGroupMember $ug */
+                    $ug = $this->modx->newObject('modUserGroupMember');
+                    $ug->fromArray(
+                        array(
+                            'user_group' => $ppArray['usergroup'],
+                            'role' => $ppArray['role'],
+                            'member' => $sub->get('user_id')
+                        )
+                    );
+                    if (!$ug->save())
+                        return 'Error saving user group '.$ppArray['usergroup'].' with role '.$ppArray['role'];
+                }
+            }
         }
 
-        return $trans->save();
+        // If we got here all things went as intended.
+        return true;
     }
 
-    public function processSubscription(smSubscription $sub) {
-        if (!($sub instanceof smSubscription)) return false;
 
-        $subArray = $sub->toArray();
-        $originalStart = strtotime($subArray['start']);
-        $originalEnd = strtotime($subArray['end']);
-        // If we were supposed to start in the past...
-        if ($originalStart < (time() - 10)) {
-            // ... calculate the difference...
-            $differenceStart = time() - $originalStart;
-            // ... and add it to the end time.
-            $correctedEnd = $originalEnd + $differenceStart;
-            
-
-            //
-            $correctedStart = time();
-        }
-
-
-
-    }
 }
         
 ?>

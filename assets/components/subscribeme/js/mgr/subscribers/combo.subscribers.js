@@ -13,7 +13,8 @@ SM.combo.Subscribers = function(config) {
         typeAhead: true,
         editable: true,
         forceSelection: true,
-        minChars: 1
+        minChars: 1,
+        pageSize: 20
     });
     SM.combo.Subscribers.superclass.constructor.call(this,config);
 };

@@ -42,8 +42,16 @@ SM.grid.Subscriptions = function(config) {
                 },scope: this}
             }
         },'-',{
+            xtype: (config.hideSubscribersCombo) ? 'hidden' : 'sm-combo-subscribers',
+            emptyText: _('sm.combo.filter_on',{what: _('user')}),
+            id: 'sm-subscriptions-user-filter',
+            width: 200,
+            listeners: {
+                'select': {fn: this.filterBySubscriber, scope: this}
+            }
+        },'-',{
             xtype: 'sm-combo-product',
-            emptyText: _('sm.combo.filter_on',{what: _('sm.subscriptions')}),
+            emptyText: _('sm.combo.filter_on',{what: _('sm.product')}),
             id: 'sm-subscriptions-product-filter',
             width: 200,
             listeners: {
@@ -59,13 +67,16 @@ SM.grid.Subscriptions = function(config) {
         paging: true,
         primaryKey: 'sub_id',
         remoteSort: true,
-        sortBy: 'sub_id',
+        sortBy: 'start',
         fields: [
             {name: 'sub_id', type: 'int'},
             {name: 'user_id', type: 'int'},
             {name: 'product_id', type: 'int'},
             {name: 'user', type: 'string'},
             {name: 'product', type: 'string'},
+            {name: 'product_price', type: 'string'},
+            {name: 'product_periods', type: 'periods'},
+            {name: 'product_period', type: 'period'},
             {name: 'start', type: 'string'},
             {name: 'expires', type: 'string'},
             {name: 'active', type: 'boolean'}
@@ -129,16 +140,31 @@ SM.grid.Subscriptions = function(config) {
                     items: [{
                         text: _('update')+' '+_('user'),
                         handler: function(grid, rowIndex, e) {
-                            var eid = Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data.sub_id;
+                            var eid = Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data.user_id;
                             window.location.href = '?a='+MODx.action['csm/index']+'&action=subscriber&id='+eid;
                         }
                     },{
+                        text: _('sm.subscription.manualtransaction'),
+                        handler: function() {
+                            data = Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data;
+                            win = new SM.window.AddManualTransaction({
+                                record: {
+                                    sub_id: data.sub_id,
+                                    user_id: data.user_id,
+                                    amount: data.product_price,
+                                    period: data.product_periods + ' ' + _('sm.combo.'+data.product_period)
+                                }
+                            });
+                            win.show();
+                        }
+                    },'-',{
                         text: _('sm.subscription.viewtransactions'),
                         handler: function() {
                             win = new SM.window.ViewTransactions({
                                 config: { subscription: Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data.sub_id }
                             });
-                            win.show();}
+                            win.show();
+                        }
                     }]
                 });
                 _contextMenu.showAt(e.getXY());
@@ -148,6 +174,11 @@ SM.grid.Subscriptions = function(config) {
     SM.grid.Subscriptions.superclass.constructor.call(this,config);
 };
 Ext.extend(SM.grid.Subscriptions,MODx.grid.Grid,{
+    filterBySubscriber: function (cb, rec, ri) {
+        this.getStore().baseParams['subscriber'] = rec.data['id'];
+        this.getBottomToolbar().changePage(1);
+        this.refresh();
+    },
     filterByProduct: function (cb, rec, ri) {
         this.getStore().baseParams['product'] = rec.data['id'];
         this.getBottomToolbar().changePage(1);
@@ -162,6 +193,8 @@ Ext.extend(SM.grid.Subscriptions,MODx.grid.Grid,{
     clearFilter: function() {
         this.getStore().baseParams['query'] = '';
         this.getStore().baseParams['product'] = '';
+        this.getStore().baseParams['subscriber'] = '';
+        Ext.getCmp('sm-subscriptions-user-filter').reset();
         Ext.getCmp('sm-subscriptions-product-filter').reset();
         Ext.getCmp('sm-subscriptions-search').reset();
         this.getBottomToolbar().changePage(1);

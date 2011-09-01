@@ -58,11 +58,14 @@ SM.page.Subscriber = function(config) {
                         action: 'mgr/subscriptions/getlist',
                         subscriber: (SM.record) ? SM.record['id'] : 0
                     },
-                    border: false
+                    border: false,
+                    hideSubscribersCombo: true
+
                 }],
                 disabled: (SM.record) ? false : true
             },{
                 title: _('sm.transactions'),
+                disabled: (SM.record) ? false : true,
                 items: [{
                     xtype: 'sm-grid-transactions',
                     border: false,
@@ -71,8 +74,7 @@ SM.page.Subscriber = function(config) {
                         subscriber: (SM.record) ? SM.record['id'] : 0
                     },
                     hideSubscribersCombo: true
-                }],
-                disabled: (SM.record) ? false : true
+                }]
             }]
 
         }]

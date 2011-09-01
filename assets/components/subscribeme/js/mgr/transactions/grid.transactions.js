@@ -68,7 +68,7 @@ SM.grid.Transactions = function(config) {
         paging: true,
         primaryKey: 'trans_id',
 		remoteSort: true,
-        sortBy: 'name',
+        sortBy: 'createdon',
 		columns: [{
 			header: _('id'),
 			dataIndex: 'trans_id',
@@ -114,7 +114,10 @@ SM.grid.Transactions = function(config) {
 			header: _('sm.method'),
 			dataIndex: 'method',
 			sortable: true,
-			width: 2
+			width: 2,
+            renderer: function(val) {
+                return _('sm.combo.'+val);
+            }
 		},{
 			header: _('sm.amount'),
 			dataIndex: 'amount',

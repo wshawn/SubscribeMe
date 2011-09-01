@@ -1,16 +1,16 @@
-SM.window.AddSubscription = function(config) {
+SM.window.AddManualTransaction = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('sm.freesubscription'),
+        title: _('sm.subscription.manualtransaction'),
         id: 'sm-window-addsubscription',
         url: SM.config.connector_url,
         closeAction: 'close',
         baseParams: {
-            action: 'mgr/subscriptions/add'
+            action: 'mgr/transactions/add'
         },
         fields: [{
             xtype: 'panel',
-            html: '<p>'+_('sm.freesubscription.text')+'</p>',
+            html: '<p>'+_('sm.subscription.manualtransaction.text')+'</p>',
             bodyStyle: 'padding-bottom: 12px;'
         },{
             name: 'user_id',
@@ -19,29 +19,28 @@ SM.window.AddSubscription = function(config) {
             fieldLabel: _('user'),
             width: 200
         },{
-            name: 'product_id',
-            hiddenName: 'product_id',
-            xtype: 'sm-combo-product',
+            name: 'sub_id',
+            hiddenName: 'sub_id',
+            xtype: 'hidden',
             fieldLabel:  _('sm.product'),
-            width: 200,
-            hideOptions: true
-        },{
-            name: 'start',
-            fieldLabel: _('sm.start'),
-            xtype: 'datefield',
-            width: 200
-        },{
-            name: 'expires',
-            fieldLabel: _('sm.expires'),
-            xtype: 'datefield',
-            allowDecimal: false,
-            allowNegative: false,
             width: 200
         },{
             name: 'reference',
             fieldLabel: _('sm.reference'),
             xtype: 'textfield',
             allowBlank: false,
+            width: 200
+        },{
+            name: 'amount',
+            fieldLabel: _('sm.amount'),
+            xtype: 'statictextfield',
+            allowBlank: false,
+            width: 200,
+            submitValue: true
+        },{
+            name: 'period',
+            fieldLabel: _('sm.period'),
+            xtype: 'statictextfield',
             width: 200
         }],
         listeners: {
@@ -52,7 +51,7 @@ SM.window.AddSubscription = function(config) {
             }
         }
     });
-    SM.window.AddSubscription.superclass.constructor.call(this,config);
+    SM.window.AddManualTransaction.superclass.constructor.call(this,config);
 };
-Ext.extend(SM.window.AddSubscription,MODx.Window);
-Ext.reg('sm-window-freesubscription',SM.window.AddSubscription);
+Ext.extend(SM.window.AddManualTransaction,MODx.Window);
+Ext.reg('sm-window-manualtransaction',SM.window.AddManualTransaction);

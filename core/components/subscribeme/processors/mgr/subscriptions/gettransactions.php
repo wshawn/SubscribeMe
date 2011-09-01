@@ -21,6 +21,8 @@ $results = array();
 $r = $modx->getCollection('smTransaction',$c);
 foreach ($r as $rs) {
     $ta = $rs->toArray();
+    $ta['updatedon'] = ($ta['updatedon'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['updatedon']));
+    $ta['createdon'] = ($ta['createdon'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['createdon']));
     $results[] = $ta;
 }
 
