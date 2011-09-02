@@ -129,8 +129,10 @@ SM.grid.Transactions = function(config) {
 			dataIndex: 'completed',
 			sortable: true,
 			width: 1,
-            editor: { xtype: 'modx-combo-boolean', renderer: true },
-            editable: false
+            renderer: function(val) {
+                if (val === true) return '<span style="color: green">'+_('yes')+'</span>';
+                else return '<span style="color: red">'+_('no')+'</span>';
+            }
 		}]
     });
     SM.grid.Transactions.superclass.constructor.call(this,config);
