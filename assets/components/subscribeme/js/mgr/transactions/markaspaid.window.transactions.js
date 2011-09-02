@@ -23,6 +23,10 @@ SM.window.MarkAsPaid = function(config) {
             xtype: 'textfield',
             width: 200,
             allowBlank: false
+        },{
+            name: 'amount',
+            fieldLabel: _('sm.amount'),
+            xtype: 'statictextfield'
         }],
         listeners: {
             success: function(result,form) {

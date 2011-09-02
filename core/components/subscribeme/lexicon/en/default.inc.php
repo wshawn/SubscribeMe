@@ -81,12 +81,12 @@ $_lang['sm.period'] = 'Period';
 $_lang['sm.permissions'] = 'Permissions';
 $_lang['sm.usergroup'] = 'User Group';
 $_lang['sm.role'] = 'Role';
+$_lang['sm.completed'] = 'Completed';
 
 /* Errors */
 $_lang['sm.error.sendmailfailed'] = 'An error occured sending email.';
 $_lang['sm.error.savefailed'] = 'An error occured attempting to save your changes.';
 $_lang['sm.error.savefailed.user'] = 'An error occured attempting to save the user account.';
 $_lang['sm.error.savefailed.userprofile'] = 'An error occured attempting to save the user profile.';
-
 
 ?>

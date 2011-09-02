@@ -63,7 +63,8 @@ SM.grid.Transactions = function(config) {
             {name: 'method', type: 'string'},
             {name: 'amount', type: 'float'},
             {name: 'createdon', type: 'string'},
-            {name: 'updatedon', type: 'string'}
+            {name: 'updatedon', type: 'string'},
+            {name: 'completed', type: 'boolean'}
         ],
         paging: true,
         primaryKey: 'trans_id',
@@ -123,6 +124,13 @@ SM.grid.Transactions = function(config) {
 			dataIndex: 'amount',
 			sortable: true,
 			width: 1
+		},{
+			header: _('sm.completed'),
+			dataIndex: 'completed',
+			sortable: true,
+			width: 1,
+            editor: { xtype: 'modx-combo-boolean', renderer: true },
+            editable: false
 		}]
     });
     SM.grid.Transactions.superclass.constructor.call(this,config);
@@ -159,25 +167,25 @@ Ext.extend(SM.grid.Transactions,MODx.grid.Grid,{
         var d = r.data;
 
         var m = [];
-        if (this.getSelectionModel().getCount() > 1) {
-        } else {
-            /*if (!d.completed) {
-                m.push({
-                    text: _('sm.transaction.markaspaid'),
-                    handler: function() {
-                        win = new SM.window.MarkAsPaid({
-                            record: {transaction: this.getSelectionModel().getSelected().data.trans_id}
-                        });
-                        win.show();
-                    }
-                });
-            }
-            else {*/
-                m.push({
-                    text: _('sm.nooptions'),
-                    handler: function() { return false; }
-                });
-            //}
+        if (!d.completed && (d.method != 'complimentary')) {
+            m.push({
+                text: _('sm.transaction.markaspaid'),
+                handler: function() {
+                    win = new SM.window.MarkAsPaid({
+                        record: {
+                            transaction: this.getSelectionModel().getSelected().data.trans_id,
+                            amount: this.getSelectionModel().getSelected().data.amount
+                        }
+                    });
+                    win.show();
+                }
+            });
+        }
+        else {
+            m.push({
+                text: _('sm.nooptions'),
+                handler: function() { return false; }
+            });
         }
         if (m.length > 0) {
             this.addContextMenuItem(m);

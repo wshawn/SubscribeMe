@@ -5,11 +5,15 @@
 $id = $modx->getOption('transaction',$scriptProperties,null);
 $ref = $modx->getOption('reference',$scriptProperties,null);
 
-/* var smTransaction @obj */
+/* @var smTransaction $obj */
 $obj = $modx->getObject('smTransaction',$id);
 if (!($obj instanceof smTransaction)) {
     return $modx->error->failure('Invalid object'); //@todo lexiconify
 }
+
+$obj->set('method','manual');
+if (!$obj->save())
+    return 'Error updating transaction data.';
 
 $result = $modx->sm->processTransaction($obj, $ref);
 

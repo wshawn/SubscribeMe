@@ -32,6 +32,7 @@ $xpdo_meta_map['smTransaction']= array (
     'amount' => 0,
     'createdon' => 'CURRENT_TIMESTAMP',
     'updatedon' => NULL,
+    'completed' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -101,6 +102,14 @@ $xpdo_meta_map['smTransaction']= array (
       'dbtype' => 'timestamp',
       'phptype' => 'timestamp',
       'null' => false,
+    ),
+    'completed' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'boolean',
+      'null' => true,
+      'default' => 0,
     ),
   ),
   'indexes' => 

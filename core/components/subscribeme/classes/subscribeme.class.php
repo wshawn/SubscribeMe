@@ -160,7 +160,12 @@ class SubscribeMe {
         }
 
         // If we got here all things went as intended.
-        return true;
+        $trans->set('completed',true);
+        $trans->set('updatedon',date('Y-m-d H:i:s'));
+        if ($trans->save())
+            return true;
+        else
+            return 'Error marking transaction as completed.';
     }
 
 
