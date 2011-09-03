@@ -6,6 +6,19 @@
 if (!$scriptProperties['user_id'] || !is_numeric($scriptProperties['user_id']))
     return $modx->error->failure('No user ID found.');
 
+/* As the processTransaction function will add one entire period later, we will need to take that off the expires
+period now. Therefore we fetch the product and the period and deduct that from that given expiry date.
+*/
+/* @var smProduct $product */
+$expires = $scriptProperties['expires']; // Get the filled in expiry date
+$product = $modx->getObject('smProduct',$scriptProperties['product_id']); // Get the product
+$productArray = $product->toArray(); // And put it in an array
+$periodUsable = array('D' => 'day', 'W' => 'week', 'M' => 'month', 'Y' => 'year'); // Set up array to transform
+$prodPeriod = $productArray['periods'].' '.$periodUsable[$productArray['period']];
+$prodPeriod = strtotime($prodPeriod,0);
+$expires = strtotime($scriptProperties['expires'].' 23:59:00') - $prodPeriod;
+$expires = date('Y-m-d H:i:s',$expires);
+
 /* @var smSubscription $subscription */
 $subscription = $modx->newObject('smSubscription');
 $subscription->fromArray(
@@ -13,7 +26,7 @@ $subscription->fromArray(
         'user_id' => $scriptProperties['user_id'],
         'product_id' => $scriptProperties['product_id'],
         'start' => date('Y-m-d H:i:s'),
-        'expires' => date('Y-m-d H:i:s',strtotime($scriptProperties['end'].' 23:59:00')),
+        'expires' => $expires,
         'active' => true
     )
 );

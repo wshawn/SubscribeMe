@@ -50,10 +50,12 @@ $c->select(array('smTransaction.*','User.username AS user_username','Profile.ful
 $results = array();
 
 $r = $modx->getCollection('smTransaction',$c);
+$cs = $modx->getOption('subscribeme.currencysign',null,'$');
 foreach ($r as $rs) {
     $ta = $rs->get(array('trans_id','sub_id','user_id','reference','method','amount','completed','createdon','updatedon','user_name','user_username'));
     $ta['updatedon'] = ($ta['updatedon'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['updatedon']));
     $ta['createdon'] = ($ta['createdon'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['createdon']));
+    $ta['amount'] = $cs.$ta['amount'];
     $results[] = $ta;
 }
 

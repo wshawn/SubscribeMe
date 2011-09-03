@@ -33,12 +33,13 @@ $total = $modx->getCount('smSubscription',$c);
 $c->sortby($sort,$dir);
 $c->limit($limit,$start);
 
+$cs = $modx->getOption('subscribeme.currencysign',null,'$');
 $collection = $modx->getCollection('smSubscription',$c);
 foreach ($collection as $r) {
     $ta = $r->toArray();
     $ta['start'] = ($ta['start'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['start']));
     $ta['expires'] = ($ta['expires'] == '0000-00-00 00:00:00') ? '' : date($modx->config['manager_date_format'].' '.$modx->config['manager_time_format'],strtotime($ta['expires']));
-
+    $ta['product_price'] = $cs.$ta['product_price'];
     $results[] = $ta;
 }
 

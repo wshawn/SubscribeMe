@@ -61,7 +61,7 @@ SM.grid.Transactions = function(config) {
             {name: 'user_username', type: 'string'},
             {name: 'reference', type: 'string'},
             {name: 'method', type: 'string'},
-            {name: 'amount', type: 'float'},
+            {name: 'amount', type: 'string'},
             {name: 'createdon', type: 'string'},
             {name: 'updatedon', type: 'string'},
             {name: 'completed', type: 'boolean'}
