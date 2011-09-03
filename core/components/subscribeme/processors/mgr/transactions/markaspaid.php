@@ -12,6 +12,7 @@ if (!($obj instanceof smTransaction)) {
 }
 
 $obj->set('method','manual');
+$obj->set('reference',$ref);
 if (!$obj->save())
     return 'Error updating transaction data.';
 

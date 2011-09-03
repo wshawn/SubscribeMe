@@ -31,8 +31,11 @@ SM.window.MarkAsPaid = function(config) {
         listeners: {
             success: function(result,form) {
                 this.close();
-                Ext.getCmp('grid-transactions').refresh();
-            }
+                Ext.getCmp(config.parentid).refresh();
+                if (config.parentid != 'sm-grid-transactions') {
+                    Ext.getCmp('sm-grid-transactions').refresh();
+                }
+            },scope: this
         }
     });
     SM.window.MarkAsPaid.superclass.constructor.call(this,config);

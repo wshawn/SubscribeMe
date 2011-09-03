@@ -14,7 +14,7 @@ SM.grid.Transactions = function(config) {
         },
         tbar: ['->',{
             xtype: 'textfield',
-            id: 'sm-subscriber-search',
+            id: (config.preventBugs) ? 'sm-subscriber-search2' : 'sm-subscriber-search',
             emptyText: _('sm.search...'),
             listeners: {
                 'change': { fn:this.searchTransactions, scope:this},
@@ -33,7 +33,7 @@ SM.grid.Transactions = function(config) {
         },'-',{
             xtype: (config.hideSubscribersCombo) ? 'hidden' : 'sm-combo-subscribers',
             emptyText: _('sm.combo.filter_on',{what: _('user')}),
-            id: 'sm-transaction-filter',
+            id: (config.preventBugs) ? 'sm-transaction-filter2' :'sm-transaction-filter',
             width: 200,
             listeners: {
                 'select': {fn: this.filterBySubscriber, scope: this}
@@ -41,7 +41,7 @@ SM.grid.Transactions = function(config) {
         },'-',{
             xtype: 'sm-combo-transactionsmethod',
             emptyText: _('sm.combo.filter_on',{what: _('sm.combo.method')}),
-            id: 'sm-method-filter',
+            id: (config.preventBugs) ? 'sm-method-filter2' :'sm-method-filter',
             width: 150,
             listeners: {
                 'select': {fn: this.filterByPaid, scope: this}
@@ -100,12 +100,14 @@ SM.grid.Transactions = function(config) {
 			header: _('sm.fullname'),
 			dataIndex: 'user_name',
 			sortable: true,
-			width: 3
+			width: 3,
+            hidden: (config.hideUser) ? true : false
 		},{
             header: _('sm.username'),
             dataIndex: 'user_username',
             sortable: true,
-            width: 2
+            width: 2,
+            hidden: (config.hideUser) ? true : false
         },{
 			header: _('sm.reference'),
 			dataIndex: 'reference',
@@ -158,9 +160,10 @@ Ext.extend(SM.grid.Transactions,MODx.grid.Grid,{
         this.getStore().baseParams['query'] = '';
         if (!this.config.hideSubscribersCombo) this.getStore().baseParams['subscriber'] = '';
         this.getStore().baseParams['method'] = '';
-        Ext.getCmp('sm-transaction-filter').reset();
-        Ext.getCmp('sm-subscriber-search').reset();
-        Ext.getCmp('sm-method-filter').reset();
+        var prevBugs = (this.config.preventBugs) ? '2' : '';
+        Ext.getCmp('sm-transaction-filter'+prevBugs).reset();
+        Ext.getCmp('sm-subscriber-search'+prevBugs).reset();
+        Ext.getCmp('sm-method-filter'+prevBugs).reset();
         this.getBottomToolbar().changePage(1);
         this.refresh();
     },
@@ -177,7 +180,8 @@ Ext.extend(SM.grid.Transactions,MODx.grid.Grid,{
                         record: {
                             transaction: this.getSelectionModel().getSelected().data.trans_id,
                             amount: this.getSelectionModel().getSelected().data.amount
-                        }
+                        },
+                        parentid: this.id
                     });
                     win.show();
                 }
