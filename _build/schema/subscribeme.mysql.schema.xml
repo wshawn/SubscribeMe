@@ -61,6 +61,12 @@
         <aggregate alias="Subscription" class="smSubscription" local="sub_id" foreign="sub_id" cardinality="one" owner="foreign" />
     </object>
 
+    <object class="smTransactionPaypal" table="sm_transaction_paypal" extends="xPDOSimpleObject">
+        <field key="trans_id" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" index="fk" />
+        <field key="token" dbtype="varchar" precision="256" phptype="string" null="false" />
+        <aggregate alias="Transaction" class="smTransaction" local="trans_id" foreign="trans_id" cardinality="one" owner="foreign" />
+    </object>
+
     <object class="smProduct" table="sm_product" extends="xPDOObject">
         <field key="product_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
         <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">

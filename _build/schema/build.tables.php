@@ -35,6 +35,7 @@ $manager->createObjectContainer('smSubscription');
 $manager->createObjectContainer('smProduct');
 $manager->createObjectContainer('smProductPermissions');
 $manager->createObjectContainer('smTransaction');
+$manager->createObjectContainer('smTransactionPaypal');
 echo '</pre>';
 
 echo 'Done.';
