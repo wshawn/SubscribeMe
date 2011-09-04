@@ -29,6 +29,8 @@
         <field key="user_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
         <field key="product_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" generated="native" attributes="unsigned" />
 
+        <field key="pp_profileid" dbtype="varchar" precision="256" phptype="string" null="true" default="" /> <!-- PayPal ProfileID value for recurring payments -->
+
         <field key="start" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
         <field key="expires" dbtype="timestamp" phptype="timestamp" null="false" />
         <field key="active" dbtype="tinyint" precision="1" phptype="boolean" null="true" default="1" />
@@ -37,6 +39,13 @@
         <aggregate alias="Product" class="smProduct" local="product_id" foreign="product_id" cardinality="one" owner="foreign" />
 
         <composite alias="Transactions" class="smTransaction" local="sub_id" foreign="trans_id" cardinality="many" owner="local" />
+    </object>
+
+    <object class="smPaypalToken" table="sm_paypal_token" extends="xPDOSimpleObject">
+        <field key="initiated" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
+        <field key="sub_id" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" index="fk" />
+        <field key="token" dbtype="varchar" precision="256" phptype="string" null="false" />
+        <aggregate alias="Subscription" class="smSubscription" local="sub_id" foreign="sub_id" cardinality="one" owner="foreign" />
     </object>
 
     <object class="smTransaction" table="sm_transaction" extends="xPDOObject">
@@ -59,12 +68,6 @@
 
         <aggregate alias="User" class="modUser" local="user_id" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="Subscription" class="smSubscription" local="sub_id" foreign="sub_id" cardinality="one" owner="foreign" />
-    </object>
-
-    <object class="smTransactionPaypal" table="sm_transaction_paypal" extends="xPDOSimpleObject">
-        <field key="trans_id" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" index="fk" />
-        <field key="token" dbtype="varchar" precision="256" phptype="string" null="false" />
-        <aggregate alias="Transaction" class="smTransaction" local="trans_id" foreign="trans_id" cardinality="one" owner="foreign" />
     </object>
 
     <object class="smProduct" table="sm_product" extends="xPDOObject">

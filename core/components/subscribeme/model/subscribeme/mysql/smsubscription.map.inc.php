@@ -27,6 +27,7 @@ $xpdo_meta_map['smSubscription']= array (
     'sub_id' => NULL,
     'user_id' => NULL,
     'product_id' => NULL,
+    'pp_profileid' => '',
     'start' => 'CURRENT_TIMESTAMP',
     'expires' => NULL,
     'active' => 1,
@@ -62,6 +63,14 @@ $xpdo_meta_map['smSubscription']= array (
       'index' => 'fk',
       'generated' => 'native',
       'attributes' => 'unsigned',
+    ),
+    'pp_profileid' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '256',
+      'phptype' => 'string',
+      'null' => true,
+      'default' => '',
     ),
     'start' => 
     array (

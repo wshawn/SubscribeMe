@@ -19,17 +19,25 @@
  * SubscribeMe; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
 */
-$xpdo_meta_map['smTransactionPaypal']= array (
+$xpdo_meta_map['smPaypalToken']= array (
   'package' => 'subscribeme',
-  'table' => 'sm_transaction_paypal',
+  'table' => 'sm_paypal_token',
   'fields' => 
   array (
-    'trans_id' => NULL,
+    'initiated' => 'CURRENT_TIMESTAMP',
+    'sub_id' => NULL,
     'token' => NULL,
   ),
   'fieldMeta' => 
   array (
-    'trans_id' => 
+    'initiated' => 
+    array (
+      'dbtype' => 'timestamp',
+      'phptype' => 'timestamp',
+      'null' => false,
+      'default' => 'CURRENT_TIMESTAMP',
+    ),
+    'sub_id' => 
     array (
       'dbtype' => 'int',
       'precision' => '11',
@@ -48,11 +56,11 @@ $xpdo_meta_map['smTransactionPaypal']= array (
   ),
   'aggregates' => 
   array (
-    'Transaction' => 
+    'Subscription' => 
     array (
-      'class' => 'smTransaction',
-      'local' => 'trans_id',
-      'foreign' => 'trans_id',
+      'class' => 'smSubscription',
+      'local' => 'sub_id',
+      'foreign' => 'sub_id',
       'cardinality' => 'one',
       'owner' => 'foreign',
     ),

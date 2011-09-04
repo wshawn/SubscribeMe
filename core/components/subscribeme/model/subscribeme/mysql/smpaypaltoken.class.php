@@ -19,5 +19,6 @@
  * SubscribeMe; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
 */
-class smTransactionPaypal extends xPDOSimpleObject {}
+require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/smpaypaltoken.class.php');
+class smPaypalToken_mysql extends smPaypalToken {}
 ?>
