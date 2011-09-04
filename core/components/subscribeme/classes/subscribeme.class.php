@@ -7,6 +7,7 @@ class SubscribeMe {
     public $modx;
     public $config = array();
     private $chunks = array();
+    public $periodUsable = array('D' => 'day', 'W' => 'week', 'M' => 'month', 'Y' => 'year');
 
     /**
      * @param \modX $modx

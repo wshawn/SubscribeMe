@@ -40,7 +40,7 @@ class phpPayPal {
 		public $PROXY_HOST = NULL;
 		public $PROXY_PORT = NULL;
 
-		private $PAYPAL_URL = NULL;
+		public $PAYPAL_URL = NULL;
 
 		public $return_url = NULL;
 		public $cancel_url = NULL;
@@ -431,6 +431,7 @@ class phpPayPal {
 				'shipping_phone_number' 	=> array('name' => 'SHIPTOPHONENUM',		'required' => 'no')
 				),
 		'SetExpressCheckout' => array(
+				'version' 				=> array('name' => 'VERSION', 'required' => 'yes'),
 				'return_url' 				=> array('name' => 'RETURNURL', 'required' => 'yes'),
 				'cancel_url' 				=> array('name' => 'CANCELURL', 'required' => 'yes'),
 				'amount_total' 				=> array('name' => 'AMT', 'required' => 'yes'),
@@ -464,9 +465,12 @@ class phpPayPal {
 				'channel_type' 				=> array('name' => 'CHANNELTYPE', 'required' => 'no'),
 				'solution_type' 			=> array('name' => 'SOLUTIONTYPE', 'required' => 'no') ,
 				'billing_type' 				=> array('name' => 'L_BILLINGTYPE0', 'required' => 'no'),
-				'billing_agreement' 		=> array('name' => 'L_BILLINGAGREEMENTDESCRIPTION0', 'required' => 'no')
+				'billing_type2' 				=> array('name' => 'BILLINGTYPE', 'required' => 'no'),
+				'billing_agreement' 		=> array('name' => 'L_BILLINGAGREEMENTDESCRIPTION0', 'required' => 'no'),
+				'billing_agreement2' 		=> array('name' => 'BILLINGAGREEMENTDESCRIPTION', 'required' => 'no')
 				),
 		'GetExpressCheckoutDetails' => array(
+                'version' 					=> array('name' => 'VERSION',				'required' => 'no'), //Added
 				'token' 					=> array('name' => 'TOKEN',					'required' => 'yes')
 				),
 		'DoExpressCheckoutPayment' => array(
@@ -505,39 +509,40 @@ class phpPayPal {
 				'version' 					=> array('name' => 'VERSION',				'required' => 'no'), //Added
 				'token' 					=> array('name' => 'TOKEN',					'required' => 'yes'),
 				'payer_id' 					=> array('name' => 'PAYERID',				'required' => 'yes'),
-				'email' 				 	=> array('name' => 'EMAIL',					'required' => 'yes'),
-				'country_code'    			=> array('name' => 'COUNTRYCODE',			'required' => 'no'),
-				'business'    				=> array('name' => 'BUSINESS',				'required' => 'no'),
-				'payer_status'				=> array('name' => 'PAYERSTATUS',			'required' => 'no'),
-				'subscriber_name' 			=> array('name' => 'SUBSCRIBERNAME',		'required' => 'yes'),
-				'profile_reference'			=> array('name' => 'PROFILEREFERENCE',		'required' => 'yes'),
-				'credit_card_type'			=> array('name' => 'CREDITCARDTYPE',		'required' => 'yes'),
-				'credit_card_number' 		=> array('name' => 'ACCT',					'required' => 'yes'),
-				'expire_date' 				=> array('name' => 'EXPDATE',				'required' => 'yes'),
-				'first_name' 				=> array('name' => 'FIRSTNAME',				'required' => 'yes'),
-				'last_name' 				=> array('name' => 'LASTNAME',				'required' => 'yes'),
-				'address1' 					=> array('name' => 'STREET',				'required' => 'no'),
-				'address2' 					=> array('name' => 'STREET2',				'required' => 'no'),
-				'city' 						=> array('name' => 'CITY',					'required' => 'no'),
-				'state' 					=> array('name' => 'STATE',					'required' => 'no'),
-				'country_code' 				=> array('name' => 'COUNTRYCODE',			'required' => 'no'),
-				'postal_code' 				=> array('name' => 'ZIP',					'required' => 'no'),
+                'profile_start_date'		=> array('name' => 'PROFILESTARTDATE',		'required' => 'yes'),
+                'email' 				 	=> array('name' => 'EMAIL',					'required' => 'yes'),
+                'country_code'    			=> array('name' => 'COUNTRYCODE',			'required' => 'no'),
+                'business'    				=> array('name' => 'BUSINESS',				'required' => 'no'),
+                'payer_status'				=> array('name' => 'PAYERSTATUS',			'required' => 'no'),
+                'subscriber_name' 			=> array('name' => 'SUBSCRIBERNAME',		'required' => 'yes'),
+                'profile_reference'			=> array('name' => 'PROFILEREFERENCE',		'required' => 'yes'),
+                'credit_card_type'			=> array('name' => 'CREDITCARDTYPE',		'required' => 'yes'),
+                'credit_card_number' 		=> array('name' => 'ACCT',					'required' => 'yes'),
+                'expire_date' 				=> array('name' => 'EXPDATE',				'required' => 'yes'),
+                'first_name' 				=> array('name' => 'FIRSTNAME',				'required' => 'yes'),
+                'last_name' 				=> array('name' => 'LASTNAME',				'required' => 'yes'),
+                'address1' 					=> array('name' => 'STREET',				'required' => 'no'),
+                'address2' 					=> array('name' => 'STREET2',				'required' => 'no'),
+                'city' 						=> array('name' => 'CITY',					'required' => 'no'),
+                'state' 					=> array('name' => 'STATE',					'required' => 'no'),
+                'country_code' 				=> array('name' => 'COUNTRYCODE',			'required' => 'no'),
+                'postal_code' 				=> array('name' => 'ZIP',					'required' => 'no'),
 
-				'shipping_name' 			=> array('name' => 'SHIPTONAME',			'required' => 'no'),
-				'shipping_address1'			=> array('name' => 'SHIPTOSTREET',			'required' => 'no'),
-				'shipping_address2' 		=> array('name' => 'SHIPTOSTREET2',			'required' => 'no'),
-				'shipping_city' 			=> array('name' => 'SHIPTOCITY',			'required' => 'no'),
-				'shipping_state' 			=> array('name' => 'SHIPTOSTATE',			'required' => 'no'),
-				'shipping_postal_code' 		=> array('name' => 'SHIPTOZIP',				'required' => 'no'),
-				'shipping_country_code' 	=> array('name' => 'SHIPTOCOUNTRYCODE',		'required' => 'no'),
-				'shipping_phone_number' 	=> array('name' => 'SHIPTOPHONENUM',		'required' => 'no'),
+                'shipping_name' 			=> array('name' => 'SHIPTONAME',			'required' => 'no'),
+                'shipping_address1'			=> array('name' => 'SHIPTOSTREET',			'required' => 'no'),
+                'shipping_address2' 		=> array('name' => 'SHIPTOSTREET2',			'required' => 'no'),
+                'shipping_city' 			=> array('name' => 'SHIPTOCITY',			'required' => 'no'),
+                'shipping_state' 			=> array('name' => 'SHIPTOSTATE',			'required' => 'no'),
+                'shipping_postal_code' 		=> array('name' => 'SHIPTOZIP',				'required' => 'no'),
+                'shipping_country_code' 	=> array('name' => 'SHIPTOCOUNTRYCODE',		'required' => 'no'),
+                'shipping_phone_number' 	=> array('name' => 'SHIPTOPHONENUM',		'required' => 'no'),
 
-				'description' 				=> array('name' => 'DESC',					'required' => 'yes'), // You must match the billing agreement var in set Express checkout
-				'currency'					=> array('name' => 'CURRENCYCODE',			'required' => 'yes'),
-				'payment_type' 				=> array('name' => 'PAYMENTACTION',			'required' => 'yes'),
-				'billing_type' 				=> array('name' => 'L_BILLINGTYPE0',		'required' => 'yes'),
-				'billing_agreement' 		=> array('name' => 'L_BILLINGAGREEMENTDESCRIPTION0', 'required' => 'yes'),
-				'profile_start_date'		=> array('name' => 'PROFILESTARTDATE',		'required' => 'yes'),
+                'description' 				=> array('name' => 'DESC',					'required' => 'yes'), // You must match the billing agreement var in set Express checkout
+                'currency'					=> array('name' => 'CURRENCYCODE',			'required' => 'yes'),
+                'payment_type' 				=> array('name' => 'PAYMENTACTION',			'required' => 'yes'),
+                'billing_type' 				=> array('name' => 'L_BILLINGTYPE0',		'required' => 'yes'),
+                'billing_type2' 				=> array('name' => 'BILLINGTYPE', 'required' => 'no'),
+            'billing_agreement' 		=> array('name' => 'L_BILLINGAGREEMENTDESCRIPTION0', 'required' => 'yes'),
 				'billing_period' 			=> array('name' => 'BILLINGPERIOD',			'required' => 'yes'), // Day Week Month SemiMonth Year
 				'billing_frequency' 		=> array('name' => 'BILLINGFREQUENCY',		'required' => 'yes'),
 				'billing_amount' 			=> array('name' => 'AMT',					'required' => 'yes'),
@@ -551,7 +556,7 @@ class phpPayPal {
 				'trial_amount' 				=> array('name' => 'TRIALAMT', 				'required' => 'no'),
 				'trial_billing_cycle' 		=> array('name' => 'TRIALTOTALBILLINGCYCLES', 'required' => 'no'),
 				'max_failed_attempts'  		=> array('name' => 'MAXFAILEDPAYMENTS', 	'required' => 'no'),
-				'auto_bill_amt'  			=> array('name' => 'AUTOBILLOUTAMT', 		'required' => 'no')
+				'auto_bill_amt'  			=> array('name' => 'AUTOBILLAMT', 		'required' => 'no')
 				),
 		'UpdateRecurringPaymentsProfile' => array(
 				'profile_id'				=> array('name' => 'PROFILEID', 			'required' => 'yes'),
@@ -967,7 +972,7 @@ class phpPayPal {
 			$this->return_url = '';
 			$this->cancel_url = '';
 
-			$this->VERSION = '3.0';
+			$this->VERSION = '57.0';
 
 		endif;
 	}

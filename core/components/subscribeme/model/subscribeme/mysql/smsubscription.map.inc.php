@@ -30,7 +30,7 @@ $xpdo_meta_map['smSubscription']= array (
     'pp_profileid' => '',
     'start' => 'CURRENT_TIMESTAMP',
     'expires' => NULL,
-    'active' => 1,
+    'active' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -91,7 +91,7 @@ $xpdo_meta_map['smSubscription']= array (
       'precision' => '1',
       'phptype' => 'boolean',
       'null' => true,
-      'default' => 1,
+      'default' => 0,
     ),
   ),
   'indexes' => 
