@@ -21,6 +21,7 @@ $_lang['sm.freesubscription.text'] = 'By adding a new Complimentary Subscription
     Doing this will create a new complimentary transaction linked to your user account.';
 $_lang['sm.subscriber.account'] = 'Account Information';
 $_lang['sm.subscriber.profile'] = 'User Profile';
+$_lang['sm.subscription.paypalprofile'] = 'View PayPal Profile Data';
 
 /* Buttons & Actions */
 $_lang['sm.button.add'] = 'Add new [[+what]]';
@@ -58,6 +59,8 @@ $_lang['sm.remove_successful'] = 'Successfully removed [[+what]]';
 $_lang['sm.removed'] = 'Removed [[+what]]';
 $_lang['sm.back'] = 'Back';
 $_lang['sm.nooptions'] = 'No options available';
+$_lang['sm.col1'] = 'Profile Data';
+$_lang['sm.col2'] = 'Profile Data (2)';
 
 /* Fields */
 $_lang['sm.fullname'] = 'Full Name';

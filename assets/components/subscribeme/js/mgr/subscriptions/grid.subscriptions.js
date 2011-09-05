@@ -140,42 +140,6 @@ SM.grid.Subscriptions = function(config) {
                 else return '<span style="color: red">'+_('no')+'</span>';
             }
 		}]
-        ,listeners: {
-			'rowcontextmenu': function(grid, rowIndex, e) {
-                var _contextMenu = new Ext.menu.Menu({
-                    items: [{
-                        text: _('update')+' '+_('user'),
-                        handler: function(grid, rowIndex, e) {
-                            var eid = Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data.user_id;
-                            window.location.href = '?a='+MODx.action['csm/index']+'&action=subscriber&id='+eid;
-                        }
-                    },{
-                        text: _('sm.subscription.manualtransaction'),
-                        handler: function() {
-                            data = Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data;
-                            win = new SM.window.AddManualTransaction({
-                                record: {
-                                    sub_id: data.sub_id,
-                                    user_id: data.user_id,
-                                    amount: data.product_price,
-                                    period: data.product_periods + ' ' + _('sm.combo.'+data.product_period)
-                                }
-                            });
-                            win.show();
-                        }
-                    },'-',{
-                        text: _('sm.subscription.viewtransactions'),
-                        handler: function() {
-                            win = new SM.window.ViewTransactions({
-                                config: { subscription: Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data.sub_id }
-                            });
-                            win.show();
-                        }
-                    }]
-                });
-                _contextMenu.showAt(e.getXY());
-			}
-		}
     });
     SM.grid.Subscriptions.superclass.constructor.call(this,config);
 };
@@ -205,6 +169,58 @@ Ext.extend(SM.grid.Subscriptions,MODx.grid.Grid,{
         Ext.getCmp('sm-subscriptions-search').reset();
         this.getBottomToolbar().changePage(1);
         this.refresh();
+    },
+    getMenu: function() {
+        var r = this.getSelectionModel().getSelected();
+        var d = r.data;
+
+        var m = [];
+        m.push({
+            text: _('update')+' '+_('user'),
+            handler: function(grid, rowIndex, e) {
+                var eid = d.user_id;
+                window.location.href = '?a='+MODx.action['csm/index']+'&action=subscriber&id='+eid;
+            }
+        },{
+            text: _('sm.subscription.manualtransaction'),
+            handler: function() {
+                win = new SM.window.AddManualTransaction({
+                    record: {
+                        sub_id: d.sub_id,
+                        user_id: d.user_id,
+                        amount: d.product_price,
+                        period: d.product_periods + ' ' + _('sm.combo.'+d.product_period)
+                    }
+                });
+                win.show();
+            }
+        });
+
+        m.push('-',{
+            text: _('sm.subscription.viewtransactions'),
+            handler: function() {
+                win = new SM.window.ViewTransactions({
+                    config: { subscription: Ext.getCmp('grid-subscriptions').getSelectionModel().getSelected().data.sub_id }
+                });
+                win.show();
+            }
+        });
+
+        if (d.pp_profileid) {
+            m.push('-',{
+                text: _('sm.subscription.paypalprofile'),
+                handler: function() {
+                    win = new SM.window.PayPalProfile({
+                        config: { pp_profileid: d.pp_profileid }
+                    });
+                    win.show();
+                }
+            });
+        }
+
+        if (m.length > 0) {
+            this.addContextMenuItem(m);
+        }
     }
 });
 Ext.reg('sm-grid-subscriptions',SM.grid.Subscriptions);

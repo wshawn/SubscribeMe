@@ -41,6 +41,7 @@ if ($_GET['action'] == 'subscriber') {
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/grid.subscriptions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/add.window.subscriptions.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/ppprofile.window.subscriptions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/viewtransactions.window.subscriptions.js');
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscribers/panel.subscribers.js');
@@ -57,6 +58,7 @@ else {
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/add.window.subscriptions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/grid.subscriptions.js');
+    $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/ppprofile.window.subscriptions.js');
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/subscriptions/viewtransactions.window.subscriptions.js');
 
     $modx->regClientStartupScript($sm->config['js_url'].'mgr/transactions/add.window.transactions.js');

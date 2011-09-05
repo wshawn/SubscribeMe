@@ -648,8 +648,12 @@ class phpPayPal {
 				'state' 					=> array('name' => 'STATE',					'required' => 'no'),
 				'country_code' 				=> array('name' => 'COUNTRYCODE',			'required' => 'no'),
 				'postal_code' 				=> array('name' => 'ZIP',					'required' => 'no')
-				)
-		);
+				),
+        'GetRecurringPaymentsProfileDetails' => array(
+            'version' => array('name' => 'VERSION', 'required' => 'no'),
+            'profile_id' => array('name' => 'PROFILEID', 'required' => 'yes')
+        )
+    );
 
 
 	public $ResponseFieldsArray = array(
@@ -845,7 +849,7 @@ class phpPayPal {
 				'max_failed_payments' 	=> 'MAXFAILEDPAYMENTS',
 				'subcriber_name' 		=> 'SUBSCRIBERNAME',
 				'profile_start_date' 	=> 'PROFILESTARTDATE',
-				'nest_billing_date' 	=> 'NEXTBILLINGDATE',
+				'next_billing_date' 	=> 'NEXTBILLINGDATE',
 				'num_cycles_completed' 	=> 'NUMCYCLESCOMPLETED',
 				'num_cycles_remaining' 	=> 'NUMCYCLESREMAINING',
 				'outstanding_balance' 	=> 'OUTSTANDINGBALANCE',
