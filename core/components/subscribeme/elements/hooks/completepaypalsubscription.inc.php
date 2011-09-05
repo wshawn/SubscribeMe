@@ -1,25 +1,18 @@
 <?php
-/* @var modX $modx
- * @var array $scriptProperties
+/* @var string $path
+ * @var modX $modx
+ * @var fiHooks $hook
+ * @var FormIt $formit
  */
-// We don't want to use this anymore.
-return '';
-
-
-$path = $modx->getOption('subscribeme.core_path',null,$modx->getOption('core_path').'components/subscribeme/').'classes/';
-$modx->getService('sm','SubscribeMe',$path);
-require_once(dirname(dirname(dirname(__FILE__))).'/classes/paypal/paypal.class.php');
+require_once($path.'classes/paypal/paypal.class.php');
 
 $debug = $modx->getOption('debug',$scriptProperties,$modx->getOption('subscribeme.debug',null,false));
-$confirmAddress = $modx->getOption('confirmAddress',$scriptProperties,true);
-$tpl = $modx->getOption('tpl',$scriptProperties,'smcheckout.paymentoptions');
-$toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,null);
 
 /* We will need to be logged in */
 if (!is_numeric($modx->user->id)) return $modx->sendUnauthorizedPage();
 
 /* Make sure we have a token and accompanying subscription ID */
-$token = $modx->getOption('token',$_REQUEST);
+$token = $modx->getOption('token',$hook->getValues());
 if (empty($token)) return 'Error, no token found.';
 
 /* @var smPaypalToken $pt */
@@ -36,8 +29,6 @@ if ($subscription->get('active') === true) return 'Subscription already Active.'
 
 /* Prepare order / transaction data */
 $product = $subscription->getOne('Product');
-$profile = $modx->user->getOne('Profile');
-$user    = array_merge($profile->toArray(),$modx->user->toArray());
 $prod    = $product->toArray();
 $sub     = $subscription->toArray();
 
@@ -46,9 +37,8 @@ $sub     = $subscription->toArray();
 $p = array();
 $p['currency_code'] = $modx->getOption('subscribeme.currencycode',null,'USD');
 $p['amount'] = $prod['price'];
-$p['return_url'] = $modx->makeUrl($modx->getOption('subscribeme.paypal.completed_id'), '', '', 'full');
-$p['cancel_url'] = $modx->makeUrl($modx->getOption('subscribeme.paypal.cancel_id'), '', array('transid' => $transid), 'full');
-$p['fail_id'] = $modx->getOption('subscribeme.paypal.fail_id');
+$p['return_url'] = $modx->makeUrl($hook->formit->config['completedResource'], '', '', 'full');
+$p['fail_id'] = $hook->formit->config['errorResource'];
 
 /* Check if we're in the sandbox or live and fetch the appropriate credentials */
 $p['sandbox'] = $modx->getOption('subscribeme.paypal.sandbox',null,true);
@@ -72,21 +62,11 @@ $paypal->API_SIGNATURE = $p['signature'];
 
 $paypal->ip_address = $_SERVER['REMOTE_ADDR'];
 
-if ($debug) var_dump(array('PayPal Settings' => $p, 'User' => $user, 'Transaction' => $trans, 'Product' => $prod,'Subscription' => $sub));
+if ($debug) var_dump(array('PayPal Settings' => $p,  'Transaction' => $trans, 'Product' => $prod,'Subscription' => $sub));
 
 /* Start filling in some data */
 $paypal->version = '57.0';
-$paypal->token = $_REQUEST['token'];
-
-/* Get the users details */
-$paypal->get_express_checkout_details();
-if ($debug) var_dump($paypal->Response);
-
-
-/* @TODO: Split it up here to allow a form where users need to confirm their shipping address & confirm the subscription */
-
-$paypal->return_url = $p['return_url'];
-$paypal->cancel_url = $p['cancel_url'];
+$paypal->token = $token;
 
 /* Set recurring payment information */
 $start_time = strtotime(date('m/d/Y'));
@@ -124,30 +104,28 @@ if (isset($response['PROFILESTATUS'])) {
              * We will, however, set the PROFILEID to the subscription so we can identify it and use that to fetch info.
              */
             $subscription->set('pp_profileid',$response['PROFILEID']);
-                /* @todo: mark as active */
+            $subscription->set('active',true);
             if ($subscription->save())
-                echo 'Subscription set up properly!';
-            if ($debug) var_dump($response);
+                return $modx->sendRedirect($p['return_url']);
             break;
-        
+
         case 'pendingprofile':
             $success = true;
             $subscription->set('pp_profileid',$response['PROFILEID']);
             if ($subscription->save())
-                echo 'Subscription set up, but currently pending activation.';
-            if ($debug) var_dump($response);
+                return $modx->sendRedirect($p['return_url'].'&pending=true');
             break;
 
-        default:
-            echo 'Something unexpected happened.';
-            if ($debug) var_dump($response);
+        default: 
+            return 'Unknown PayPal response.';
             break;
     }
 }
 else {
     // Uh oh.. trouble!
     if ($debug) var_dump($response);
-    echo 'Something went wrong creating recurring payments profile.';
+    $modx->log(1,print_r($response,true));
+    $modx->sendRedirect($modx->makeUrl($p['fail_id'],'',array('errorcode' => 'PPRPE', 'errormsg' => 'An error occured setting up your recurring profile.')));
+    return 'An error occured setting up the recurring payments. ';
 }
-
 ?>

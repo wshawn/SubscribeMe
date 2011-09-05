@@ -33,9 +33,10 @@ $product = $subscription->getOne('Product');
 $p = array();
 $p['currency_code'] = $modx->getOption('subscribeme.currencycode',null,'USD');
 $p['amount'] = $product->get('price');
-$p['return_url'] = $modx->makeUrl($modx->getOption('subscribeme.paypal.return_id'), '', '', 'full');
-$p['cancel_url'] = $modx->makeUrl($modx->getOption('subscribeme.paypal.cancel_id'), '', array('transid' => $subid), 'full');
-$p['fail_id'] = $modx->getOption('subscribeme.paypal.fail_id');
+
+$p['return_url'] = $modx->makeUrl($modx->getOption('return_id',$scriptProperties,$modx->getOption('subscribeme.paypal.return_id')), '', '', 'full');
+$p['cancel_url'] = $modx->makeUrl($modx->getOption('cancel_id',$scriptProperties,$modx->getOption('subscribeme.paypal.cancel_id')), '', array('transid' => $subid), 'full');
+$p['fail_id'] = $modx->getOption('fail_id',$scriptProperties,$modx->getOption('subscribeme.paypal.fail_id'));
 
 /* Check if we're in the sandbox or live and fetch the appropriate credentials */
 $p['sandbox'] = $modx->getOption('subscribeme.paypal.sandbox',null,true);
