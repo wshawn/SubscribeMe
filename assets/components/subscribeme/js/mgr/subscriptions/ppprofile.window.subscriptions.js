@@ -3,7 +3,7 @@ SM.window.PayPalProfile = function(config) {
     Ext.applyIf(config,{
         title: _('sm.subscription.paypalprofile'),
         closeAction: 'hide',
-        width: '40%',
+        width: 700,
         fields: [{
             xtype: 'panel',
             html: _('sm.subscription.paypalprofile.text'),

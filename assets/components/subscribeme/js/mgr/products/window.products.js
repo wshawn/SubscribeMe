@@ -29,6 +29,16 @@ SM.window.Products = function(config) {
             allowNegative: false,
             allowBlank: false
         },{
+            name: 'amount_shipping',
+            fieldLabel: _('sm.amount_shipping'),
+            xtype: 'numberfield',
+            allowNegative: false
+        },{
+            name: 'amount_vat',
+            fieldLabel: _('sm.amount_vat'),
+            xtype: 'numberfield',
+            allowNegative: false
+        },{
             name: 'periods',
             fieldLabel: _('sm.periods'),
             xtype: 'numberfield',

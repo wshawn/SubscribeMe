@@ -29,6 +29,8 @@ $xpdo_meta_map['smProduct']= array (
     'description' => '',
     'sortorder' => 0,
     'price' => 0,
+    'amount_shipping' => 0,
+    'amount_vat' => 0,
     'periods' => 1,
     'period' => 'M',
     'active' => 1,
@@ -67,6 +69,22 @@ $xpdo_meta_map['smProduct']= array (
       'default' => 0,
     ),
     'price' => 
+    array (
+      'dbtype' => 'numeric',
+      'precision' => '7,2',
+      'phptype' => 'float',
+      'null' => false,
+      'default' => 0,
+    ),
+    'amount_shipping' => 
+    array (
+      'dbtype' => 'numeric',
+      'precision' => '7,2',
+      'phptype' => 'float',
+      'null' => false,
+      'default' => 0,
+    ),
+    'amount_vat' => 
     array (
       'dbtype' => 'numeric',
       'precision' => '7,2',

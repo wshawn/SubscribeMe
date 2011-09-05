@@ -85,8 +85,8 @@ $paypal->billing_agreement = urlencode($prod['name'].' (#'.$sub['sub_id'].')');
 $paypal->description = urlencode($prod['name'].' (#'.$sub['sub_id'].')');
 $paypal->profile_reference = $sub['sub_id'];
 $paypal->payer_id = $_REQUEST['PayerID'];
-$paypal->tax_amount = 0.00;
-$paypal->ship_amount = 0.00;
+$paypal->tax_amount = $prod['amount_vat'];
+$paypal->ship_amount = $prod['amount_shipping'];
 $paypal->subscriber_name = urlencode($user['fullname']);
 
 /* Create the profile */

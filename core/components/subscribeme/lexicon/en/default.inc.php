@@ -22,6 +22,8 @@ $_lang['sm.freesubscription.text'] = 'By adding a new Complimentary Subscription
 $_lang['sm.subscriber.account'] = 'Account Information';
 $_lang['sm.subscriber.profile'] = 'User Profile';
 $_lang['sm.subscription.paypalprofile'] = 'View PayPal Profile Data';
+$_lang['sm.subscription.paypalprofile.text'] = 'The PayPal Profile is identified by the PayPal Profile ID, and is being retrieved from PayPal directly.
+    Below you can review all information PayPal has regarding this Recurring Payments Profile. Note: it may take a few seconds to collect all the data.';
 
 /* Buttons & Actions */
 $_lang['sm.button.add'] = 'Add new [[+what]]';
@@ -79,7 +81,9 @@ $_lang['sm.name'] = 'Name';
 $_lang['sm.description'] = 'Description';
 $_lang['sm.sortorder'] = 'Sort Order';
 $_lang['sm.price'] = 'Price';
-$_lang['sm.periods'] = 'Every X Periods';
+$_lang['sm.amount_shipping'] = 'Shipping';
+$_lang['sm.amount_vat'] = 'VAT';
+$_lang['sm.periods'] = 'Cycle';
 $_lang['sm.period'] = 'Period';
 $_lang['sm.permissions'] = 'Permissions';
 $_lang['sm.usergroup'] = 'User Group';

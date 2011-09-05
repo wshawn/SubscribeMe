@@ -50,6 +50,8 @@ SM.grid.products = function(config) {
             {name: 'description', type: 'string'},
             {name: 'sortorder', type: 'int'},
             {name: 'price', type: 'float'},
+            {name: 'amount_shipping', type: 'float'},
+            {name: 'amount_vat', type: 'float'},
             {name: 'periods', type: 'int'},
             {name: 'period', type: 'string'},
             {name: 'permissions', type: 'string'},
@@ -91,6 +93,18 @@ SM.grid.products = function(config) {
 			width: 2,
             editor: { xtype: 'numberfield' }
 		},{
+			header: _('sm.amount_shipping'),
+			dataIndex: 'amount_shipping',
+			sortable: true,
+			width: 2,
+            editor: { xtype: 'numberfield' }
+		},{
+			header: _('sm.amount_vat'),
+			dataIndex: 'amount_vat',
+			sortable: true,
+			width: 2,
+            editor: { xtype: 'numberfield' }
+		},{
 			header: _('sm.periods'),
 			dataIndex: 'periods',
 			sortable: true,
@@ -106,7 +120,7 @@ SM.grid.products = function(config) {
 			header: _('sm.permissions'),
 			dataIndex: 'permissions',
 			sortable: true,
-			width: 5,
+			width: 3,
             renderer: function(val) {
                 return '<div style="white-space: normal !important;">'+ val +'</div>';
             }
