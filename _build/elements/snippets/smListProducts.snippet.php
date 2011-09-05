@@ -6,6 +6,6 @@
 $path = $modx->getOption('subscribeme.core_path',null,$modx->getOption('core_path').'components/subscribeme/');
 $modx->getService('sm','SubscribeMe',$path.'classes/');
 
-return include($path.'elements/snippets/smlistproducts.inc.php');
+return include($path.'elements/snippets/smListProducts.inc.php');
 
 ?>
