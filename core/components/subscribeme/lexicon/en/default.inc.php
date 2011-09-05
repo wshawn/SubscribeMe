@@ -82,6 +82,7 @@ $_lang['sm.permissions'] = 'Permissions';
 $_lang['sm.usergroup'] = 'User Group';
 $_lang['sm.role'] = 'Role';
 $_lang['sm.completed'] = 'Completed';
+$_lang['sm.pp_profileid'] = 'PayPal Profile ID';
 
 /* Errors */
 $_lang['sm.error.sendmailfailed'] = 'An error occured sending email.';

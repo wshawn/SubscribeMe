@@ -77,6 +77,7 @@ SM.grid.Subscriptions = function(config) {
             {name: 'product_price', type: 'string'},
             {name: 'product_periods', type: 'periods'},
             {name: 'product_period', type: 'period'},
+            {name: 'pp_profileid', type: 'string'},
             {name: 'start', type: 'string'},
             {name: 'expires', type: 'string'},
             {name: 'active', type: 'boolean'}
@@ -114,6 +115,11 @@ SM.grid.Subscriptions = function(config) {
             renderer: function(val) {
                 return '<div style="white-space: normal !important;">'+ val +'</div>';
             }
+		},{
+			header: _('sm.pp_profileid'),
+			dataIndex: 'pp_profileid',
+			sortable: true,
+			width: 3
 		},{
 			header: _('sm.start'),
 			dataIndex: 'start',
