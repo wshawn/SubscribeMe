@@ -38,6 +38,8 @@ if ($config['debug']) {
 }
 
 $results = array();
+$currencySign = $modx->getOption('subscribeme.currencysign',null,'&euro;');
+$currencyCode = $modx->getOption('subscribeme.currencycode',null,'EUR');
 $collection = $modx->getCollection('smProduct',$c);
 foreach ($collection as $obj) {
     if ($obj instanceof smProduct) {
@@ -45,6 +47,9 @@ foreach ($collection as $obj) {
         $periodLexicon = 'sm.combo.'.$ta['period'].(($ta['periods'] > 1) ? 's' : '');
         $ta['period'] = $modx->lexicon($periodLexicon);
         $ta['count'] = $count;
+        $ta['amount_total'] = $ta['price'] + $ta['amount_shipping'] + $ta['amount_vat'];
+        $ta['currency'] = $currencySign; 
+        $ta['currencycode'] = $currencyCode;  
         $results[] = $modx->sm->getChunk($config['tplRow'],$ta);
         if ($config['debug'])
             echo '<pre>Result: '.print_r($ta,true).'</pre>';
