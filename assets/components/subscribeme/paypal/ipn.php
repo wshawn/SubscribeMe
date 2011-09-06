@@ -1,47 +1,66 @@
 <?php
-
 require_once dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.core.php';
-require_once MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php';
-require_once MODX_CONNECTORS_PATH.'index.php';
+require_once MODX_CORE_PATH.'model/modx/modx.class.php';
+$modx = new modX();
+if (!($modx instanceof modX)) { error_log('Failure setting up modX.'); die(); }
+$modx->initialize('web');
+$modx->getService('error','error.modError');
+
+$debug = false;
+if ($modx->getOption('subscribeme.debug',null,false)) $debug = true;
 
 $corePath = $modx->getOption('subscribeme.core_path',null,$modx->getOption('core_path').'components/subscribeme/');
 require_once $corePath.'classes/subscribeme.class.php';
 $modx->sm = new SubscribeMe($modx);
 
-$ipn_post_data = array_merge($_POST,$_GET);
-$modx->log(1,'tracking');
-var_dump($modx->log(1,print_r(array_merge($_POST,$_GET),true)));
-// Choose url
+$ipn_post_data = $_POST;
+
+if ($debug) $modx->log(MODX_LEVEL_ERROR,'IPN Triggered with data: '.print_r($ipn_post_data,true));
+
+// Choose url based on test_ipn value
 if(array_key_exists('test_ipn', $ipn_post_data) && 1 === (int) $ipn_post_data['test_ipn'])
     $url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
 else
     $url = 'https://www.paypal.com/cgi-bin/webscr';
 
-// Set up request to PayPal
-$request = curl_init();
-curl_setopt_array($request, array
-(
-    CURLOPT_URL => $url,
-    CURLOPT_POST => TRUE,
-    CURLOPT_POSTFIELDS => http_build_query(array('cmd' => '_notify-validate') + $ipn_post_data),
-    CURLOPT_RETURNTRANSFER => TRUE,
-    CURLOPT_HEADER => FALSE,
-    CURLOPT_SSL_VERIFYPEER => TRUE,
-    CURLOPT_CAINFO => 'cacert.pem',
-));
+// Build the postfields
+$req = 'cmd=_notify-validate'; 
+foreach ($ipn_post_data as $key => $value) {  
+	if($get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1){  
+		$value = urlencode(stripslashes($value)); 
+	} else { 
+		$value = urlencode($value); 
+	} 
+	$req .= "&$key=$value"; 
+} 
+
+// Set up request to PayPal using cUrl
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
+curl_setopt($ch, CURLOPT_HEADER , 0); 
+curl_setopt($ch, CURLOPT_VERBOSE, 1);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 // Execute request and get response and status code
-$response = curl_exec($request);
-$status   = curl_getinfo($request, CURLINFO_HTTP_CODE);
+$response = curl_exec($ch);
+$status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
 
-// Close connection
-curl_close($request);
-
+if ($debug) {
+    $modx->log(MODX_LEVEL_ERROR,'[Request] Posted to '.$url.': '.$req);
+    $modx->log(MODX_LEVEL_ERROR,'[Response] Status: '.$status.' Response: '.$response);
+}
 if($status == 200 && $response == 'VERIFIED') {
     // All good! Proceed...
     switch ($ipn_post_data['txn_type']) {
         case 'recurring_payment':
             // We received a recurring payment
+            if ($debug) $modx->log(MODX_LEVEL_ERROR,'IPN identified as a recurring payment.');
             $transid = $ipn_post_data['txn_id'];
             $existingTransaction = $modx->getObject('smTransaction',array('reference' => $transid));
             if ($existingTransaction instanceof smTransaction) 
@@ -49,7 +68,7 @@ if($status == 200 && $response == 'VERIFIED') {
                
             // Make sure the payment was completed.
             if ($ipn_post_data['payment_status'] != 'Completed') {
-               $modx->log(1,'IPN received, but payment status not confirmed. '.print_r($ipn_post_data,true));
+               if ($debug) $modx->log(MODX_LEVEL_ERROR,'IPN received, but payment status not confirmed. Doing nothing.');
                return '';
             }
             
@@ -57,7 +76,7 @@ if($status == 200 && $response == 'VERIFIED') {
             $subtoken = $ipn_post_data['recurring_payment_id'];
             $subscription = $modx->getObject('smSubscription',array('pp_profileid' => $subtoken));
             if (!($subscription instanceof smSubscription)) {
-               $modx->log(1,'IPN received with profile ID '.$subtoken.', however cant find a matching subscription.');
+               $modx->log(MODX_LEVEL_ERROR,'IPN received with profile ID '.$subtoken.', however cant find a matching subscription. Doing nothing. Transaction ID: '.$ipn_post_data['txn_id']);
                return '';
             }
             
@@ -71,13 +90,13 @@ if($status == 200 && $response == 'VERIFIED') {
                 'amount' => $ipn_post_data['amount']
             ));
             if (!$transaction->save()) {
-                $modx->log(1,'Failed saving transaction for sub '.$subscription->get('sub_id').', transaction '.$ipn_post_data['txn_id']);
+                $modx->log(MODX_LEVEL_ERROR,'Failed saving transaction for subcription '.$subscription->get('sub_id').'. Transaction ID: '.$ipn_post_data['txn_id']);
                 return '';
             }
             
             $result = $modx->sm->processTransaction($transaction);
             if ($result !== true) {
-                $modx->log(1,'Failed processing transaction: '.$result);
+                $modx->log(MODX_LEVEL_ERROR,'Failed processing transaction: '.$result);
                 return '';
             }
             
@@ -85,28 +104,29 @@ if($status == 200 && $response == 'VERIFIED') {
 
             break;
         case 'recurring_payment_expired':
+            if ($debug) $modx->log(MODX_LEVEL_ERROR,'IPN identified as an expired Recurring Payments Profile.');
             // A recurring payment expired - we should probably cancel the subscription.
 
             return '';
             break;
         case 'recurring_payment_skipped':
-            // Recurring payment skipped; it will be retried up to a total of 3 times, 5 days apart
+            if ($debug) $modx->log(MODX_LEVEL_ERROR,'Recurring payment skipped');
+            // Recurring payment skipped; it will be retried at a later time.. disable subscription or wait?
             
             return '';
             break;
 
         default:
+            if ($debug) $modx->log(MODX_LEVEL_ERROR,'IPN identified as other transaction type ('.$ipn_post_data['txn_type'].'), no handling built in at this point.');
             // Don't care about others
-            $modx->log(1,'IPN received: '.print_r($ipn_post_data,true));
-            
+           
             return '';
             break;
     }
 }
 else {
-    $modx->log(1,'Invalid IPN message received: '.print_r($ipn_post_data,true));
+    $modx->log(MODX_LEVEL_ERROR,'IPN was found to be INVALID');
     return '';
 }
 return '';
-
 ?>
