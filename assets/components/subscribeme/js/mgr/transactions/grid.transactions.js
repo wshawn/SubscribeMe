@@ -187,13 +187,26 @@ Ext.extend(SM.grid.Transactions,MODx.grid.Grid,{
                 }
             });
         }
+        if (d.reference && (d.method == 'paypal')) {
+            m.push({
+                text: _('sm.transaction.transactiondetails'),
+                handler: function() {
+                    win = new SM.window.TransactionDetails({
+                        reference: d.reference
+                    });
+                    win.show();
+                }
+            });
+        }
+
+        if (m.length > 0) {
+            this.addContextMenuItem(m);
+        }
         else {
             m.push({
                 text: _('sm.nooptions'),
                 handler: function() { return false; }
             });
-        }
-        if (m.length > 0) {
             this.addContextMenuItem(m);
         }
     }
