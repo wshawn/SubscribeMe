@@ -9,8 +9,6 @@ if (!$scriptProperties['sub_id'] || !is_numeric($scriptProperties['sub_id']))
     return $modx->error->failure('No subscription ID found.');
 if (!$scriptProperties['reference'])
     return $modx->error->failure('No reference found.');
-if (!$scriptProperties['amount'] || !is_numeric($scriptProperties['amount']))
-    return $modx->error->failure('No amount found.');
 
 $trans = $modx->newObject('smTransaction');
 $trans->fromArray(

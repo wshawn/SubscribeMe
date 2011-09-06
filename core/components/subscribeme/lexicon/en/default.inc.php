@@ -126,5 +126,9 @@ $_lang['setting_subscribeme.paypal.return_id'] = 'Return Resource ID';
 $_lang['setting_subscribeme.paypal.return_id_desc'] = 'The ID of a Resource to return to from PayPal.';
 $_lang['setting_subscribeme.paypal.sandbox'] = 'Use Sandbox?';
 $_lang['setting_subscribeme.paypal.sandbox_desc'] = 'Enabled by default, this switch decides whether you are using the Sandbox or LIVE implementation of PayPal. IT IS STRONGLY RECOMMENDED TO TRY SANDBOX FIRST! It is your responsibility to get this working, and I will not be liable for  any (financial) damage resulting from improper setup, nor faults in the code.';
+$_lang['setting_subscribeme.email.confirmtransaction'] = 'Confirm Transaction Email Chunk';
+$_lang['setting_subscribeme.email.confirmtransaction_desc'] = 'The name of a chunk to use as email template for confirming a transaction has been processed to a user. You can use all user, subscription, product and transaction fields in the chunk. For example [ [+user.fullname]] and [ [+product.name]].';
+$_lang['setting_subscribeme.email.confirmtransaction.subject'] = 'Confirm Transaction Email Subject';
+$_lang['setting_subscribeme.email.confirmtransaction.subject_desc'] = 'The subject to use for the email confirming a transaction has been processed. You can use transid and product as placeholder.';
 
 ?>
