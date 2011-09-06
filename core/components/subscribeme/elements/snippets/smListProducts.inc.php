@@ -12,10 +12,10 @@ $defaults = array(
     'sortdir' => 'asc',
     'tplOuter' => 'smListProducts.outer',
     'tplRow' => 'smListProducts.row',
-    'activeOnly' => 1,
+    'activeOnly' => true,
     'separator' => "\n",
     'toPlaceholder' => '',
-    'debug' => 0,
+    'debug' => false,
 );
 
 $config = array_merge($defaults,$scriptProperties);

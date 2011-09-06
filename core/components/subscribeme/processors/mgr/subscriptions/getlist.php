@@ -22,8 +22,8 @@ $c->select(
         'smSubscription.*',
         'Product.name as product',
         'Product.price as product_price',
-        'product.periods as product_periods',
-        'product.period as product_period',
+        'Product.periods as product_periods',
+        'Product.period as product_period',
         'Profile.fullname as user',
     )
 );

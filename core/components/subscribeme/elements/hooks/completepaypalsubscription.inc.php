@@ -25,7 +25,7 @@ if (!($subscription instanceof smSubscription)) return 'Error, no subscription f
 
 /* Confirm valid transaction */
 if ($subscription->get('user_id') != $modx->user->id) { return 'Please make sure you are logged in with the user that requested this subscription.'; }
-if ($subscription->get('active') === true) return 'Subscription already Active.';
+//if ($subscription->get('active') === true) return 'Subscription already Active.';
 
 /* Prepare order / transaction data */
 $product = $subscription->getOne('Product');
@@ -70,12 +70,12 @@ $paypal->token = $token;
 
 /* Set recurring payment information */
 $start_time = strtotime(date('m/d/Y'));
-$start_date = gmdate('Y-m-d\T00:00:00\Z',$start_time);
+$start_date = date('Y-m-d\T00:00:00\Z',$start_time);
 $paypal->profile_start_date = urlencode($start_date);
 
 $paypal->invoice_number = $trans['id'];
 $paypal->currency = $p['currency_code'];
-$paypal->billing_start = gmdate('d-m-Y\TH:i:s\Z');// '2011-09-05T05:00:00.0000000Z'; //$start_date;//'2011-09-04 T01:09:14Z%20'; //date('Y-m-d\T+H:i:s\Z ',strtotime('+1month'));
+$paypal->billing_start = date('d-m-Y\TH:i:s\Z');// '2011-09-05T05:00:00.0000000Z'; //$start_date;//'2011-09-04 T01:09:14Z%20'; //date('Y-m-d\T+H:i:s\Z ',strtotime('+1month'));
 $paypal->billing_period = ucfirst($modx->sm->periodUsable[$prod['period']]);
 $paypal->billing_frequency = $prod['periods'];
 $paypal->billing_amount = $prod['price'];

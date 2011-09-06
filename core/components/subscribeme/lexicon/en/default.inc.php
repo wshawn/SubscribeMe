@@ -97,4 +97,34 @@ $_lang['sm.error.savefailed'] = 'An error occured attempting to save your change
 $_lang['sm.error.savefailed.user'] = 'An error occured attempting to save the user account.';
 $_lang['sm.error.savefailed.userprofile'] = 'An error occured attempting to save the user profile.';
 
+/* System Settings */
+$_lang['setting_subscribeme.currencycode'] = 'Currency Code';
+$_lang['setting_subscribeme.currencycode_desc'] = 'The 3-character Currency Code for the currency in which you want to receive payments.';
+$_lang['setting_subscribeme.currencysign'] = 'Currency Sign';
+$_lang['setting_subscribeme.currencysign_desc'] = 'The symbol matching your currency.';
+$_lang['setting_subscribeme.debug'] = 'Output Debug';
+$_lang['setting_subscribeme.debug_desc'] = 'When enabling debug, as much data as possible will be displayed in Snippet output. Can be overriden with &debug in the snippet calls.';
+$_lang['setting_subscribeme.paypal.api_username'] = 'PayPal API Username';
+$_lang['setting_subscribeme.paypal.api_username_desc'] = 'Your Live PayPal API Username.';
+$_lang['setting_subscribeme.paypal.api_password'] = 'PayPal API Password';
+$_lang['setting_subscribeme.paypal.api_password_desc'] = 'Your Live PayPal API Password';
+$_lang['setting_subscribeme.paypal.api_signature'] = 'PayPal API Signature';
+$_lang['setting_subscribeme.paypal.api_signature_desc'] = 'Your Live PayPal API Signature, if you are unsure where to get it from consult the SubscribeMe documentation on the RTFM.';
+$_lang['setting_subscribeme.paypal.sandbox_username'] = 'PayPal Sandbox Username';
+$_lang['setting_subscribeme.paypal.sandbox_username_desc'] = 'Your PayPal Sandbox Username for testing the implementation.';
+$_lang['setting_subscribeme.paypal.sandbox_password'] = 'PayPal Sandbox Password';
+$_lang['setting_subscribeme.paypal.sandbox_password_desc'] = 'Your PayPal Sandbox Password for testing the implementation.';
+$_lang['setting_subscribeme.paypal.sandbox_signature'] = 'PayPal Sandbox Signature';
+$_lang['setting_subscribeme.paypal.sandbox_signature_desc'] = 'Your PayPal Sandbox Signature for testing the implementation. Refer to the SubscribeMe documentation if you need help finding it.';
+$_lang['setting_subscribeme.paypal.cancel_id'] = 'Cancel Resource ID';
+$_lang['setting_subscribeme.paypal.cancel_id_desc'] = 'The ID of the Resource to redirect to when the action was canceled.';
+$_lang['setting_subscribeme.paypal.completed_id'] = 'Completed Resource ID';
+$_lang['setting_subscribeme.paypal.completed_id_desc'] = 'The ID of a Resource to redirect to when the action was completed.';
+$_lang['setting_subscribeme.paypal.fail_id'] = 'Failure Resource ID';
+$_lang['setting_subscribeme.paypal.fail_id_desc'] = 'The ID of a Resource to redirect to when the action failed.';
+$_lang['setting_subscribeme.paypal.return_id'] = 'Return Resource ID';
+$_lang['setting_subscribeme.paypal.return_id_desc'] = 'The ID of a Resource to return to from PayPal.';
+$_lang['setting_subscribeme.paypal.sandbox'] = 'Use Sandbox?';
+$_lang['setting_subscribeme.paypal.sandbox_desc'] = 'Enabled by default, this switch decides whether you are using the Sandbox or LIVE implementation of PayPal. IT IS STRONGLY RECOMMENDED TO TRY SANDBOX FIRST! It is your responsibility to get this working, and I will not be liable for  any (financial) damage resulting from improper setup, nor faults in the code.';
+
 ?>

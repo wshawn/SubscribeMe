@@ -7,8 +7,6 @@
 require_once($path.'classes/paypal/paypal.class.php');
 
 $debug = $modx->getOption('debug',$scriptProperties,$modx->getOption('subscribeme.debug',null,false));
-$confirmAddress = $modx->getOption('confirmAddress',$scriptProperties,true);
-$tpl =
 
 $fromPaypal = true;
 
