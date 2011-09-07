@@ -16,6 +16,8 @@ $s = array(
     'paypal.completed_id' => 1,
     'email.confirmtransaction' => 'smConfirmTransactionEmail',
     'email.confirmtransaction.subject' => 'Transaction processed for [[+product]] subscription',
+    'email.confirmcancel' => 'smConfirmCancelEmail',
+    'email.confirmcancel.subject' => 'Cancellation received for your [[+product]] subscription',
 );
 
 $settings = array();

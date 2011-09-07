@@ -132,5 +132,9 @@ $_lang['setting_subscribeme.email.confirmtransaction'] = 'Confirm Transaction Em
 $_lang['setting_subscribeme.email.confirmtransaction_desc'] = 'The name of a chunk to use as email template for confirming a transaction has been processed to a user. You can use all user, subscription, product and transaction fields in the chunk. For example [ [+user.fullname]] and [ [+product.name]].';
 $_lang['setting_subscribeme.email.confirmtransaction.subject'] = 'Confirm Transaction Email Subject';
 $_lang['setting_subscribeme.email.confirmtransaction.subject_desc'] = 'The subject to use for the email confirming a transaction has been processed. You can use transid and product as placeholder.';
+$_lang['setting_subscribeme.email.confirmcancel'] = 'Confirm Cancellation Email Chunk';
+$_lang['setting_subscribeme.email.confirmcancel_desc'] = 'The name of a chunk to use as email template for confirming a recurring payments profile has been cancelled by a user. You can use all user, subscription and product fields in the chunk. For example [ [+user.fullname]] and [ [+subscription.name]].';
+$_lang['setting_subscribeme.email.confirmcancel.subject'] = 'Confirm Cancellation Email Subject';
+$_lang['setting_subscribeme.email.confirmcancel.subject_desc'] = 'The subject to use for the email confirming a recurring payments profile has been cancelled by a user. You can use product as placeholder.';
 
 ?>

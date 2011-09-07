@@ -101,7 +101,6 @@ if($status == 200 && $response == 'VERIFIED') {
             }
             
             return true;
-
             break;
         case 'recurring_payment_expired':
             if ($debug) $modx->log(MODX_LEVEL_ERROR,'IPN identified as an expired Recurring Payments Profile.');
