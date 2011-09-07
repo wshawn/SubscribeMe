@@ -115,6 +115,58 @@ if($status == 200 && $response == 'VERIFIED') {
             
             return '';
             break;
+        case 'recurring_payment_profile_cancel':
+        // A recurring payment was canceled by the user. We'll mark the subscription as inactive and send an email confirming the deactivation.
+            $pp_profileid = $ipn_post_data['recurring_payment_id'];
+                /* @var smSubscription $subscription */
+                $subscription = $modx->getObject('smSubscription',array('pp_profileid' => $pp_profileid));
+                if (!($subscription instanceof smSubscription)) {
+                    $modx->log(MODX_LEVEL_ERROR,'Payment Profile cancellation received via IPN, however related subscription could not be found.');
+                    return '';
+                }
+                if ($ipn_post_data['profile_status'] != 'Cancelled') {
+                    $modx->log(MODX_LEVEL_ERROR,'Payment Profile cancellation received via IPN, however profile status is not "Cancelled" but '.$ipn_post_data['profile_status']);
+                    return '';
+                }
+
+                // Mark as inactive to indicate the subscription has been cancelled.
+                $subscription->set('active',false);
+                if (!$subscription->save()) {
+                    $modx->log(MODX_LEVEL_ERROR,'Error trying to deactivate subscription '.$subscription->get('sub_id'));
+                }
+
+                // Send a notification email to confirm the cancellation.
+                /* @var modUser $user */
+                $user = $this->modx->getObject('modUser',$subscription->get('user_id'));
+                if ($user instanceof modUser) {
+                    $up = $user->getOne('Profile');
+                    $upa = array();
+                    if ($up instanceof modUserProfile)
+                        $upa = $up->toArray();
+                    
+                    $chunk = $this->modx->getOption('subscribeme.email.confirmcancel',null,'smConfirmCancelEmail');
+                    $phs = array(
+                        'user' => array_merge($user->toArray(),$upa),
+                        'subscription' => $subscription->toArray(),
+                        'product' => $product->toArray(),
+                        'settings' => $this->modx->config,
+                    );
+                    $msg = $this->getChunk($chunk,$phs);
+                    $subject =  $this->modx->getOption('subscribeme.email.confirmcancel.subject',null,'Cancellation received for your [[+product]] subscription');
+                    $subject = str_replace(
+                        array('[[+product]]'),
+                        array($product->get('name')),
+                        $subject
+                    );
+                    if ($user->sendEmail($msg,array('subject' => $subject)) !== true)
+                        return 'Error sending cancellation received email.';
+                    return true;
+                }
+                else {
+                    return 'Error fetching user to send transaction confirmation email.';
+                }
+
+            break;
 
         default:
             if ($debug) $modx->log(MODX_LEVEL_ERROR,'IPN identified as other transaction type ('.$ipn_post_data['txn_type'].'), no handling built in at this point.');
