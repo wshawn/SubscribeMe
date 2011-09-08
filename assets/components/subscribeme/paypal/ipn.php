@@ -105,14 +105,66 @@ if($status == 200 && $response == 'VERIFIED') {
         case 'recurring_payment_expired':
             if ($debug) $modx->log(MODX_LEVEL_ERROR,'IPN identified as an expired Recurring Payments Profile.');
             // A recurring payment expired - we should probably cancel the subscription.
+                // Let's just check if the subscriptions have expired.
 
+                $pp_profileid = $ipn_post_data['recurring_payment_id'];
+                /* @var smSubscription $subscription */
+                $subscription = $modx->getObject('smSubscription',array('pp_profileid' => $pp_profileid));
+                if (!($subscription instanceof smSubscription)) {
+                    $modx->log(MODX_LEVEL_ERROR,'Payment Profile cancellation received via IPN, however related subscription could not be found.');
+                    return '';
+                }
+                $user = $subscription->get('user_id');
+                // We've got a User ID here... let's just verify their user groups.
+                $modx->sm->checkForExpiredSubscriptions($subscription->get('user'));
+
+
+                // Send a notification email to notify them of the skipped payment
+                /* @var modUser $user */
+                $user = $this->modx->getObject('modUser',$subscription->get('user_id'));
+                $product = $subscription->getOne('Product');
+                if ($user instanceof modUser) {
+                    $result = $modx->sm->sendNotificationEmail($ipn_post_data['txn_type'], $subscription, $user, $product);
+                    if ($result !== true)
+                        $modx->log(MODX_LEVEL_ERROR,'Error sending notification email to user #'.$user->get('id').' for IPN type '.$ipn_post_data['txn_type'].': '.$result);
+                    return true;
+                }
+                else {
+                    return 'Error fetching user to send notification about skipped payment.';
+                }
             return '';
             break;
         case 'recurring_payment_skipped':
             if ($debug) $modx->log(MODX_LEVEL_ERROR,'Recurring payment skipped');
-            // Recurring payment skipped; it will be retried at a later time.. disable subscription or wait?
-            
-            return '';
+            // A payment was skipped. That doesn't mean we need to deactivate right away, but it can't hurt to check
+                // if the subscriptions haven't expired yet.
+
+                // Check if the subscription expired
+                $pp_profileid = $ipn_post_data['recurring_payment_id'];
+                /* @var smSubscription $subscription */
+                $subscription = $modx->getObject('smSubscription',array('pp_profileid' => $pp_profileid));
+                if (!($subscription instanceof smSubscription)) {
+                    $modx->log(MODX_LEVEL_ERROR,'Payment Profile cancellation received via IPN, however related subscription could not be found.');
+                    return '';
+                }
+                $user = $subscription->get('user_id');
+                // We've got a User ID here... let's just verify their user groups.
+                $modx->sm->checkForExpiredSubscriptions($subscription->get('user'));
+
+                // Send a notification email to notify them of the skipped payment
+                /* @var modUser $user */
+                $user = $this->modx->getObject('modUser',$subscription->get('user_id'));
+                $product = $subscription->getOne('Product');
+                if ($user instanceof modUser) {
+                    $result = $modx->sm->sendNotificationEmail($ipn_post_data['txn_type'], $subscription, $user, $product);
+                    if ($result !== true)
+                        $modx->log(MODX_LEVEL_ERROR,'Error sending notification email to user #'.$user->get('id').' for IPN type '.$ipn_post_data['txn_type'].': '.$result);
+                    return true;
+                }
+                else {
+                    return 'Error fetching user to send notification about skipped payment.';
+                }
+                
             break;
         case 'recurring_payment_profile_cancel':
         // A recurring payment was canceled by the user. We'll mark the subscription as inactive and send an email confirming the deactivation.
@@ -123,6 +175,10 @@ if($status == 200 && $response == 'VERIFIED') {
                     $modx->log(MODX_LEVEL_ERROR,'Payment Profile cancellation received via IPN, however related subscription could not be found.');
                     return '';
                 }
+
+                // We've got a User ID here... let's just verify their user groups.
+                $modx->sm->checkForExpiredSubscriptions($subscription->get('user_id'));
+
                 if ($ipn_post_data['profile_status'] != 'Cancelled') {
                     $modx->log(MODX_LEVEL_ERROR,'Payment Profile cancellation received via IPN, however profile status is not "Cancelled" but '.$ipn_post_data['profile_status']);
                     return '';
@@ -134,35 +190,18 @@ if($status == 200 && $response == 'VERIFIED') {
                     $modx->log(MODX_LEVEL_ERROR,'Error trying to deactivate subscription '.$subscription->get('sub_id'));
                 }
 
-                // Send a notification email to confirm the cancellation.
+                // Send a notification email to notify them of the skipped payment
                 /* @var modUser $user */
                 $user = $this->modx->getObject('modUser',$subscription->get('user_id'));
+                $product = $subscription->getOne('Product');
                 if ($user instanceof modUser) {
-                    $up = $user->getOne('Profile');
-                    $upa = array();
-                    if ($up instanceof modUserProfile)
-                        $upa = $up->toArray();
-                    
-                    $chunk = $this->modx->getOption('subscribeme.email.confirmcancel',null,'smConfirmCancelEmail');
-                    $phs = array(
-                        'user' => array_merge($user->toArray(),$upa),
-                        'subscription' => $subscription->toArray(),
-                        'product' => $product->toArray(),
-                        'settings' => $this->modx->config,
-                    );
-                    $msg = $this->getChunk($chunk,$phs);
-                    $subject =  $this->modx->getOption('subscribeme.email.confirmcancel.subject',null,'Cancellation received for your [[+product]] subscription');
-                    $subject = str_replace(
-                        array('[[+product]]'),
-                        array($product->get('name')),
-                        $subject
-                    );
-                    if ($user->sendEmail($msg,array('subject' => $subject)) !== true)
-                        return 'Error sending cancellation received email.';
+                    $result = $modx->sm->sendNotificationEmail($ipn_post_data['txn_type'], $subscription, $user, $product);
+                    if ($result !== true)
+                        $modx->log(MODX_LEVEL_ERROR,'Error sending notification email to user #'.$user->get('id').' for IPN type '.$ipn_post_data['txn_type'].': '.$result);
                     return true;
                 }
                 else {
-                    return 'Error fetching user to send transaction confirmation email.';
+                    return 'Error fetching user to send notification about skipped payment.';
                 }
 
             break;

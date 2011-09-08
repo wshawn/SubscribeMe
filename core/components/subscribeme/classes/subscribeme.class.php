@@ -31,6 +31,7 @@ class SubscribeMe {
             'css_url' => $assetsUrl.'css/',
             'assets_url' => $assetsUrl,
             'connector_url' => $assetsUrl.'connector.php',
+            'debug' => $this->modx->getOption('subscribeme.debug',null,false)
         ),$config);
 
         $this->modx->addPackage('subscribeme',$this->config['model_path']);
@@ -126,6 +127,7 @@ class SubscribeMe {
         // Update the expires column
         $subExp = date('Y-m-d H:i:s',$subExp);          // First change it to a format MySQL will surely understand.
         $sub->set('expires', $subExp);                  // Change it
+        $sub->set('active', true);                      // Make sure the subscription is set to active
         if (!$sub->save())                              // Save & if that failed return an error.
             return 'Error updating subscription with new expires timestamp.';
 
@@ -198,6 +200,167 @@ class SubscribeMe {
         }
         else
             return 'Error marking transaction as completed.';
+    }
+
+    /**
+     * Used to send a notification email to a user for IPN notification.
+     *
+     * @param string $type Type of notification email to send.
+     * @param \smSubscription $subscription The relevant Subscription object
+     * @param \modUser $user The relevant User object.
+     * @param \smProduct $product The relevant Product object
+     * @param string|\smTransaction $transaction If a transaction is involved, the transaction object.
+     * @return bool|string True if successful, an error message if not.
+     */
+    public function sendNotificationEmail($type = '', smSubscription $subscription, modUser $user, smProduct $product, $transaction = '') {
+        $chunk = ''; $subject = ''; $phs = array();
+        $up = $this->modx->user->getOne('Profile');
+        $phs = array(
+            'user' => array_merge($user->toArray(),$up->toArray()),
+            'subscription' => $subscription->toArray(),
+            'product' => $product->toArray(),
+            'settings' => $this->modx->config,
+        );
+        if ($transaction instanceof smTransaction) {
+            $phs['transaction'] = $transaction->toArray();
+        }
+
+        switch ($type) {
+            case 'recurring_payment_profile_cancel':
+                    $chunk = $this->modx->getOption('subscribeme.email.confirmcancel',null,'smConfirmCancelEmail');
+                    $subject = $this->modx->getOption('subscribeme.email.confirmcancel.subject',null,'Your recurring payments profile for [[+product]] has been canceled.');
+                break;
+
+            case 'recurring_payment_skipped':
+                    $chunk = $this->modx->getOption('subscribeme.email.notifyskippedpayment',null,'smNotifySkippedPaymentEmail');
+                    $subject = $this->modx->getOption('subscribeme.email.notifyskippedpayment.subject',null,'A payment for your [[+product]] subscription has been skipped.');
+                break;
+
+            case 'recurring_payment_expired':
+                    $chunk = $this->modx->getOption('subscribeme.email.paymentexpired',null,'smPaymentExpiredEmail');
+                    $subject = $this->modx->getOption('subscribeme.email.paymentexpired.subject',null,'Your Recurring Payment for [[+product]] has expired.');
+                break;
+        }
+
+        $msg = $this->getChunk($chunk,$phs);
+        $subject = str_replace(
+            array('[[+product]]'),
+            array($product->get('name')),
+            $subject
+        );
+        if ($transaction instanceof smTransaction) {
+            $subject = str_replace(
+                array('[[+transid]]','[[+transaction.method]]'),
+                array($transaction->get('id'),$transaction->get('method')),
+                $subject
+            );
+        }
+        if ($user->sendEmail($msg,array('subject' => $subject)) !== true)
+            return 'Error sending email to user.';
+        return true;
+    }
+
+
+    /**
+     * @param $userid The User ID to check.
+     * @return bool True/false depending on success of checking. Does not imply something changed or not.
+     */
+    public function checkForExpiredSubscriptions($userid) {
+        if (!is_numeric($userid) || $userid < 0) { $this->modx->log(MODX_LEVEL_WARNING,'SubscribeMe::checkForExpired fired without valid user ID.'); return false; }
+
+        $debug = $this->config['debug'];
+
+        // Let's make a fun query! :)
+
+        // We'll start looking from the subscription perspective...
+        $c = $this->modx->newQuery('smSubscription');
+        // ... joining the subscription with the product permissions associated with it ...
+        $c->rightJoin('smProductPermissions','ProdPerms','smSubscription.product_id = ProdPerms.product_id');
+        // ... where the user id of the subscription matches the user we're looking for
+        $c->where(
+            array(
+                 'smSubscription.user_id' => $userid,
+                 'UserGroupMember.id:>' => 0,
+            )
+        );
+
+        $c->leftJoin('modUserGroupMember','UserGroupMember','(
+            UserGroupMember.member = smSubscription.user_id AND
+            UserGroupMember.user_group = ProdPerms.usergroup AND
+            UserGroupMember.role = ProdPerms.role)'
+        );
+
+        // ... but we'll only need a few fields
+        $c->select(
+            array(
+                 'smSubscription.sub_id as sub_id',
+                 'smSubscription.expires as expires',
+                 'ProdPerms.usergroup as usergroup',
+                 'ProdPerms.role as role',
+                 'UserGroupMember.id as ugm_id'
+            )
+        );
+
+        // We're using the same query up to this point in the sub query to filter out duplicate subscriptions not set
+        // to expire yet.
+        $c->prepare();
+        $subc = $c->toSQL();
+        $subc .= 'AND smSubscription.expires > NOW()';
+        // Add the condition
+        $c->andCondition(
+            array(
+                'NOT EXISTS('.$subc.')'
+            )
+        );
+
+        // Check if there's any results
+        $count = $this->modx->getCount('smSubscription',$c);
+
+        // Debug SQL - shouldn't be needed with normal debugging but only for development.
+        $c->prepare();
+        if ($debug) $this->modx->log(1,$c->toSQL());
+
+        if (($count < 1) || !is_numeric($count)) {
+            if ($debug) $this->modx->log(MODX_LEVEL_ERROR,'Nothing needs to be taken care of!');
+            return '';
+        }
+
+        // We found something that needs to be unset.
+        if ($debug) $this->modx->log(MODX_LEVEL_ERROR,'Found a user group that needs to be unset.');
+
+        $permissions = $this->modx->getCollection('smSubscription',$c);
+        foreach ($permissions as $p) {
+            if ($p instanceof smSubscription) {
+                //$ta = $p->get(array('sub_id','expires','ug','rl'));
+                $ta = array(
+                    'usergroup' => $p->get('usergroup'),
+                    'role' => $p->get('role'),
+                    'sub_id' => $p->get('sub_id'),
+                    'expires' => $p->get('expires'),
+                    'ugm_id' => $p->get('ugm_id'),
+                );
+
+                /* Remove the user group membership */
+                $ugm = $this->modx->getObject('modUserGroupMember',$ta['ugm_id']);
+                if ($ugm instanceof modUserGroupMember) {
+                    if (!$ugm->remove())
+                        if ($debug) $this->modx->log(MODX_LEVEL_ERROR,'Error removing user group membership '.$ta['ugm_id'].' with regards to subscription '.$ta['sub_id']);
+                    else {
+                        if ($debug) $this->modx->log(MODX_LEVEL_ERROR,'Removed user group membership '.$ta['ugm_id'].' related to subscription '.$ta['sub_id']);
+                        $subObj = $this->modx->getObject('smSubscription',$ta['sub_id']);
+                        if ($subObj instanceof smSubscription) {
+                            $subObj->set('active',false);
+                            if (!$subObj->save())
+                                $this->modx->log(MODX_LEVEL_ERROR,'Error marking subscription as inactive.');
+
+                            // @todo send expiring email.
+
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
 

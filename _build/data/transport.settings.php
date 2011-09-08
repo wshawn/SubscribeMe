@@ -18,6 +18,10 @@ $s = array(
     'email.confirmtransaction.subject' => 'Transaction processed for [[+product]] subscription',
     'email.confirmcancel' => 'smConfirmCancelEmail',
     'email.confirmcancel.subject' => 'Cancellation received for your [[+product]] subscription',
+    'email.notifyskippedpayment' => 'smNotifySkippedPaymentEmail',
+    'email.notifyskippedpayment.subject' => 'A payment for your [[+product]] subscription was skipped',
+    'email.paymentexpired' => 'smPaymentExpiredEmail',
+    'email.paymentexpired.subject' => 'A payment for your [[+product]] subscription has expired.',
 );
 
 $settings = array();

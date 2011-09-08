@@ -105,7 +105,7 @@ $_lang['setting_subscribeme.currencycode_desc'] = 'The 3-character Currency Code
 $_lang['setting_subscribeme.currencysign'] = 'Currency Sign';
 $_lang['setting_subscribeme.currencysign_desc'] = 'The symbol matching your currency.';
 $_lang['setting_subscribeme.debug'] = 'Output Debug';
-$_lang['setting_subscribeme.debug_desc'] = 'When enabling debug, as much data as possible will be displayed in Snippet output. Can be overriden with &debug in the snippet calls.';
+$_lang['setting_subscribeme.debug_desc'] = 'When enabling debug, as much data as possible will be displayed in Snippet output, IPN requests received will be logged extensively to the Error Log and the plugin will also log information to the Error Log. Can be overriden for snippets with &debug in the snippet calls.';
 $_lang['setting_subscribeme.paypal.api_username'] = 'PayPal API Username';
 $_lang['setting_subscribeme.paypal.api_username_desc'] = 'Your Live PayPal API Username.';
 $_lang['setting_subscribeme.paypal.api_password'] = 'PayPal API Password';
@@ -136,5 +136,9 @@ $_lang['setting_subscribeme.email.confirmcancel'] = 'Confirm Cancellation Email 
 $_lang['setting_subscribeme.email.confirmcancel_desc'] = 'The name of a chunk to use as email template for confirming a recurring payments profile has been cancelled by a user. You can use all user, subscription and product fields in the chunk. For example [ [+user.fullname]] and [ [+subscription.name]].';
 $_lang['setting_subscribeme.email.confirmcancel.subject'] = 'Confirm Cancellation Email Subject';
 $_lang['setting_subscribeme.email.confirmcancel.subject_desc'] = 'The subject to use for the email confirming a recurring payments profile has been cancelled by a user. You can use product as placeholder.';
+$_lang['setting_subscribeme.email.notifyskippedpayment'] = 'Nofiy Skipped Payment Chunk';
+$_lang['setting_subscribeme.email.notifyskippedpayment_desc'] = 'The name of a chunk to use as email template for notifying a user that a recurring payment was skipped. You can use all user, subscription, product and transaction fields in the chunk. For example [ [+user.fullname]] and [ [+product.name]].';
+$_lang['setting_subscribeme.email.notifyskippedpayment.subject'] = 'Notify Skipped Payment Subject';
+$_lang['setting_subscribeme.email.notifyskippedpayment.subject_desc'] = 'The subject to use for the email notifying a user a recurring payment has been skipped. You can use product as placeholder.';
 
 ?>
