@@ -22,8 +22,8 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','SubscribeMe');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-define('PKG_VERSION','0.9.3');
-define('PKG_RELEASE','dev4');
+define('PKG_VERSION','0.9.4');
+define('PKG_RELEASE','dev1');
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources= array (
@@ -33,6 +33,7 @@ $sources= array (
     'data' => $root . '_build/data/',
     'source_core' => $root.'core/components/'.PKG_NAME_LOWER,
     'source_assets' => $root.'assets/components/'.PKG_NAME_LOWER,
+    'elements' => $root.'core/components/'.PKG_NAME_LOWER.'/elements/',
     'chunks' => $root.'core/components/'.PKG_NAME_LOWER.'/elements/chunks/',
     'snippets' => $root.'_build/elements/snippets/',
     'lexicon' => $root . 'core/components/'.PKG_NAME_LOWER.'/lexicon/',
@@ -104,6 +105,29 @@ foreach ($settings as $setting) {
 }
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($settings).' system settings.'); flush();
 unset($settings,$setting,$attributes);
+
+/* add plugins */
+$plugins = include $sources['data'].'transport.plugins.php';
+if (!is_array($plugins)) { $modx->log(modX::LOG_LEVEL_FATAL,'Adding plugins failed.'); }
+$attributes= array(
+    xPDOTransport::UNIQUE_KEY => 'name',
+    xPDOTransport::PRESERVE_KEYS => false,
+    xPDOTransport::UPDATE_OBJECT => true,
+    xPDOTransport::RELATED_OBJECTS => true,
+    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
+        'PluginEvents' => array(
+            xPDOTransport::PRESERVE_KEYS => true,
+            xPDOTransport::UPDATE_OBJECT => false,
+            xPDOTransport::UNIQUE_KEY => array('pluginid','event'),
+        ),
+    ),
+);
+foreach ($plugins as $plugin) {
+    $vehicle = $builder->createVehicle($plugin, $attributes);
+    $builder->putVehicle($vehicle);
+}
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($plugins).' plugins.'); flush();
+unset($plugins,$plugin,$attributes);
 
 $vehicle = $builder->createVehicle($category,$attr);
 $vehicle->resolve('file',array(
