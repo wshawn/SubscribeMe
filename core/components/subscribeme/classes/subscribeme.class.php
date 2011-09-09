@@ -214,9 +214,18 @@ class SubscribeMe {
      */
     public function sendNotificationEmail($type = '', smSubscription $subscription, modUser $user, smProduct $product, $transaction = '') {
         $chunk = ''; $subject = ''; $phs = array();
-        $up = $this->modx->user->getOne('Profile');
+        if (!($user instanceof modUser) || !($subscription instanceof smSubscription) || !($product instanceof smProduct)) {
+            $this->modx->log(MODX_LEVEL_ERROR,'Error: invalid parameter(s) in SubscribeMe::sendNotificationEmail');
+            return 'Invalid parameter(s) in SubscribeMe::sendNotificationEmail';
+        }
+
+        $up = $user->getOne('Profile');
+        $userarray = $user->toArray();
+        if ($up instanceof modUserProfile)
+            $userarray = array_merge($userarray,$up->toArray());
+        
         $phs = array(
-            'user' => array_merge($user->toArray(),$up->toArray()),
+            'user' => $userarray,
             'subscription' => $subscription->toArray(),
             'product' => $product->toArray(),
             'settings' => $this->modx->config,
