@@ -10,7 +10,7 @@ if (!$eid)
 
 $obj = $modx->getObject('smProduct',$eid);
 if (!($obj instanceof smProduct))
-    return $modx->error->failure('Invalid object');
+    return $modx->error->failure($modx->lexicon('sm.error.invalidobject'));
 
 
 // Let's check if there's any subscriptions for this type.. to prevent data corruption, we'll not accept that
@@ -22,11 +22,11 @@ $chk->where(
 );
 $count = $modx->getCount('smSubscription',$chk);
 if ($count > 0)
-    return $modx->error->failure('There are subscriptions for this type, thus it cannot be removed. Please deactive it instead of removing.');
+    return $modx->error->failure($modx->lexicon('sm.error.cantremoveproductinuse'));
 
 // Remove the object
 if ($obj->remove())
     return $modx->error->success();
-return $modx->error->failure('Error removing object');
+return $modx->error->failure($modx->lexicon('sm.error.removefail'));
 
 ?>

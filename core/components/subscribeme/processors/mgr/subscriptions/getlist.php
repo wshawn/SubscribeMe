@@ -44,7 +44,7 @@ foreach ($collection as $r) {
 }
 
 if (count($results) == 0) {
-    return $modx->error->failure('No results found.'); //@todo Lexiconify
+    return $modx->error->failure($modx->lexicon('sm.error.noresults'));
 }
 $ra = array(
     'success' => true,

@@ -36,11 +36,6 @@ if ($method) {
 
 $matches = $modx->getCount('smTransaction',$c);
 
-if (0) {
-    $c->prepare();
-    return $modx->error->failure($c->toSql());
-}
-
 $c->sortby($sort,$dir);
 $c->sortby('createdon','desc');
 $c->limit($limit,$start);
@@ -60,7 +55,7 @@ foreach ($r as $rs) {
 }
 
 if (count($results) == 0) {
-    return $modx->error->failure('No results found.'); //@todo Lexiconify
+    return $modx->error->failure($modx->lexicon('sm.error.noresults')); 
 }
 $ra = array(
     'success' => true,

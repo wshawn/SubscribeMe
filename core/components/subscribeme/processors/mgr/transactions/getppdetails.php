@@ -2,7 +2,7 @@
 require_once (dirname(dirname(dirname(dirname(__FILE__))))).'/classes/paypal/paypal.class.php';
 
 $ppid = $modx->getOption('reference',$scriptProperties,'');
-if (empty($ppid)) return $modx->error->failure('No reference specified');
+if (empty($ppid)) return $modx->error->failure($modx->lexicon('sm.error.notspecified',array('what' => $modx->lexicon('sm.reference'))));
 
 /* Check if we're in the sandbox or live and fetch the appropriate credentials */
 $p['sandbox'] = $modx->getOption('subscribeme.paypal.sandbox',null,true);
@@ -40,7 +40,7 @@ foreach ($response as $key => $value) {
 }
 
 if (count($return) == 0) {
-    return $modx->error->failure('Unable to retrieve information.'); //@todo Lexiconify
+    return $modx->error->failure($modx->lexicon('sm.error.noresults'));
 }
 
 $count = count($return);

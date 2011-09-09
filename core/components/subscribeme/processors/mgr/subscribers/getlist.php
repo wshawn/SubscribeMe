@@ -16,11 +16,6 @@ $c->select(
     array(
         'modUser.*',
         'Profile.*',
-        /*'modUser.id',
-        'modUser.active',
-        'modUser.username',
-        'Profile.fullname',
-        'Profile.email',*/
     )
 );
 
@@ -37,7 +32,6 @@ if (!empty($search)) {
 
 if (is_numeric($subfilter)) {
     $c->leftJoin('smSubscription','S','modUser.id = S.user_id');
-    //$c->leftJoin('smProduct','ST','S.type_id = ST.type_id');
     $c->where(array(
                    'S.product_id' => $subfilter,
                    'AND:S.expires:>' => date('Y-m-d H:i:s',time())
@@ -54,10 +48,6 @@ elseif ($subfilter == 'current') {
 $total = $modx->getCount('modUser',$c);
 
 $c->sortby($sort,$dir);
-
-
-/*$c->prepare();
-return $modx->error->failure($c->toSql());*/
 
 $results = array();
 $qr = $modx->getIterator('modUser',$c);
@@ -89,7 +79,7 @@ foreach ($qr as $idx => $r) {
     }
 
     if (count($ta['subscriptions']) > 0) $ta['subscriptions'] = implode(",<br /> ",$ta['subscriptions']); //@todo Make seperator configurable?
-    else $ta['subscriptions'] = (defined('returnasarray')) ? '' : '<i>None</i>'; //@todo Lexiconify
+    else $ta['subscriptions'] = '';
 
     $results[] = $ta;
 }
@@ -98,7 +88,7 @@ if (defined('returnasarray'))
     return $results;
 
 if (count($results) == 0) {
-    return $modx->error->failure('No results found.'); //@todo Lexiconify
+    return $modx->error->failure($modx->lexicon('sm.error.noresults'));
 }
 $ra = array(
     'success' => true,

@@ -1,7 +1,7 @@
 <?php
 $file = $modx->getOption('export',$scriptProperties,null);
 if (!$file) {
-    die ('An error occured.');
+    die ($modx->lexicon('sm.error.notspecified',array('what' => 'ID')));
 }
 $path = $modx->sm->config['core_path'] . '/exports/' . $file . '.txt';
 $o = file_get_contents($path);
@@ -10,6 +10,6 @@ if ($o) {
     return $o;
 }
 else {
-    die('Could not find export.');
+    die($modx->lexicon('sm.error.exportnotfound'));
 }
 ?>

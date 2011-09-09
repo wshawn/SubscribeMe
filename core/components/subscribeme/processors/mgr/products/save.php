@@ -7,7 +7,7 @@ else
     $st = $modx->getObject('smProduct',$id);
 
 if (!($st instanceof smProduct))
-    return $modx->error->failure('Invalid object');
+    return $modx->error->failure($modx->lexicon('sm.error.invalidobject'));
 
 $data = $scriptProperties;
 $data['active'] = ($data['active'] == 'on') ? true : false;
@@ -16,6 +16,6 @@ $st->fromArray($data);
 
 if ($st->save())
     return $modx->error->success();
-return $modx->error->failure('Error saving object');
+return $modx->error->failure($modx->lexicon('sm.error.savefail'));
 
 ?>

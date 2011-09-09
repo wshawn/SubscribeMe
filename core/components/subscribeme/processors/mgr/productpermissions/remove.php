@@ -6,15 +6,15 @@
 
 $eid = $modx->getOption('eid',$scriptProperties,null);
 if (!$eid)
-    return $modx->error->failure('No ID found.');
+    return $modx->error->failure($modx->lexicon('sm.error.notspecified',array('what' => 'ID')));
 
 $obj = $modx->getObject('smProductPermissions',$eid);
 if (!($obj instanceof smProductPermissions))
-    return $modx->error->failure('Invalid object');
+    return $modx->error->failure($modx->lexicon('sm.error.invalidobject'));
 
 // Remove the object
 if ($obj->remove())
     return $modx->error->success();
-return $modx->error->failure('Error removing object');
+return $modx->error->failure($modx->lexicon('sm.error.removefail'));
 
 ?>

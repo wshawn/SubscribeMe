@@ -8,13 +8,13 @@ else
     $st = $modx->getObject('smProductPermissions',$id);
 
 if (!($st instanceof smProductPermissions))
-    return $modx->error->failure('Invalid object');
+    return $modx->error->failure($modx->lexicon('sm.error.invalidobject'));
 
 $st->fromArray($data);
 
 if ($st->save())
     return $modx->error->success();
 
-return $modx->error->failure('Error saving object');
+return $modx->error->failure($modx->lexicon('sm.error.savefail'));
 
 ?>

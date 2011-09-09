@@ -4,7 +4,7 @@
  */
 
 if (!$scriptProperties['user_id'] || !is_numeric($scriptProperties['user_id']))
-    return $modx->error->failure('No user ID found.');
+    return $modx->error->failure($modx->lexicon('sm.error.notspecified',array('what' => 'ID')));
 
 /* As the processTransaction function will add one entire period later, we will need to take that off the expires
 period now. Therefore we fetch the product and the period and deduct that from that given expiry date.
@@ -31,7 +31,7 @@ $subscription->fromArray(
     )
 );
 if(!$subscription->save())
-    return $modx->error->failure('Error saving subscription.');
+    return $modx->error->failure($modx->lexicon('sm.error.savefail'));
 
 /* @var smTransaction $transaction*/
 $transaction = $modx->newObject('smTransaction');
@@ -47,11 +47,11 @@ $transaction->fromArray(
 
 
 if (!$transaction->save())
-    return $modx->error->failure('Error saving transaction.');
+    return $modx->error->failure($modx->lexicon('sm.error.savefail'));
 
 $processTrans = $modx->sm->processTransaction($transaction);
 if ($processTrans !== true)
-    return $modx->error->failure('Error processing transaction: '.$processTrans);
+    return $modx->error->failure($modx->lexicon('sm.error.processtransfail',array('result' => $processTrans)));
 
 return $modx->error->success();
 

@@ -48,6 +48,8 @@ $_lang['sm.combo.day'] = 'Day';
 $_lang['sm.combo.week'] = 'Week';
 $_lang['sm.combo.month'] = 'Month';
 $_lang['sm.combo.year'] = 'Year';
+$_lang['sm.combo.current'] = 'Currently Subscribed';
+$_lang['sm.combo.all'] = 'All User Accounts';
 $_lang['sm.search'] = 'Search';
 $_lang['sm.search...'] = 'Search...';
 $_lang['sm.transaction.markaspaid'] = 'Mark As Paid';
@@ -94,10 +96,22 @@ $_lang['sm.completed'] = 'Completed';
 $_lang['sm.pp_profileid'] = 'PayPal Profile ID';
 
 /* Errors */
-$_lang['sm.error.sendmailfailed'] = 'An error occured sending email.';
-$_lang['sm.error.savefailed'] = 'An error occured attempting to save your changes.';
-$_lang['sm.error.savefailed.user'] = 'An error occured attempting to save the user account.';
-$_lang['sm.error.savefailed.userprofile'] = 'An error occured attempting to save the user profile.';
+$_lang['sm.error.sendmailfailed'] = 'An error occurred sending email.';
+$_lang['sm.error.savefailed'] = 'An error occurred attempting to save your changes.';
+$_lang['sm.error.savefailed.user'] = 'An error occurred attempting to save the user account.';
+$_lang['sm.error.savefailed.userprofile'] = 'An error occurred attempting to save the user profile.';
+$_lang['sm.error.notspecified'] = 'An error occurred: No [[+what]] specified.';
+$_lang['sm.error.invalidobject'] = 'An error occurred: The requested object is invalid.';
+$_lang['sm.error.noresults'] = 'No results matching your criteria found.';
+$_lang['sm.error.removefail'] = 'An error occured attempting to remove the object.';
+$_lang['sm.error.savefail'] = 'An error occured attempting to save the object.';
+$_lang['sm.error.processtransfail'] = 'An error occured attempting to process the transaction: [[+result]]';
+$_lang['sm.error.cantremoveproductinuse'] = 'There are subscriptions for this Product, thus it cannot be removed. Please deactivate it instead of removing if you wish to prevent future subscriptions.';
+$_lang['sm.error.notfound'] = 'Requested object not found.';
+$_lang['sm.error.exportnotfound'] = 'Requested export could not be found.';
+$_lang['sm.error.export_openfile'] = 'Error opening file [[+file]] for writing.';
+$_lang['sm.error.export_writeheader'] = 'Error writing header to [[+file]].';
+$_lang['sm.error.export_writeentry'] = 'Error writing entry to [[+file]].';
 
 /* System Settings */
 $_lang['setting_subscribeme.currencycode'] = 'Currency Code';

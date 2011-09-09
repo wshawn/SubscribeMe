@@ -25,20 +25,16 @@ if (!($userprof instanceof modUserProfile)) {
     $userprof = $modx->newObject('modUserProfile');
     $userprof->set('internalKey',$user->get('id'));
 }
-/*
-$data['extended'] = $modx->fromJSON($userprof->get('extended'));
-$data['extended'] = $modx->toJSON($data['extended']);
-*/
+
 $userprof->fromArray($data);
 $userprofresult = $userprof->save();
-
 
 if ($userresult && $userprofresult) {
     if (isset($rpass)) {
         $phs = array_merge($modx->config,$user->toArray(),array('password' => $rpass));
-        $mail = $modx->sm->getChunk('RegistrationMail',$phs);
+        $mail = $modx->sm->getChunk('RegistrationMail',$phs); //@todo Make configurable
         $options = array(
-            'subject' => 'Welcome!'
+            'subject' => 'Welcome!' // @todo Make configurable
         );
 
         $sent = $user->sendEmail($mail,$options);

@@ -11,11 +11,11 @@ if ($modx->getOption('options',$scriptProperties,true)) {
     $results = array(
         array(
             'id' => 'current',
-            'display' => 'Current Subscribers' //@todo Lexiconify
+            'display' => $modx->lexicon('sm.combo.current')
         ),
         array(
             'id' => '',
-            'display' => 'All User Accounts'
+            'display' => $modx->lexicon('sm.combo.all')
         )
     );
 } else {

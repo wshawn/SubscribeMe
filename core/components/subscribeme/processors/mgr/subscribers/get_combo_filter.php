@@ -33,6 +33,9 @@ foreach ($query as $r) {
     );
 }
 
+if (count($results) == 0)
+    return $modx->error->failure($modx->lexicon('sm.error.noresults'));
+
 $returnArray = array(
     'success' => true,
     'total' => $total,

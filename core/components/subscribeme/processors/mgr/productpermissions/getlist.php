@@ -6,7 +6,7 @@ $dir = $modx->getOption('dir',$scriptProperties,'asc');
 
 $product  = $modx->getOption('product',$scriptProperties,null);
 if (!$product)
-    return $modx->error->failure('No product specified.');
+    return $modx->error->failure($modx->lexicon('sm.error.notspecified',array('what' => $modx->lexicon('sm.product'))));
 
 $results = array();
 
@@ -25,7 +25,7 @@ foreach ($r as $rs) {
 }
 
 if (count($results) == 0) {
-    return $modx->error->failure('No results found.'); //@todo Lexiconify
+    return $modx->error->failure($modx->lexicon('sm.error.noresults'));
 }
 $ra = array(
     'success' => true,
