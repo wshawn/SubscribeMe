@@ -121,7 +121,7 @@ if($status == 200 && $response == 'VERIFIED') {
 
                 // Send a notification email to notify them of the skipped payment
                 /* @var modUser $user */
-                $user = $this->modx->getObject('modUser',$subscription->get('user_id'));
+                $user = $modx->getObject('modUser',$subscription->get('user_id'));
                 $product = $subscription->getOne('Product');
                 if ($user instanceof modUser) {
                     $result = $modx->sm->sendNotificationEmail($ipn_post_data['txn_type'], $subscription, $user, $product);
@@ -153,7 +153,7 @@ if($status == 200 && $response == 'VERIFIED') {
 
                 // Send a notification email to notify them of the skipped payment
                 /* @var modUser $user */
-                $user = $this->modx->getObject('modUser',$subscription->get('user_id'));
+                $user = $modx->getObject('modUser',$subscription->get('user_id'));
                 $product = $subscription->getOne('Product');
                 if ($user instanceof modUser) {
                     $result = $modx->sm->sendNotificationEmail($ipn_post_data['txn_type'], $subscription, $user, $product);
@@ -192,7 +192,7 @@ if($status == 200 && $response == 'VERIFIED') {
 
                 // Send a notification email to notify them of the skipped payment
                 /* @var modUser $user */
-                $user = $this->modx->getObject('modUser',$subscription->get('user_id'));
+                $user = $modx->getObject('modUser',$subscription->get('user_id'));
                 $product = $subscription->getOne('Product');
                 if ($user instanceof modUser) {
                     $result = $modx->sm->sendNotificationEmail($ipn_post_data['txn_type'], $subscription, $user, $product);
