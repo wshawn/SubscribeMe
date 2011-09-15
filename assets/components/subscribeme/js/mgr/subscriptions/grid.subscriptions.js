@@ -216,6 +216,55 @@ Ext.extend(SM.grid.Subscriptions,MODx.grid.Grid,{
                     win.show();
                 }
             });
+            if (d.active) {
+                m.push({
+                    text: _('sm.subscription.cancel'),
+                    handler: function() {
+                        o = new MODx.Window({
+                            title: _('sm.subscription.cancel'),
+                            url: SM.config.connector_url,
+                            baseParams: {
+                                action: 'mgr/subscriptions/cancelpp'
+                            },
+                            fields: [{
+                                xtype: 'panel',
+                                html: '<p>'+_('sm.subscription.confirmcancel')+'</p>',
+                                bodyStyle: 'padding-bottom: 12px;'
+                            },{
+                                fieldLabel: _('sm.product'),
+                                name: 'product',
+                                xtype: 'statictextfield',
+                                value: d.product,
+                                width: '100%'
+                            },{
+                                fieldLabel: _('sm.subscription') + ' ' + _('id'),
+                                name: 'sub_id',
+                                xtype: 'statictextfield',
+                                value: d.sub_id,
+                                submitValue: true,
+                                width: '100%'
+                            },{
+                                fieldLabel: _('sm.pp_profileid'),
+                                name: 'pp_profileid',
+                                xtype: 'statictextfield',
+                                value: d.pp_profileid,
+                                width: '100%'
+                            }],
+                            saveBtnText: _('sm.subscription.docancel'),
+                            cancelBtnText: _('sm.subscription.cancelcancel'),
+                            listeners: {
+                                'success': {fn: function(r) {
+                                    Ext.getCmp('grid-subscriptions').refresh();
+                                },scope: this},
+                                'failure': {fn:function(r) {
+                                    MODx.msg.alert(_('error'),r.message);
+                                },scope: this}
+                            }
+                        });
+                        o.show();
+                    }
+                });
+            }
         }
 
         if (m.length > 0) {

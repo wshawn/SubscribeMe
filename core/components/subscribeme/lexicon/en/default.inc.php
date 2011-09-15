@@ -60,6 +60,10 @@ $_lang['sm.subscription.viewtransactions'] = 'View Related Transactions';
 $_lang['sm.subscription.viewtransactions.text'] = 'These are the transactions related to this subscription, and may include manual and complimentary transactions as well.';
 $_lang['sm.subscription.manualtransaction'] = 'Add Manual Transaction';
 $_lang['sm.subscription.manualtransaction.text'] = 'Manual transactions are filed to properly record transactions that were paid in cash.';
+$_lang['sm.subscription.cancel'] = 'Cancel PayPal Subscription';
+$_lang['sm.subscription.docancel'] = 'Confirm: Cancel Subscription';
+$_lang['sm.subscription.cancelcancel'] = 'Never Mind';
+$_lang['sm.subscription.confirmcancel'] = 'Are you sure you want to cancel this subscription? Once this subscription has been cancelled it cannot be undone.<br /><br />Details of this subscription are shown below.';
 $_lang['sm.remove'] = 'Remove [[+what]]';
 $_lang['sm.remove_successful'] = 'Successfully removed [[+what]]';
 $_lang['sm.removed'] = 'Removed [[+what]]';
@@ -112,6 +116,8 @@ $_lang['sm.error.exportnotfound'] = 'Requested export could not be found.';
 $_lang['sm.error.export_openfile'] = 'Error opening file [[+file]] for writing.';
 $_lang['sm.error.export_writeheader'] = 'Error writing header to [[+file]].';
 $_lang['sm.error.export_writeentry'] = 'Error writing entry to [[+file]].';
+$_lang['sm.error.cancelsubscription.notactive'] = 'Can not cancel this subscription, it is not active (or suspended). Status: [[+status]].';
+$_lang['sm.notification.admincancelledsubscription'] = 'An administrator has cancelled your subscription. For more information, please get in touch via our website.';
 
 /* System Settings */
 $_lang['setting_subscribeme.currencycode'] = 'Currency Code';

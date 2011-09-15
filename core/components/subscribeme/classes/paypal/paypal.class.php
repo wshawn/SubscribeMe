@@ -652,6 +652,12 @@ class phpPayPal {
         'GetRecurringPaymentsProfileDetails' => array(
             'version' => array('name' => 'VERSION', 'required' => 'no'),
             'profile_id' => array('name' => 'PROFILEID', 'required' => 'yes')
+        ),
+        'ManageRecurringPaymentsProfileStatus' => array(
+            'version' => array('name' => 'VERSION', 'required' => 'no'),
+            'profile_id' => array('name' => 'PROFILEID', 'required' => 'yes'),
+            'action' => array('name' => 'ACTION', 'required' => 'yes'),
+            'note' => array('name' => 'NOTE', 'required' => 'no')
         )
     );
 
@@ -925,7 +931,10 @@ class phpPayPal {
 				'protection_eligibility'=> 'PROTECTIONELIGIBILITY',
 				'ebay_item_auction_transaction_id'	=> 'EBAYITEMAUCTIONTXNID',
 				'payment_error'			=> 'PAYMENTERROR'
-				)
+				),
+        'ManageRecurringPaymentsProfileStatus' => array(
+            'profileid' => 'PROFILEID'
+        )
 		);
 
 
@@ -1915,6 +1924,51 @@ echo '<br /><br />'.$nvpstr.'<br /><br />';
 			return true;
 		}
 	}
+
+    public function manage_recurring_payments_profile_status() {
+		$this->urlencodeVariables();
+
+		$nvpstr = $this->generateNVPString('ManageRecurringPaymentsProfileStatus');
+
+		$this->urldecodeVariables();
+
+		$this->Response = $this->hash_call("ManageRecurringPaymentsProfileStatus", $nvpstr);
+
+		if(strtoupper($this->Response["ACK"]) != "SUCCESS")
+		{
+			$this->Error['TIMESTAMP']		= @$this->Response['TIMESTAMP'];
+			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
+			$this->Error['ACK']				= $this->Response['ACK'];
+			$this->Error['ERRORCODE']		= $this->Response['L_ERRORCODE0'];
+			$this->Error['SHORTMESSAGE']	= $this->Response['L_SHORTMESSAGE0'];
+			$this->Error['LONGMESSAGE']		= $this->Response['L_LONGMESSAGE0'];
+			$this->Error['SEVERITYCODE']	= $this->Response['L_SEVERITYCODE0'];
+			$this->Error['VERSION']			= @$this->Response['VERSION'];
+			$this->Error['BUILD']			= @$this->Response['BUILD'];
+
+			$this->_error				= true;
+			$this->_error_ack			= $this->Response['ACK'];
+			$this->ack					= 'Failure';
+			$this->_error_type			= 'paypal';
+			$this->_error_date			= $this->Response['TIMESTAMP'];
+			$this->_error_code			= $this->Response['L_ERRORCODE0'];
+			$this->_error_short_message	= $this->Response['L_SHORTMESSAGE0'];
+			$this->_error_long_message	= $this->Response['L_LONGMESSAGE0'];
+			$this->_error_severity_code	= $this->Response['L_SEVERITYCODE0'];
+			$this->_error_version		= @$this->Response['VERSION'];
+			$this->_error_build			= @$this->Response['BUILD'];
+
+			return false;
+		}
+		elseif(strtoupper($this->Response["ACK"]) == 'SUCCESS')
+		{
+
+			foreach($this->ResponseFieldsArray['ManageRecurringPaymentsProfileStatus'] as $key => $value)
+				$this->$key = $this->Response[$value];
+
+			return true;
+		}
+    }
 
 	public function do_reference_transaction()
 	{

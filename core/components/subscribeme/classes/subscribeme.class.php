@@ -249,6 +249,11 @@ class SubscribeMe {
                     $chunk = $this->modx->getOption('subscribeme.email.paymentexpired',null,'smPaymentExpiredEmail');
                     $subject = $this->modx->getOption('subscribeme.email.paymentexpired.subject',null,'Your Recurring Payment for [[+product]] has expired.');
                 break;
+
+            case 'recurring_payment_cancelledbyadmin':
+                    $chunk = $this->modx->getOption('subscribeme.email.confirmcancel.admin',null,'smConfirmCancelAdminEmail');
+                    $subject = $this->modx->getOption('subscribeme.email.confirmcancel.admin.subject',null,'An administrator has cancelled your [[+product]] subscription.');
+                break;
         }
 
         $msg = $this->getChunk($chunk,$phs);
