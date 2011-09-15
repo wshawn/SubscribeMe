@@ -22,8 +22,8 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','SubscribeMe');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-define('PKG_VERSION','0.9.4');
-define('PKG_RELEASE','dev1');
+define('PKG_VERSION','0.9.5');
+define('PKG_RELEASE','dev2');
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources= array (
