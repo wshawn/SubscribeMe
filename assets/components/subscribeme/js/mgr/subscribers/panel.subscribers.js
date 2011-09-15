@@ -146,8 +146,11 @@ SM.panel.Profile = function(config) {
 };
 Ext.extend(SM.panel.Profile,MODx.FormPanel,{
     changePassWindow: function() {
-        cp = new SM.window.ChangePass({
-            record: {uid: (SM.record) ? SM.record.id : null }
+        cp = new SM.window.NewPassword({
+            record: {
+                uid: SM.record.id,
+                username: SM.record.username
+            }
         });
         cp.show();
     }

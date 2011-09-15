@@ -368,6 +368,9 @@ class SubscribeMe {
                                 $this->modx->log(MODX_LEVEL_ERROR,'Error marking subscription as inactive.');
 
                             // @todo send expiring email.
+                            /*
+    $chunk = $modx->getOption('subscribeme.email.subscriptionexpired',null,'smSubscriptionExpiredAdminEmail');
+    $subject = $modx->getOption('subscribeme.email.subscriptionexpired.subject',null,'Your Password was Changed');*/
 
                         }
                     }

@@ -71,6 +71,7 @@ $_lang['sm.back'] = 'Back';
 $_lang['sm.nooptions'] = 'No options available';
 $_lang['sm.col1'] = 'Profile Data';
 $_lang['sm.col2'] = 'Profile Data (2)';
+$_lang['sm.newpass.confirm'] = 'Are you sure you want to create a new password for this user? They will receive an email with the new password and their old one will no longer work.';
 
 /* Fields */
 $_lang['sm.fullname'] = 'Full Name';
@@ -118,6 +119,7 @@ $_lang['sm.error.export_writeheader'] = 'Error writing header to [[+file]].';
 $_lang['sm.error.export_writeentry'] = 'Error writing entry to [[+file]].';
 $_lang['sm.error.cancelsubscription.notactive'] = 'Can not cancel this subscription, it is not active (or suspended). Status: [[+status]].';
 $_lang['sm.notification.admincancelledsubscription'] = 'An administrator has cancelled your subscription. For more information, please get in touch via our website.';
+$_lang['sm.passwordchanged'] = 'A new password has been sent to the user, on email [[+email]].';
 
 /* System Settings */
 $_lang['setting_subscribeme.currencycode'] = 'Currency Code';
