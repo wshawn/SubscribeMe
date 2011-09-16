@@ -423,7 +423,7 @@ class SubscribeMe {
         $c->where(array(
                       'user_id' => $userid,
                       'active' => 1,
-                      'expires:<' => 'NOW()'
+                      '`smSubscription`.`expires` < NOW()'
                   ));
 
         // We don't need all the fields, these would be fine.
