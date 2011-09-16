@@ -1,9 +1,12 @@
-<li class="subscription" style="[[+expired:eq=`0`:then=`color: #000`:else=`color: #222; font-style: italic`]]">
-    [[+product_name]], started [[+start]] [[+expired:eq=`0`:then=`will expire`:else=`expired`]] on [[+expires]]
-    [[+active:eq=`1`:then=`
-        <form method="post" action="[[~[[*id]]]]">
-            <input type="hidden" name="sub_id" value="[[+sub_id]]" />
-            <input type="submit" value="Cancel Payments" />
-        </form>
-    `]]
-</li>
+<tr class="[[+expired:notempty=`expired`]]">
+  <td>[[+sub_id]]</td>
+  <td>[[+product_name]]</td>
+  <td>[[+start]]</td>
+  <td>[[+expires]]</td>
+  <td>[[+pp_profileid:notempty=`
+         PayPal Recurring ([[+pp_profileid]]</a>)
+      `:empty=`Manual`]]</td>
+  <td>[[+active:eq=`1`:then=`
+         Yes[[+pp_profileid:notempty=`, <a href="[[~43? &subid=`[[+sub_id]]`]]" title="Cancel Recurring Payments">cancel</a>`]]
+      `:else=`No`]]</td>
+</tr>
