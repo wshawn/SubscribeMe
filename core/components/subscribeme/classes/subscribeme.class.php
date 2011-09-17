@@ -98,9 +98,10 @@ class SubscribeMe {
 
     /**
      * @param \smTransaction $trans
+     * @param bool $updateExpires When true, the function will recalculate the expires column.
      * @return bool|string Returns true if succesful, or an error string when something went wrong.
      */
-    public function processTransaction(smTransaction $trans) {
+    public function processTransaction(smTransaction $trans, $updateExpires = true) {
         // Get the subscription
         $sub = $trans->getOne('Subscription');
         if (!($sub instanceof smSubscription))
@@ -116,17 +117,20 @@ class SubscribeMe {
         $prodPeriod = $product->get('periods'); // the number of periods
         $prodPeriod .= ' '.$periodUsable[$product->get('period')]; // the actual period entity (day)
 
-        // Recalculate the expires column.
-        $subExpCur = $sub->get('expires');                  // Get the current expires time in format 2011-08-30 14:17:22
-        $subExp = strtotime($subExpCur);                    // Parse the time into a unix timestamp
-        if ($subExp < time()) $subExp = time();             // Make sure that the current expiry date is at least the same as now.
-        $subExp = strtotime('+' . $prodPeriod,$subExp);     // Take the "+2 week" from the product, and add it.
-        if ($subExp < $subExpCur)                           // Do a simple check to make sure the new expires date is larger than earlier
-            return 'Error calculating the new expiring timestamp.';
+        // If requested, recalculate the expires column.
+        if ($updateExpires) {
+            $subExpCur = $sub->get('expires');                  // Get the current expires time in format 2011-08-30 14:17:22
+            $subExp = strtotime($subExpCur);                    // Parse the time into a unix timestamp
+            if ($subExp < time()) $subExp = time();             // Make sure that the current expiry date is at least the same as now.
+            $subExp = strtotime('+' . $prodPeriod,$subExp);     // Take the "+2 week" from the product, and add it.
+            if ($subExp < $subExpCur)                           // Do a simple check to make sure the new expires date is larger than earlier
+                return 'Error calculating the new expiring timestamp.';
+    
+            // Update the expires column
+            $subExp = date('Y-m-d H:i:s',$subExp);              // First change it to a format MySQL will surely understand.
+            $sub->set('expires', $subExp);                      // Change it
+        }
 
-        // Update the expires column
-        $subExp = date('Y-m-d H:i:s',$subExp);          // First change it to a format MySQL will surely understand.
-        $sub->set('expires', $subExp);                  // Change it
         $sub->set('active', true);                      // Make sure the subscription is set to active
         if (!$sub->save())                              // Save & if that failed return an error.
             return 'Error updating subscription with new expires timestamp.';
