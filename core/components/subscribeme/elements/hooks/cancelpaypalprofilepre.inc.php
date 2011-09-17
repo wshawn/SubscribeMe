@@ -31,7 +31,7 @@ if ($subscription->get('user_id') != $modx->user->id) {
 $fields = $subscription->toArray();
 $product = $subscription->getOne('Product');
 if ($product instanceof smProduct)
-    $fields = $fields + array('product' => $product->toArray());
+    $fields = array_merge($fields,$product->toArray());
 
 $hook->setValues($fields);
 return true;

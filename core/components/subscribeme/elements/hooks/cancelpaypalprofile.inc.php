@@ -73,7 +73,7 @@ if (strtolower($paypal->Response['ACK']) == 'success') {
     /* We will assume the customer *knows* the payment was cancelled.
     They will still receive an email when the IPN gets triggered, so we're not sending any confirmation emails here.
     */
-
+    return true;
 }
 
 ?>
