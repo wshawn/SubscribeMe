@@ -5,6 +5,7 @@ $snips = array(
     'smCompletePayPalSubscription' => 'FormIt hook that, based on posted "token" and "PayerID" values finishes the payment process.',
     'smGetUserDataFromPayPal' => 'FormIt pre-hook that will fetch user details from their profile, and if available overrides that with data from PayPal. Requires a token.',
     'smCancelPayPalProfile' => 'FormIt hook to cancel a Recurring Payment Profile with PayPal. Requires a hidden field with sub_id.',
+    'smCancelPayPalProfilePre' => 'FormIt hook to check data and set some values.',
     'smListProducts' => 'Standalone snippet that will output a list of the products.',
     'smNewSubscription' => 'FormIt hook that will create a new subscription object for the current user, and redirects to the payment options screen.',
     'smUpdateUserProfile' => 'FormIt hook that will save POST data to a users profile.',

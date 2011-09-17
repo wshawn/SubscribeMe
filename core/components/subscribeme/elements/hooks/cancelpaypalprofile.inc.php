@@ -70,20 +70,9 @@ if (strtolower($paypal->Response['ACK']) == 'success') {
     if (!$sub->save())
         return $modx->lexicon('sm.error.sendmailfailed');
 
-
-    // Send a notification email to notify them of the skipped payment
-    /* @var modUser $user */
-    $user = $modx->getObject('modUser',$sub->get('user_id'));
-    $product = $sub->getOne('Product');
-    if ($user instanceof modUser) {
-        $result = $modx->sm->sendNotificationEmail('recurring_payment_cancelledbyadmin', $sub, $user, $product);
-        if ($result !== true)
-            $modx->log(MODX_LEVEL_ERROR,'Error sending notification email to user #'.$user->get('id').' for IPN type '.$ipn_post_data['txn_type'].': '.$result);
-        return true;
-    }
-    else {
-        return $modx->lexicon('sm.error.invalidobject');
-    }
+    /* We will assume the customer *knows* the payment was cancelled.
+    They will still receive an email when the IPN gets triggered, so we're not sending any confirmation emails here.
+    */
 
 }
 

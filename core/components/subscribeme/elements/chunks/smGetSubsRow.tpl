@@ -7,6 +7,6 @@
          PayPal Recurring ([[+pp_profileid]]</a>)
       `:empty=`Manual`]]</td>
   <td>[[+active:eq=`1`:then=`
-         Yes[[+pp_profileid:notempty=`, <a href="[[~43? &subid=`[[+sub_id]]`]]" title="Cancel Recurring Payments">cancel</a>`]]
+         Yes[[+pp_profileid:notempty=`, <a href="[[~43? &sub_id=`[[+sub_id]]`]]" title="Cancel Recurring Payments">cancel</a>`]]
       `:else=`No`]]</td>
 </tr>
