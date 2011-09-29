@@ -1,28 +1,34 @@
 # SubscribeMe
-SubscribeMe is a subscriptions extra for MODX Revolution that is currently in _pre-release development_.
+SubscribeMe is a subscriptions extra for MODX Revolution that, well, seems to work but probably needs more testers!
 
-The key features of SubscribeMe will include:
+The key features of SubscribeMe include:
 
 - Ability to set up different recurring subscription plans
-- Payments done via Paypal subscriptions
+- Payments done via PayPal subscriptions (Only PayPal or manual - NO other payment gateways supported or planned)
 - Component overview of users on different subscription plans and export of their details to CSV format
 - Manually provide users with a free subscription for a certain period (can be used for offline payments)
 - Read-only overview of transactions
 - Provides a FormIt hook which processes the registration and forwards user to Paypal or offline payment instructions
 
+# Documentation
+Documentation can be found on the "MODX RTFM":http://rtfm.modx.com/display/ADDON/SubscribeMe.
+
 # License
-SubscribeMe will be released as open source under the GPL v2 (or later) license. This means that while I hope this is useful,
+SubscribeMe has been released as open source under the GPL v2 (or later) license. This means that while I hope this is useful,
 I am not responsible for the effects of using it and can not be held liable for any (financial) damage incurred from using it.
 
-The source will be kept in a closed repository during initial development but publicized when completed.
+I welcome people taking this addon and customizing it to their needs. A pull request for any improvements would be great!
 
 # Installation Instructions
+See the "RTFM":http://rtfm.modx.com/display/ADDON/SubscribeMe.Setting+up+the+Payment+Flow for instructions on setting up the payment flow.
 
-1. Install the packag, and in Components -> SubscribeMe set up some products.
+The package can be found in the MODX Revolution Package Manager and has been tested on (and developed for) Revolution 2.1.
+
+1. Install the package, and in Components -> SubscribeMe set up some products.
 2. List all products using the smListProducts snippet. The default chunks use a FormIt call in the outer template
    which calls the smNewSubscription hook. The smNewSubscriptions hook creates a new inactive subscription, and then
    redirects to the resource as specified in the FormIt's &optionsResource property, with &subid=16 appended to the
-   link.
+   link. "More information on the RTFM":http://rtfm.modx.com/display/ADDON/SubscribeMe.Listing+Products+with+the+smListProducts+Snippet
 3. Set up the resource to display the payment options. PayPal is included, but it could be possible to add other
    methods (like manual payments or other payment options you add yourself) should you want to. The payment options
    resource needs to call the smCheckout snippet. This snippet will set up a token with PayPal, so you could use any
@@ -75,13 +81,13 @@ The source will be kept in a closed repository during initial development but pu
 
 # PayPal Instructions
 
-Coming soon!
+"See the RTFM":http://rtfm.modx.com/display/ADDON/SubscribeMe.Configuring+API+Credentials%2C+IPN+and+going+Live
 
 # Developer
 **Mark Hamstra**  
 Email: hello@markhamstra.com  
 Website: www.markhamstra.com
 
-# Development
+# Development Funded By
 **Jared Loman Creative**  
 www.jaredloman.com
