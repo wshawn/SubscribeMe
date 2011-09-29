@@ -1,2 +1,2 @@
-+++++ SubscribeMe 0.9.0 +++++
-Initial package.
++++++ SubscribeMe 1.0.0 +++++
+Initial publicly available package.

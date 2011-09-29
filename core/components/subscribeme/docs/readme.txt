@@ -15,9 +15,12 @@ SubscribeMe is released as open source under the GPL v2 (or later) license. This
 I am not responsible for the effects of using it and can not be held liable for any (financial) damage incurred from using it.
 
 ## Documentation
-Please see http://rtfm.modx.com/display/ADDON/SubscribeMe
+Please see http://rtfm.modx.com/display/ADDON/SubscribeMe and the Github home page at https://github.com/Mark-H/SubscribeMe
 
 ## Credits
 - Developed by Mark Hamstra, markhamstra.com
 - Development funded by Jared Loman Creative, jaredloman.com
 - PayPal class by Drew Johnston, 2007, drewjoh.com and modified by Mark Hamstra, markhamstra.com
+
+## Bugs & Feature Requests
+Please file them at https://github.com/Mark-H/SubscribeMe/issues/ - thanks!
