@@ -1,27 +1,24 @@
 <?php
 /**
- * RealEstateX
+ * SubscribeMe
  *
  * Copyright 2011 by Mark Hamstra <business@markhamstra.nl>
  *
- * This file is part of RealEstateX, a real estate property listings component
- * for MODX Revolution.
+ * This file is part of SubscribeMe, a subscriptions management extra for MODX Revolution
  *
- * RealEstateX is free software; you can redistribute it and/or modify it under
+ * SubscribeMe is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
  *
- * RealEstateX is distributed in the hope that it will be useful, but WITHOUT ANY
+ * SubscribeMe is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * RealEstateX; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * SubscribeMe; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
- *
 */
-/* Main index Action */
 $action = $modx->newObject('modAction');
 $action->fromArray(array(
     'id' => 0,
